@@ -1,0 +1,127 @@
+/* Barra de herramientas */
+.toolbar {
+  font-family     : 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size       : x-large;
+  height          : 60px;
+  margin          : -8px;
+  display         : flex;
+  align-items     : center;
+  background-color: #004e99;
+  color           : white;
+  box-shadow      : 0 2px 5px 0 #0000004d;
+  font-weight     : 100;
+}
+
+.toolbar img {
+  margin: 15px 10px 10px 16px;
+}
+
+.no-seleccionable {
+  margin-left: 2px;
+  -moz-user-select   : none;
+  -webkit-user-select: none;
+  -ms-user-select    : none;
+  user-select        : none;
+}
+
+@media only screen and (max-width: 770px){
+  .no-seleccionable {
+      display: none;
+  }
+}
+
+/* Boton Acerca de...*/
+.acercade {
+  color      : #fff;
+  border     : none;
+  margin-left: 2px;
+  position   : absolute;
+  right      : 0;
+}
+
+.acercade:hover {
+  color           : #004e99;
+  background-color: #fff;
+  border-color    : #fff;
+}
+
+.manual {
+  color      : #fff;
+  border     : none;
+  margin-left: 2px;
+  margin-right: 55px !important;
+  position   : absolute;
+  right      : 0;
+}
+
+.manual:hover {
+  color           : #004e99;
+  background-color: #fff;
+  border-color    : #fff;
+}
+
+
+.mat-button {
+  min-width   : 10px;
+  margin-right: 10px;
+  margin-top  : 3px;
+}
+
+/* Boton seleccion de idioma */
+.seleccion {
+  position    : absolute;
+  right       : 0;
+  margin-right: 98px;
+  margin-top  : 3px;
+}
+
+.bandera {
+  margin: 10px 5px 10px 10px !important;
+}
+
+.btn-idioma {
+  padding: 0px;
+  margin : 0px;
+  color  : white;
+}
+
+.textoidioma {
+  font-size   : 15px;
+  margin-right: 8px;
+}
+
+.btn-idioma:hover {
+  background-color: white;
+  color           : #004e99;
+}
+
+/* Triangulo del desplegable*/
+.dropdown-toggle:after {
+  color       : white;
+  margin-right: 4px;
+  margin-left : -3px;
+}
+
+.dropdown-toggle:hover::after {
+  color: #004e99;
+}
+
+.btn:focus {
+  box-shadow: none;
+}
+
+/* Desplegable */
+.dropdown-item:focus,
+.dropdown-item:hover {
+  color           : white;
+  text-decoration : none;
+  background-color: #004e99;
+}
+
+.dropdown-item {
+  padding: 0px;
+}
+
+.dropdown-menu {
+  padding: 0px;
+}

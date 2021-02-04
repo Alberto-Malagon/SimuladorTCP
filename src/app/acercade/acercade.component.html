@@ -1,0 +1,66 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h4 class="modal-title">{{ 'acercade.titulo' | translate }}</h4> <!--Acercade Titulo-->
+        <button ngbAutofocus type="button" class="close" aria-label="Close" (click)="activeModal.close('Cross click')" title="{{ 'acercade.cerrar' | translate }}">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+    <!-- Cuerpo del mensaje del apartado Acercade, donde se explica los autores de la misma, la tutora que lo supervisa y los agradecimientos -->
+        <p>
+            {{ 'acercade.acerca' | translate }} <a href="{{ 'acercade.autor-web' | translate }}" target="_blank"
+                title="{{ 'acercade.autor' | translate }}">{{ 'acercade.autor' | translate }}</a>
+            {{ 'acercade.acerca2' | translate }} <a href="{{ 'acercade.tutor-web' | translate }}" target="_blank"
+                title="{{ 'acercade.tutor' | translate }}">{{ 'acercade.tutor' | translate }}</a>.
+            <br>
+            {{ 'acercade.agradecimiento' | translate }} <a href="{{ 'acercade.tutor2-web' | translate }}"
+                target="_blank" title="{{ 'acercade.tutor2' | translate }}">{{ 'acercade.tutor2' | translate }}</a>
+            {{ 'acercade.agradecimiento2' | translate }}.
+        </p>
+        <p>
+            {{ 'acercade.acerca3' | translate }} <a href="{{ 'acercade.autor2-web' | translate }}" target="_blank"
+                title="{{ 'acercade.autor2' | translate }}">{{ 'acercade.autor2' | translate }}</a>
+            {{ 'acercade.acerca4' | translate }} <a href="{{ 'acercade.tutor-web' | translate }}" target="_blank"
+                title="{{ 'acercade.tutor' | translate }}">{{ 'acercade.tutor' | translate }}</a>.
+        </p>
+        <!-- Herramientas utilizadas en el desarrollo de la app. -->
+        <p>{{ 'acercade.herramientas' | translate }}:</p>
+        <a href="https://angular.io/" target="_blank" title="Angular">
+            <img src="assets\img\angular-logo.svg" alt="Angular" class="herramientas"
+                style="width: 80px; margin-left: 10px;" />
+        </a>
+        <a href="https://ng-bootstrap.github.io/#/home" target="_blank" title="Bootstrap">
+            <img src="assets\img\bootstrap-logo.svg" alt="Bootstrap" class="herramientas"
+                style="width: 70px; margin-left: 5px;" />
+        </a>
+        <a href="https://code.visualstudio.com/" target="_blank" title="Visual Studio Code">
+            <img src="assets\img\vscode-logo.svg" alt="Visual Studio Code" class="herramientas"
+                style="width: 60px; margin-left: 15px;" />
+        </a>
+        <a href="https://github.com/" target="_blank" title="GitHub">
+            <img src="assets\img\github-logo.svg" alt="GitHub" class="herramientas"
+                style="width: 60px; margin-left: 20px;" />
+        </a>
+        <p>
+            <br>{{ 'acercade.iconos' | translate }} <a href="https://fontawesome.com/" target="_blank"
+                title="Font Awesome">Font Awesome</a>.
+            <br>{{ 'acercade.traduccion' | translate }} <a href="https://www.deepl.com/translator" target="_blank"
+                title="DeepL">DeepL</a>.
+            <br>{{ 'acercade.softw-licen' | translate }} <a href="{{ 'acercade.licencias-web' | translate }}"
+                target="_blank"
+                title="{{ 'acercade.softw-licen' | translate }} {{ 'acercade.softw-licen-2' | translate }}">{{ 'acercade.softw-licen-2' | translate }}</a> {{ 'acercade.softw-licen-3' | translate }}.
+
+            <br>{{ 'acercade.repo-licen' | translate }}  <a href="{{ 'acercade.repo-licen-web' | translate }}" target="_blank" title="{{ 'acercade.repo-licen-tp' | translate }}">
+                    <img src="assets\img\gplv3.png" alt="{{ 'acercade.repo-licen-tp' | translate }}"
+                        style="width: 75px;" /></a>
+        </p>
+    </div>
+    <!-- Versión y Repositorio -->
+    <div class="modal-footer">
+        <span class="version" title="{{ appVersion.date }} ">v{{ appVersion.version }}</span>
+        <a href="https://alberto-malagon.github.io/SimuladorTCP/" class="btn btn-modal" target="_blank"
+            title="{{ 'acercade.repo' | translate }}">{{ 'acercade.repo' | translate }}</a>
+        <button type="button" class="btn btn-modal" (click)="activeModal.close('Close click')"
+            title="{{ 'acercade.cerrar' | translate }}">{{ 'acercade.cerrar' | translate }}</button>
+    </div>
+</div>

@@ -1,0 +1,114 @@
+/* Colores de fondo */
+.mat-drawer-container {
+  background-color: white;
+}
+
+.mat-drawer {
+  background-color: white;
+}
+
+/* Formulario izquierdo */
+.formizq {
+  position: absolute;
+  top     : 60px;
+  bottom  : 0;
+  left    : 5px;
+  right   : 0;
+}
+
+/* Boton para abrir y cerrar el formulario izquierdo */
+.mat-button {
+  padding  : 0;
+  min-width: 0;
+}
+
+.btn-menu {
+  color      : #004e99;
+  border     : none;
+  margin-left: 2px;
+  position   : fixed;
+  margin-top : -15px;
+  z-index    : 1;
+}
+
+.btn-menu:hover {
+  color           : #fff;
+  background-color: #004e99;
+  border-color    : #004e99;
+}
+
+/* Botones de simular, rellenar y limpiar formulario */
+.btn-formulario {
+  color       : #004e99;
+  border-color: #004e99;
+  margin-left : 10px;
+  margin-top  : 10px;
+}
+
+.btn-formulario:hover {
+  color           : #fff;
+  background-color: #004e99;
+  border-color    : #004e99
+}
+
+/* Contenedor de los parametros */
+.params-container {
+  display       : flex;
+  flex-direction: column;
+}
+
+.params-container {
+  width : 90%;
+  margin: auto;
+}
+
+/* Seleccion del algoritmo de congestion */
+.mat-option:hover {
+  color           : #fff;
+  background-color: #004e99;
+  border-color    : #004e99
+}
+
+/* Entrada de parametros */
+.mat-form-field {
+  margin: 0 0 -10px 0;
+}
+
+/* Simulacion */
+.contsimulacion {
+  margin    : 0 0 0 15px;
+  text-align: -webkit-center;
+}
+
+/* Alertas */
+.alerta {
+  margin: 10px;
+}
+
+.alert-info {
+  color           : #004e99;
+  background-color: #7db4e926;
+  border-color    : #004e99;
+}
+
+.alert-warning {
+  color           : #6a4f00;
+  background-color: #fff3cd;
+  border-color    : #6a4f00;
+}
+
+.alert-danger {
+  color           : #721c24;
+  background-color: #f8d7da;
+  border-color    : #721c24;
+}
+
+/* Boton de informacion de los parametros */
+.infoparametros {
+  opacity    : 0.6;
+  margin-left: 6px;
+}
+
+.infoparametros:hover {
+  opacity: 1.0;
+}

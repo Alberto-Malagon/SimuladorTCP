@@ -1,0 +1,35 @@
+<!-- Toolbar -->
+<div class="toolbar" role="banner">
+
+  <a href="{{ 'supbar.uah-url' | translate }}" target="_blank" title="{{ 'supbar.img-uni' | translate }}">
+    <img width="120" alt="{{ 'supbar.img-uni' | translate }}" src="{{ 'supbar.logo' | translate }}" />
+  </a>
+  <span class="no-seleccionable">{{ 'supbar.titulo' | translate }}</span>
+
+  <button class="btn manual" mat-button title="{{ 'supbar.btn-manual' | translate }}" (click)="manualUsuario()">
+    <fa-icon [icon]="faBook"></fa-icon>
+  </button>
+
+  <button class="btn acercade" mat-button title="{{ 'supbar.btn-acercade' | translate }}" (click)="acercaDe()">
+    <fa-icon [icon]="faInfoCircle"></fa-icon>
+  </button>
+
+  <div ngbDropdown class="seleccion">
+    <button class="btn btn-idioma" title="{{ 'supbar.btn-idioma' | translate }}" ngbDropdownToggle>
+      <img class="bandera" width="16px" alt="{{ bandera }}" src="assets\img\flags\{{ bandera }}_round.png" /><span
+        class="textoidioma">{{ idiomaSeleccionado }}</span>
+    </button>
+    <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="lenguaje">
+      <button ngbDropdownItem *ngFor="let idioma of idiomas" (click)="CambiarIdioma(idioma)" title="{{ idioma }}">
+        <span *ngIf="idioma === 'Español'">
+          <img width="32px" alt="{{ bandera }}" src="assets\img\flags\spain.png" />
+        </span>
+        <span *ngIf="idioma === 'English'">
+          <img width="32px" alt="{{ bandera }}" src="assets\img\flags\united_kingdom.png" />
+        </span>
+        {{ idioma }}
+      </button>
+    </div>
+  </div>
+
+</div>

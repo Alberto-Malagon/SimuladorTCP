@@ -1,0 +1,55 @@
+.modal-content {
+    width      : 225%;
+    margin-left: -62%;
+}
+
+/* iPad */
+@media only screen and (max-width: 1150px) and (min-width: 768px) {
+    .modal-content {
+        width       : 147%;
+        margin-right: auto;
+        margin-left : -24%;
+    }
+}
+
+/* Menores al iPad */
+@media only screen and (max-width: 767px) {
+    .modal-content {
+        width       : auto;
+        margin-right: auto;
+        margin-left : auto;
+    }
+}
+
+button[aria-label="Close"]:focus {
+    outline: none;
+}
+
+.modal-body {
+    text-align: justify;
+}
+
+.btn-modal {
+    color       : #004e99;
+    border-color: #004e99;
+    margin-left : 10px;
+    margin-top  : 10px;
+}
+
+.btn-modal:hover {
+    color           : #fff;
+    background-color: #004e99;
+    border-color    : #004e99
+}
+
+a {
+    color: #023163;
+}
+
+a:hover {
+    color: #007bff;
+}
+
+.oblig {
+    color: #8c2626;
+}
