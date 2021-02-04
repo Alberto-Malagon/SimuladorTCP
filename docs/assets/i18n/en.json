@@ -83,6 +83,8 @@
     "error-cierre": "You must select the device to initiate the connection closure"
   },
   "simulacion": {
+    "ack-retardado": "DELAYED ACK",
+    "ack-retardado": "In practice, when the MSS on the sending side is equal to the W on the receiving side, the ACK should be immediate, but for simplicity delayed ACK is implemented.",
     "clien": "Client",
     "ipclien": "Client IP",
     "serv": "Server",
@@ -118,6 +120,10 @@
     "autor-web": "https://www.linkedin.com/in/javierortipriego/",
     "acerca2": "and supervised by",
     "tutor": "Elisa Rojas Sánchez",
+    "acerca3":"The application is currently in its second version, where the functionalities have been expanded and some aspects of it have been modified. This v2 has been made in another Bachelor Thesis by",
+    "autor2": "Alberto Malagón Ramírez",
+    "autor2-web":"https://www.linkedin.com/in/alberto-malag%C3%B3n-ram%C3%ADrez-8ba1101b8/",
+    "acerca4":"also supervised by",
     "tutor-web": "https://www.uah.es/en/estudios/profesor/Elisa-Rojas-Sanchez/",
     "agradecimiento": "Acknowledge the assistance provided by",
     "tutor2": "Milan Segedinac",

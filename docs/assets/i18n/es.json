@@ -83,6 +83,8 @@
     "error-cierre": "Debe seleccionar el dispositivo que va a iniciar el cierre de conexión"
   },
   "simulacion": {
+    "ack_retardado": "ACK RETARDADO",
+    "ack-retardado": "En la práctica, cuando el MSS del lado emisor es igual que la W del receptor, el ACK debería ser inmediato, pero por simplicidad se implementa el ACK retardado",
     "clien": "Cliente",
     "ipclien": "IP del cliente",
     "serv": "Servidor",
@@ -113,12 +115,16 @@
   },
   "acercade": {
     "titulo": "Acerca de...",
-    "acerca": "Este proyecto es un Trabajo de Fin de Grado (TFG) para la Universidad de Alcalá (Alcalá de Henares, Madrid, España) realizado por",
+    "acerca": "Este proyecto es un Trabajo de Fin de Grado (TFG) para la Universidad de Alcalá (Alcalá de Henares, Madrid, España) cuya primera versión está realizada por",
     "autor": "Javier Orti Priego",
     "autor-web": "https://www.linkedin.com/in/javierortipriego/",
     "acerca2": "y dirigido por",
     "tutor": "Elisa Rojas Sánchez",
     "tutor-web": "https://www.uah.es/es/estudios/profesor/Elisa-Rojas-Sanchez/",
+    "acerca3":"La aplicación actualmente se encuentra en su segunda versión, ya que posteriormente se han ampliado las funcionalidades y se han modificado algunos aspectos de la misma. Esta v2 ha sido realizada en otro TFG por el alumno",
+    "autor2": "Alberto Malagón Ramírez",
+    "autor2-web":"https://www.linkedin.com/in/alberto-malag%C3%B3n-ram%C3%ADrez-8ba1101b8/",
+    "acerca4":"también dirigido por",
     "agradecimiento": "Agradecer la ayuda prestada por",
     "tutor2": "Milan Segedinac",
     "tutor2-web": "http://www.ftn.uns.ac.rs/1417837849/milan-segedinac",
