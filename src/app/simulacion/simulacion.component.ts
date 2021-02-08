@@ -265,6 +265,7 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         envAck++;
       }
       else if (denv !=0){ // Cada 2 paquetes enviados por el cliente, el servidor envia un ACK mientras el cliente envía datos (flechas cruzadas)
+        this.serv.flags = ack;
         this.cli.ult_sn = this.cli.sn;
         this.cli.sn += ultDataEnv;
         this.serv.ult_sn = this.serv.sn;
@@ -287,7 +288,7 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
       if (envAck == 2 && numPqtClienEnv + 1 >= numPqtClien && modPqtClien == 0) // Si es el ultimo paquete a enviar y no hay mas datos a enviar salimos del bucle
         numPqtClienEnv += 99;
     }
-//######################################################################################
+//##########################################################################################################################################################################################################################
     // El servidor espera 1.5 ticks por si recibe otro paquete
     if (envAck != 2)
       this.comunicacion.push({ numseg: null, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1 });
