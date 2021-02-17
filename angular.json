@@ -128,5 +128,8 @@
       }
     }
   },
-  "defaultProject": "tcp-simulador"
+  "defaultProject": "tcp-simulador",
+  "cli": {
+    "analytics": "712a84f5-0a61-4b5f-86ea-1ed0fecefe1d"
+  }
 }

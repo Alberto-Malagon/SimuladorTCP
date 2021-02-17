@@ -1,7 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\src",
+    "\\src\\app",
+    "\\src\\app\\simulacion"
   ],
-  "SelectedNode": "\\tsconfig.json",
+  "SelectedNode": "\\src\\app\\simulacion\\simulacion.component.ts",
   "PreviewInSolutionExplorer": false
 }

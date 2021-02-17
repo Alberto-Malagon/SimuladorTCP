@@ -249,7 +249,6 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     var segperdRegex = new RegExp('[0-9]+(,[0-9]+)+/g');
     var segperdclien: string = this.simulacion.segperdclien;
     var segperdserv: string = this.simulacion.segperdserv;
-
     if (segperdclien != null) { //Cliente
       segperdclien = segperdclien.replace(/[a-zA-Z]+/gi, ''); // se eliminan los caracteres que sean letras
       segperdclien = segperdclien.replace(/\s/g, ''); // se eliminan los espacios
@@ -257,6 +256,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
 
       var segperdNum = segperdclien.split(',').map(Number); // se transforma la cadena de caracteres a un array numerico
       segperdNum = segperdNum.sort((n1, n2) => n1 - n2); // se ordenan los numeros de menor a mayor
+      
       segperdclien = segperdNum.toString(); // se transforma el array numerico en una cadena de caracteres
 
       // Eliminamos los valores duplicados
@@ -276,6 +276,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
         segperdclien = ""
 
       this.simulacion.segperdclien = segperdclien;
+      
     }
 
     if (segperdserv != null) { //Servidor
@@ -364,8 +365,8 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     if (this.alertas.length == 0) {
       simular = true;
       // Si hay segmentos perdidos mostramos la advertencia sobre funcionalidad en proceso
-      if ((this.simulacion.segperdclien != null && this.simulacion.segperdclien != "") || (this.simulacion.segperdserv != null && this.simulacion.segperdserv != ""))
-        this.enprocMsg = true;
+      //if ((this.simulacion.segperdclien != null && this.simulacion.segperdclien != "") || (this.simulacion.segperdserv != null && this.simulacion.segperdserv != ""))
+        //this.enprocMsg = true;
     }
     else {
       simular = false;
