@@ -86,6 +86,8 @@
   "simulacion": {
     "ack_retardado": "ACK RETARDADO",
     "ack-retardado": "En la práctica, cuando el MSS del lado emisor es igual que la W del receptor, el ACK debería ser inmediato, pero por simplicidad se implementa el ACK retardado",
+    "fin_timeout": "Vence el temporizador y se reenvía el segmento",
+    "temporizador": "Arranca el temporizador",
     "clien": "Cliente",
     "ipclien": "IP del cliente",
     "serv": "Servidor",

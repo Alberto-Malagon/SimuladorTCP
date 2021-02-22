@@ -104,6 +104,10 @@
                         </span>
                         <span title="{{ 'simulacion.datos' | translate }}">D={{ conversacion.dcli }}, </span>
                         <span title="{{ 'simulacion.w' | translate }}">W={{ conversacion.wcli }}</span>
+                        <span *ngIf="conversacion.pqt_rtx==1">
+                            <i class="fas fa-history " title="{{ 'simulacion.fin_timeout' | translate }}"></i>
+                        </span>
+                    
                     </td>
                     <td>
                         <span title="{{ 'simulacion.seg' | translate }} {{ conversacion.numseg }}">
@@ -133,6 +137,9 @@
                             AN={{ conversacion.ancli }},  </span>
                         <span title="{{ 'simulacion.datos' | translate }}">D={{ conversacion.dcli }}, </span>
                         <span title="{{ 'simulacion.w' | translate }}">W={{ conversacion.wcli }}</span>
+                        <span *ngIf="conversacion.pqt_rtx==1">
+                            <i class="fas fa-history " title="{{ 'simulacion.fin_timeout' | translate }}"></i>
+                        </span>
                     </td>
                     <td>
                         <span title="{{ 'simulacion.seg' | translate }} {{ conversacion.numseg }}">
@@ -182,6 +189,9 @@
                         </span>
                         <span title="{{ 'simulacion.datos' | translate }}">D={{ conversacion.dcli }}, </span>
                         <span title="{{ 'simulacion.w' | translate }}">W={{ conversacion.wcli }}</span>
+                        <span *ngIf="conversacion.pqt_rtx==1">
+                            <i class="fas fa-history " title="{{ 'simulacion.fin_timeout' | translate }}"></i>
+                        </span>
                     </td>
                     <td>
                         <span title="{{ 'simulacion.seg' | translate }} {{ conversacion.numseg }}">
@@ -248,6 +258,9 @@
                         </span>
                         <span title="{{ 'simulacion.datos' | translate }}">D={{ conversacion.dcli }}, </span>
                         <span title="{{ 'simulacion.w' | translate }}">W={{ conversacion.wcli }}</span>
+                        <span>
+                            <i class="far fa-clock " title="{{ 'simulacion.temporizador' | translate }}"></i>
+                        </span>
                     </td>
                     <td>
                         <span title="{{ 'simulacion.seg' | translate }} {{ conversacion.numseg }}">
@@ -293,6 +306,9 @@
                         </span>
                         <span title="{{ 'simulacion.datos' | translate }}">D={{ conversacion.dcli }}, </span>
                         <span title="{{ 'simulacion.w' | translate }}">W={{ conversacion.wcli }}</span>
+                        <span>
+                            <i class="far fa-clock " title="{{ 'simulacion.temporizador' | translate }}"></i>
+                        </span>
                     </td>
                     <td>
                         <span title="{{ 'simulacion.seg' | translate }} {{ conversacion.numseg }}">
