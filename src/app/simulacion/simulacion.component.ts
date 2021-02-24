@@ -644,6 +644,7 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
     //#########################
     // >>>>> Si el primer segmento se pierde <<<<<
     let x: number=0;
+    let reconocido: number = 0; //1--> El segmento perdido no ha sido reconocido  0--> El segmento perdido ha sido reconocido
     let sn_perd: number;
     let an_perd: number;
     let d_perd: number;
@@ -656,7 +657,7 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
       d_perd = denv;
       this.comunicacion.push({ numseg: ++nseg, dir: -1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1 , pqt_rtx:0});
       contadorPqtEnv++;
-
+      reconocido=1;
     }
     else 
     {
@@ -690,6 +691,7 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
     //############################
     let envAck: number = 0; // Cada dos paquetes enviados por el cliente, el servidor devuelve un ACK
     let ultDataEnv: number = denv; // Tamanyo de los ultimos datos enviados
+    let ACK_inm: number = 0;
     for (; numPqtClienEnv <= numPqtClien; numPqtClienEnv++) { //Segmentos enviados a partir del primero
       let x: number=0;
       //REENVÍO PAQUETE PERDIDO
@@ -700,30 +702,71 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:1 });
         numPqtClienEnv++;
         envAck++;
+        reconocido=0;
+        ACK_inm = 1;
         }  
         else if (denv !=0)
         {
         this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:1 });
         numPqtClienEnv++;
         envAck++;
+        reconocido=0;
+        ACK_inm = 1;
         }
       }
-      //ACK
-      if (envAck == Math.min(this.cli.vcrep, envMaxClien)) // Si se han enviado los paquetes que permite la VC pero no se ha recibido aun un ACK, se envia
+      //ACK inmediato
+      if (ACK_inm==1)
       {
-        this.serv.flags = ack;
         this.serv.ult_sn = this.serv.sn;
         this.serv.ult_an = this.serv.an;
         let inc: number = this.cli.ult_sn - this.serv.ult_an;
         this.serv.an = this.cli.ult_sn + (inc == 0 ? denv : inc);
-        this.incrementarVC(this.cli, this.serv, mssClien);
+        this.serv.ult_an = this.serv.an;
+        this.serv.flags = ack;
+        this.serv.an = sn_perd;
+        //this.incrementarVC(this.cli, this.serv, mssClien);
         this.comprobarEC(this.cli, umbral);
         this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 });
-        this.cli.ult_sn = this.cli.sn;
-        this.cli.ult_an = this.cli.an;
         numPqtClienEnv--; // HACE QUE EL SEGMENTO PERDIDO SE REPITA DOS VECES!! Solucionado con contadorPqtEnv
         timeout --;
-        envAck = 0;
+        envAck = 0; 
+        ACK_inm=0;
+      }
+      //ACK
+      if (envAck == Math.min(this.cli.vcrep, envMaxClien)) // Si se han enviado los paquetes que permite la VC pero no se ha recibido aun un ACK, se envia
+      {
+        if (reconocido==0)
+        {
+          this.serv.flags = ack;
+          this.serv.ult_sn = this.serv.sn;
+          this.serv.ult_an = this.serv.an;
+          let inc: number = this.cli.ult_sn - this.serv.ult_an;
+          this.serv.an = this.cli.ult_sn + (inc == 0 ? denv : inc);
+          this.incrementarVC(this.cli, this.serv, mssClien);
+          this.comprobarEC(this.cli, umbral);
+          this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 });
+          this.cli.ult_sn = this.cli.sn;
+          this.cli.ult_an = this.cli.an;
+          numPqtClienEnv--; // HACE QUE EL SEGMENTO PERDIDO SE REPITA DOS VECES!! Solucionado con contadorPqtEnv
+          timeout --;
+          envAck = 0;
+        }
+        else if (reconocido==1)
+        {
+          this.serv.ult_sn = this.serv.sn;
+          this.serv.ult_an = this.serv.an;
+          let inc: number = this.cli.ult_sn - this.serv.ult_an;
+          this.serv.an = this.cli.ult_sn + (inc == 0 ? denv : inc);
+          this.serv.ult_an = this.serv.an;
+          this.serv.flags = ack;
+          this.serv.an = sn_perd;
+          this.incrementarVC(this.cli, this.serv, mssClien);
+          this.comprobarEC(this.cli, umbral);
+          this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 });
+          numPqtClienEnv--; // HACE QUE EL SEGMENTO PERDIDO SE REPITA DOS VECES!! Solucionado con contadorPqtEnv
+          timeout --;
+          envAck = 0; 
+        }
       }
       //SEGMENTOS PERDIDOS
       else if (this.simular.segperdclien!= null && contadorPqtEnv+1==segperdNumclien[x])
@@ -737,16 +780,22 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         this.cli.ult_sn = this.cli.sn;
         this.cli.sn += ultDataEnv;
         this.comprobarEC(this.cli, umbral);
-
+        sn_perd = this.cli.sn;
+        an_perd = this.cli.an;
+        d_perd = denv;
         this.comunicacion.push({ numseg: ++nseg, dir: -1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0});
         this.cli.ult_sn = this.cli.sn;
         ultDataEnv = denv;
         envAck++;
         contadorPqtEnv++;
         timeout=this.simular.timeout;
+        reconocido=1;
         }
         else if (denv !=0) // SEGMENTO PERDIDO (FLECHAS CRUZADAS)
         {
+        sn_perd = this.cli.sn;
+        an_perd = this.cli.an;
+        d_perd = denv;
         this.serv.flags = ack;
         this.cli.ult_sn = this.cli.sn;
         this.cli.sn += ultDataEnv;
@@ -758,12 +807,12 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         this.serv.flags=ack;
         this.comunicacion.push({ numseg: ++nseg, dir: -10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 5, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 });
         contadorPqtEnv++;
-        this.cli.ult_sn = this.cli.sn;
-        this.cli.ult_an = this.cli.an;
         envAck = 1;// Con el ACK se envía otro paquete , por lo que hay un paquete sin reconocer => envAck=1
         timeout=this.simular.timeout;
+        reconocido=1;
       }
       }
+      //PAQUETES DE DATOS
       else if (envAck < 2 && denv !=0 ) // El numero de paquetes enviados no alcanza al ACK
       {
         this.serv.flags= nullflag;
@@ -777,6 +826,7 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         contadorPqtEnv++;
         timeout --;
       }
+      //ACK Y DATOS 
       else if (denv !=0){ // Cada 2 paquetes enviados por el cliente, el servidor envia un ACK mientras el cliente envía datos (flechas cruzadas)
         this.serv.flags = ack;
         this.cli.ult_sn = this.cli.sn;
