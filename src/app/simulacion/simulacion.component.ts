@@ -703,17 +703,16 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
       {
         if (envAck < 2 && denv !=0 )
         {
-        this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:1 });
-        //numPqtClienEnv++;
+        this.cli.vcrep=1;
+        this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 });
         envAck++;
         reconocido=0;
         ACK_inm = 1;
         pqtPerdido=0;
         }  
-        else if (denv !=0)
+        else if (denv !=0) //FLECHAS CRUZADAS
         {
-        this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:1 });
-        //numPqtClienEnv++;
+        this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:1 });
         envAck++;
         reconocido=0;
         ACK_inm = 1;
@@ -782,16 +781,12 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         if (envAck < 2 && denv !=0)
         {
         this.serv.flags= nullflag;
-        this.cli.ult_sn = this.cli.sn;
-        this.cli.sn += ultDataEnv;
         this.comprobarEC(this.cli, umbral);
         sn_perd = this.cli.sn;
         an_perd = this.cli.an;
         d_perd = denv;
         this.comunicacion.push({ numseg: ++nseg, dir: -1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0});
-        this.cli.ult_sn = this.cli.sn;
         ultDataEnv = denv;
-        //envAck++;
         contadorPqtEnv++;
         numPqtClienEnv--;
         timeout=this.simular.timeout;

@@ -107,6 +107,11 @@ img.flechaperd {
     filter: opacity(.5) drop-shadow(0 0 0 red);
 }
 
+img.flechaperdyACK {
+    height: 100%;
+    width : 100%;
+}
+
 img.flecha {
     height: 100%;
     width : 100%;
