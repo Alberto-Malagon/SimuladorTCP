@@ -704,7 +704,7 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         if (envAck < 2 && denv !=0 )
         {
         this.cli.vcrep=1;
-        this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 });
+        this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:1 });
         envAck++;
         reconocido=0;
         ACK_inm = 1;
@@ -712,7 +712,8 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         }  
         else if (denv !=0) //FLECHAS CRUZADAS
         {
-        this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:1 });
+        this.cli.vcrep=1;
+        this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:1 });
         envAck++;
         reconocido=0;
         ACK_inm = 1;
@@ -732,7 +733,6 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         this.comprobarEC(this.cli, umbral);
         this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 });
         numPqtClienEnv--; // HACE QUE EL SEGMENTO PERDIDO SE REPITA DOS VECES!! Solucionado con contadorPqtEnv
-        timeout --;
         envAck = 0; 
         ACK_inm=0;
       }
@@ -741,6 +741,7 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
       {
         if (reconocido==0)
         {
+          timeout --;
           this.serv.flags = ack;
           this.serv.ult_sn = this.serv.sn;
           this.serv.ult_an = this.serv.an;
@@ -752,11 +753,11 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
           this.cli.ult_sn = this.cli.sn;
           this.cli.ult_an = this.cli.an;
           numPqtClienEnv--; // HACE QUE EL SEGMENTO PERDIDO SE REPITA DOS VECES!! Solucionado con contadorPqtEnv
-          timeout --;
           envAck = 0;
         }
         else if (reconocido==1)
         {
+          timeout --;
           this.serv.ult_sn = this.serv.sn;
           this.serv.ult_an = this.serv.an;
           let inc: number = this.cli.ult_sn - this.serv.ult_an;
@@ -768,7 +769,6 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
           this.comprobarEC(this.cli, umbral);
           this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 });
           numPqtClienEnv--; // HACE QUE EL SEGMENTO PERDIDO SE REPITA DOS VECES!! Solucionado con contadorPqtEnv
-          timeout --;
           envAck = 0; 
         }
       }
@@ -804,13 +804,12 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         this.serv.ult_sn = this.serv.sn;
         this.serv.ult_an = this.serv.an;
         this.serv.an = this.cli.ult_sn + (this.cli.ult_sn - this.serv.ult_an);
-        this.incrementarVC(this.cli, this.serv, mssServ);
         this.comprobarEC(this.cli, umbral);
         this.serv.flags=ack;
         this.comunicacion.push({ numseg: ++nseg, dir: -10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 5, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 });
         contadorPqtEnv++;
         numPqtClienEnv--;
-        envAck = 1;// Con el ACK se envía otro paquete , por lo que hay un paquete sin reconocer => envAck=1
+        envAck = 0;
         timeout=this.simular.timeout;
         reconocido=1;
         pqtPerdido=1;
@@ -819,6 +818,7 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
       //PAQUETES DE DATOS
       else if (envAck < 2 && denv !=0 ) // El numero de paquetes enviados no alcanza al ACK
       {
+        timeout --;
         this.serv.flags= nullflag;
         this.cli.ult_sn = this.cli.sn;
         this.cli.sn += ultDataEnv;
@@ -828,10 +828,11 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         ultDataEnv = denv;
         envAck++;
         contadorPqtEnv++;
-        timeout --;
+       
       }
       //ACK Y DATOS 
       else if (denv !=0){ // Cada 2 paquetes enviados por el cliente, el servidor envia un ACK mientras el cliente envía datos (flechas cruzadas)
+        timeout--;
         this.serv.flags = ack;
         this.cli.ult_sn = this.cli.sn;
         this.cli.sn += ultDataEnv;
@@ -846,15 +847,16 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         this.cli.ult_an = this.cli.an;
         envAck = 1;// Con el ACK se envía otro paquete , por lo que hay un paquete sin reconocer => envAck=1
         contadorPqtEnv++;
-        timeout--;
+        
       }
       if (numPqtClienEnv == numPqtClien - 1){ // Si es el penultimo paquete a enviar, se prepara para enviar los datos restantes en el último
           if (modPqtClien!=0)
             denv = modPqtClien;
           else if (pqtPerdido==1)
           {
-            this.comunicacion.push({ numseg: null, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 });
             timeout--;
+            this.comunicacion.push({ numseg: null, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 });
+            
           }
           else
             numPqtClienEnv += 99;
