@@ -1,4 +1,14 @@
 /* Tabla general */
+.fa-redo-alt{
+    color: #f90b03;
+    font-size: 30px;
+    padding: 5px;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    line-height: 35px;
+    border-radius: 50%;   
+}
 .fa-exclamation{
   
   background: #F9EE03;
@@ -11,7 +21,7 @@
   line-height: 35px;
   border-radius: 50%;
 } 
-.fa-history
+.fa-stopwatch
 {
     color: #f90b03;
     font-size: 30px;
@@ -160,6 +170,11 @@ span.vccli {
     background-color: #3e3e7e;
     color           : white;
     border-radius   : 4px;
+}
+span.vctemp {
+    background-color: #b10a0a;
+    color           : white;
+    border-radius   : 3px;
 }
 
 span.modo {

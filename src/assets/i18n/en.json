@@ -86,7 +86,8 @@
   "simulacion": {
     "ack_retardado": "DELAYED ACK",
     "ack-retardado": "In practice, when the MSS on the sending side is equal to the W on the receiving side, the ACK should be immediate, but for simplicity delayed ACK is implemented.",
-    "fin_timeout":"The timer expires and the segment is resent.",
+    "fin_timeout":"The timer expires.",
+    "reenvio": "The missing segment is resent.",
     "temporizador":"The timer starts.",
     "clien": "Client",
     "ipclien": "Client IP",

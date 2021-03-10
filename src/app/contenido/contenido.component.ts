@@ -274,11 +274,13 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
 
       if (segperdclien == "0")
         segperdclien = ""
-
-      this.simulacion.segperdclien = segperdclien;
       
     }
-
+    else 
+      segperdclien="";
+    
+    this.simulacion.segperdclien = segperdclien;
+  
     if (segperdserv != null) { //Servidor
       segperdserv = segperdserv.replace(/[a-zA-Z]+/gi, ''); // se eliminan los caracteres que sean letras
       segperdserv = segperdserv.replace(/\s/g, ''); // se eliminan los espacios
@@ -306,6 +308,8 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
 
       this.simulacion.segperdserv = segperdserv;
     }
+    else 
+      segperdserv="";
 
     // ----DATOS NUMERICOS----
     // Se comprueba que los valores introducidos no son mayores a 99999999
