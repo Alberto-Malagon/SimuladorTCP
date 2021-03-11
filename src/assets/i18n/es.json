@@ -86,6 +86,7 @@
   "simulacion": {
     "ack_retardado": "ACK RETARDADO",
     "ack-retardado": "En la práctica, cuando el MSS del lado emisor es igual que la W del receptor, el ACK debería ser inmediato, pero por simplicidad se implementa el ACK retardado",
+    "umbral": "Umbral",
     "fin_timeout": "Vence el temporizador",
     "reenvio": "Se reenvía el segmento perdido",
     "temporizador": "Arranca el temporizador",
