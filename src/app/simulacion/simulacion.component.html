@@ -90,10 +90,11 @@
                 <!-- Direccion bidireccional cliente<->servidor con VC en cliente-->
                 <span *ngIf="conversacion.dir == 0">
                     <td class="info-izq">
-                        <span *ngIf="conversacion.fin_temp ==1" title="{{ 'simulacion.umbral' | translate }}"
-                            class="umbral">U={{ conversacion.umbral }},</span>
                         <span *ngIf="conversacion.flagcli[3] != ''" title="{{ 'simulacion.al' | translate }}"
                             class="modo">&nbsp;{{ 'simulacion.al_letra' | translate }}&nbsp;</span>
+                        &nbsp;
+                        <span *ngIf="conversacion.fin_temp ==1" title="{{ 'simulacion.umbral' | translate }}"
+                            class="umbral">U={{ conversacion.umbral }},</span>
                         <span *ngIf="conversacion.flagcli[4] != ''" title="{{ 'simulacion.ec' | translate }}"
                             class="modo">&nbsp;{{ 'simulacion.ec_letra' | translate }}&nbsp;</span>
                         <span *ngIf="conversacion.flagcli[5] != ''" title="{{ 'simulacion.rr' | translate }}"
@@ -136,7 +137,8 @@
                 <span *ngIf="conversacion.dir == 10">
                     <td class="info-izq">
                         <span *ngIf="conversacion.fin_temp ==1" title="{{ 'simulacion.umbral' | translate }}"
-                            class="umbral">&nbsp;U={{ conversacion.umbral }},</span>
+                            class="umbral">&nbsp;U={{ conversacion.umbral }},&nbsp;</span>
+                            &nbsp;
                        <span *ngIf="conversacion.flagcli[2] != ''" title="{{ 'simulacion.ack' | translate }}"
                               class="flagcli">&nbsp;{{ 'simulacion.ack_letra' | translate }},</span>
                         <span title="{{ 'simulacion.sn' | translate }}">&nbsp;SN={{ conversacion.sncli }}, </span>
@@ -180,10 +182,11 @@
                 <!-- Direccion cliente->servidor -->
                 <span *ngIf="conversacion.dir == 1">
                     <td class="info-izq">
-                        <span *ngIf="conversacion.fin_temp ==1" title="{{ 'simulacion.umbral' | translate }}"
-                            class="umbral">&nbsp;U={{ conversacion.umbral }}</span>
                         <span *ngIf="conversacion.flagcli[3] != ''" title="{{ 'simulacion.al' | translate }}"
                             class="modo">&nbsp;{{ 'simulacion.al_letra' | translate }}&nbsp;</span>
+                        &nbsp;
+                        <span *ngIf="conversacion.fin_temp ==1" title="{{ 'simulacion.umbral' | translate }}"
+                            class="umbral"> &nbsp;U={{ conversacion.umbral }}&nbsp;</span>
                         <span *ngIf="conversacion.flagcli[4] != ''" title="{{ 'simulacion.ec' | translate }}"
                             class="modo">&nbsp;{{ 'simulacion.ec_letra' | translate }}&nbsp;</span>
                         <span *ngIf="conversacion.flagcli[5] != ''" title="{{ 'simulacion.rr' | translate }}"
@@ -231,7 +234,7 @@
                 <span *ngIf="conversacion.dir == 2">
                     <td class="info-izq">
                         <span *ngIf="conversacion.fin_temp ==1" title="{{ 'simulacion.umbral' | translate }}"
-                            class="umbral">U={{ conversacion.umbral }},</span>
+                            class="umbral">U={{ conversacion.umbral }},&nbsp;</span>
                         <span *ngIf="conversacion.flagcli[4] != ''" title="{{ 'simulacion.ec' | translate }}"
                             class="modo">&nbsp;{{ 'simulacion.ec_letra' | translate }}&nbsp;</span>&nbsp;
                         <span *ngIf="conversacion.vc != 0 && conversacion.fin_temp !=1" title="{{ 'simulacion.vc' | translate }}"
