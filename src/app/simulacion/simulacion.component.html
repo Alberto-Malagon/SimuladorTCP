@@ -74,6 +74,11 @@
                       <span *ngIf="comprobarACKretardado_cli() && conversacion.emisor==2">
                         <i class="fas fa-exclamation " title="{{ 'simulacion.ack-retardado' | translate }}"></i>
                       </span>
+                      <span *ngIf="conversacion.fin_temp == 1 && conversacion.envio == 0">
+                        <span *ngIf="conversacion.vc != 0" title="{{ 'simulacion.vc' | translate }}"
+                        class="vctemp">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc }}</span>
+                        <i class="fas fa-stopwatch" title="{{ 'simulacion.fin_timeout' | translate }}"></i>
+                    </span>
                     </td>
                     <td>
                         <span title="">
@@ -400,9 +405,16 @@
                 <!-- Segmento perdido en direccion servidor->cliente y envío cliente -> servidor-->
                 <span *ngIf="conversacion.dir == -20">
                     <td class="info-izq">
-                      <span *ngIf="conversacion.flagcli != null"
-                          title="Flags"><strong>{{ conversacion.flagcli }}</strong>,
-                      </span>
+                        <span *ngIf="conversacion.flagcli[4] != ''" title="{{ 'simulacion.ec' | translate }}"
+                            class="modo">&nbsp;{{ 'simulacion.ec_letra' | translate }}&nbsp;</span>
+                        <span *ngIf="conversacion.flagcli[5] != ''" title="{{ 'simulacion.rr' | translate }}"
+                            class="modo">&nbsp;{{ 'simulacion.rr_letra' | translate }}&nbsp;</span>
+                        <span *ngIf="conversacion.flagcli[0] != ''" title="{{ 'simulacion.syn' | translate }}"
+                            class="flagcli">&nbsp;{{ 'simulacion.syn_letra' | translate }},</span>
+                        <span *ngIf="conversacion.flagcli[1] != ''" title="{{ 'simulacion.fin' | translate }}"
+                            class="flagcli">&nbsp;{{ 'simulacion.fin_letra' | translate }},</span>
+                        <span *ngIf="conversacion.flagcli[2] != ''" title="{{ 'simulacion.ack' | translate }}"
+                            class="flagcli">&nbsp;{{ 'simulacion.ack_letra' | translate }},</span>
                       <span title="{{ 'simulacion.sn' | translate }}" class="datos">SN={{ conversacion.sncli }}, </span>
                       <span *ngIf="conversacion.msscli != 0" title="{{ 'simulacion.mss' | translate }}" class="datos">
                           MSS={{ conversacion.msscli }},
