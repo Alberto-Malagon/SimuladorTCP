@@ -70,6 +70,7 @@
     "error-datosclien": "El tamaño de los datos a enviar (en bytes) debe ser mayor que 0",
     "error-snclien": "El número de secuencia por el que comienza el cliente debe ser mayor que 0",
     "error-segperdclien": "Los segmentos perdidos deben ser numeros separados por comas",
+    "error-segperdalert": "Uno de los valores introducidos es mayor que el número de segmentos a enviar",
     "error-wclien": "La ventana de recepción (en bytes) debe ser mayor que 0",
     "error-ipserv": "Debe ser del tipo [0-255].[0-255].[0-255].[0-255]",
     "error-mssserv": "El tamaño máximo de segmento a enviar (en bytes) debe ser mayor que 0",

@@ -245,6 +245,10 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     this.simulacion.ipclien = this.simulacion.ipclien.replace(/\W+/g, '.');
 
     //-----SEGMENTOS PERDIDOS-----
+    // Número máximo de segmentos enviados
+    let mss: number = Math.min(this.simulacion.mssclien,this.simulacion.mssserv);
+    let NumEnvMax_cli: number = Math.ceil(this.simulacion.datosclien/mss);
+    let NumEnvMax_serv: number = Math.ceil(this.simulacion.datosserv/mss);
     // Expresion regular para comprobar si segperd son numeros separados por comas
     var segperdRegex = new RegExp('[0-9]+(,[0-9]+)+/g');
     var segperdclien: string = this.simulacion.segperdclien;
@@ -256,7 +260,15 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
 
       var segperdNum = segperdclien.split(',').map(Number); // se transforma la cadena de caracteres a un array numerico
       segperdNum = segperdNum.sort((n1, n2) => n1 - n2); // se ordenan los numeros de menor a mayor
-      
+      //Se comprueba que ninguno de los valores introducidos es mayor que el número de sgmentos a enviar.
+      let x: number;
+      var segperdclialert: number = 0;
+      var segperdservalert: number = 0;
+      for(x=0;x<segperdNum.length;x++)
+      {
+        if(segperdNum[x]>NumEnvMax_cli)
+          segperdclialert=1;
+      }
       segperdclien = segperdNum.toString(); // se transforma el array numerico en una cadena de caracteres
 
       // Eliminamos los valores duplicados
@@ -288,6 +300,13 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
 
       var segperdNum = segperdserv.split(',').map(Number); // se transforma la cadena de caracteres a un array numerico
       segperdNum = segperdNum.sort((n1, n2) => n1 - n2); // se ordenan los numeros de menor a mayor
+    //Se comprueba que ninguno de los valores introducidos es mayor que el número de sgmentos a enviar
+      let y: number;
+      for(y=0;y<segperdNum.length;y++)
+      {
+        if(segperdNum[y]>NumEnvMax_serv)
+          segperdservalert=1;
+      }
       segperdserv = segperdNum.toString(); // se transforma el array numerico en una cadena de caracteres
 
       // Eliminamos los valores duplicados
@@ -340,6 +359,8 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
       this.alertas.push({ campo: this.translate.instant('contenido.clien') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.snclien') + ": ", msg: this.translate.instant('contenido.error-snclien') });
     if (this.simulacion.segperdclien != null && this.simulacion.segperdclien.indexOf(',') != -1 && segperdRegex.test(this.simulacion.segperdclien))
       this.alertas.push({ campo: this.translate.instant('contenido.clien') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.segperdclien') + ": ", msg: this.translate.instant('contenido.error-segperdclien') });
+    if (segperdclialert==1)
+      this.alertas.push({ campo: this.translate.instant('contenido.clien') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.segperdclien') + ": ", msg: this.translate.instant('contenido.error-segperdalert') });
     if (this.simulacion.wclien < 1)
       this.alertas.push({ campo: this.translate.instant('contenido.clien') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.wclien') + ": ", msg: this.translate.instant('contenido.error-wclien') });
     //Servidor
@@ -353,6 +374,8 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
       this.alertas.push({ campo: this.translate.instant('contenido.serv') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.snserv') + ": ", msg: this.translate.instant('contenido.error-snserv') });
     if (this.simulacion.segperdserv != null && this.simulacion.segperdserv.indexOf(',') != -1 && segperdRegex.test(this.simulacion.segperdserv))
       this.alertas.push({ campo: this.translate.instant('contenido.serv') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.segperdserv') + ": ", msg: this.translate.instant('contenido.error-segperdserv') });
+    if (segperdservalert==1)
+      this.alertas.push({ campo: this.translate.instant('contenido.serv') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.segperdserv') + ": ", msg: this.translate.instant('contenido.error-segperdalert') });
     if (this.simulacion.wserv < 1)
       this.alertas.push({ campo: this.translate.instant('contenido.serv') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.wserv') + ": ", msg: this.translate.instant('contenido.error-wserv') });
     //General
@@ -392,7 +415,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
       this.simulacion.datosclien = this.numAleatorio(100, 5000, 10);
       this.simulacion.snclien = this.numAleatorio(1, 500, 5);
       this.simulacion.wclien = this.numAleatorio(0, 8000, 1000);
-      this.simulacion.segperdclien = null;
+      this.simulacion.segperdclien = this.numAleatorio(0,this.simulacion.datosclien/this.simulacion.mssclien,1).toString();
 
       //Servidor
       this.simulacion.ipserv = "192.168." + + this.numAleatorio(0, 11, 1).toString() + "." + this.numAleatorio(0, 255, 1).toString();
@@ -400,7 +423,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
       this.simulacion.datosserv = this.numAleatorio(100, 5000, 10);
       this.simulacion.snserv = this.numAleatorio(1, 500, 5);
       this.simulacion.wserv = this.numAleatorio(0, 8000, 1000);
-      this.simulacion.segperdserv = null;
+      this.simulacion.segperdserv = this.numAleatorio(0,this.simulacion.datosserv/this.simulacion.mssclien,1).toString();;
 
       //General
       this.simulacion.timeout = this.numAleatorio(0, 10, 1);
