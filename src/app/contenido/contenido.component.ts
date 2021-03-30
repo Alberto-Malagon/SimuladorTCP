@@ -130,7 +130,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     this._success.pipe(debounceTime(duracion)).subscribe(() => this.infoMsg = null);
     this.translate.get('contenido.aviso').subscribe(value => { this._success.next(value); });
 
-    // this.test();
+    this.test();
   }
 
   ngAfterContentChecked() {
@@ -528,21 +528,21 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
   test1(): void {
     // cliente
     this.simulacion.ipclien = "127.0.0.1";
-    this.simulacion.mssclien = 1390;
-    this.simulacion.datosclien = 2310;
-    this.simulacion.snclien = 55;
-    this.simulacion.segperdclien = "";
-    this.simulacion.wclien = 2000;
+    this.simulacion.mssclien = 1920;
+    this.simulacion.datosclien = 3610;
+    this.simulacion.snclien = 490;
+    this.simulacion.segperdclien = "1";
+    this.simulacion.wclien = 1000;
     // servidor
     this.simulacion.ipserv = "192.168.0.1";
-    this.simulacion.mssserv = 950;
-    this.simulacion.datosserv = 410;
-    this.simulacion.snserv = 220;
-    this.simulacion.segperdserv = "";
-    this.simulacion.wserv = 6000;
-    this.simulacion.timeout = 6;
-    this.simulacion.umbral = 9;
-    this.simulacion.algort = "1";
+    this.simulacion.mssserv = 200;
+    this.simulacion.datosserv = 760;
+    this.simulacion.snserv = 160;
+    this.simulacion.segperdserv = "1";
+    this.simulacion.wserv = 7000;
+    this.simulacion.timeout = 8;
+    this.simulacion.umbral = 3;
+    this.simulacion.algort = "2";
     this.simulacion.cierre = "1";
   }
 

@@ -1,5 +1,15 @@
 /* Tabla general */
-.fa-redo-alt{
+.fa-history{
+    color: #f90b03;
+    font-size: 25px;
+    padding: 5px;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    line-height: 35px;
+    border-radius: 50%;   
+}
+.fa-redo{
     color: #f90b03;
     font-size: 25px;
     padding: 5px;
@@ -21,17 +31,7 @@
   line-height: 35px;
   border-radius: 50%;
 } 
-.fa-stopwatch
-{
-    color: #f90b03;
-    font-size: 25px;
-    padding: 5px;
-    width: 30px;
-    height: 30px;
-    text-align: center;
-    line-height: 35px;
-    border-radius: 50%;   
-}
+
 .fa-clock
 {
     color: #000000;

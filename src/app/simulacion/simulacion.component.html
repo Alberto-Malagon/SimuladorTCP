@@ -74,10 +74,14 @@
                       <span *ngIf="comprobarACKretardado_cli() && conversacion.emisor==2">
                         <i class="fas fa-exclamation " title="{{ 'simulacion.ack-retardado' | translate }}"></i>
                       </span>
-                      <span *ngIf="conversacion.fin_temp == 1 && conversacion.envio == 0">
-                        <span *ngIf="conversacion.vc != 0" title="{{ 'simulacion.vc' | translate }}"
+                      <span *ngIf="conversacion.flagcli[3] != ''" title="{{ 'simulacion.al' | translate }}"
+                      class="modo">&nbsp;{{ 'simulacion.al_letra' | translate }}&nbsp;</span>
+                     <span *ngIf="conversacion.fin_temp == 1 && conversacion.envio == 0">
+                      <span *ngIf="conversacion.vc != 0" title="{{ 'simulacion.vc' | translate }}"
                         class="vctemp">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc }}</span>
-                        <i class="fas fa-stopwatch" title="{{ 'simulacion.fin_timeout' | translate }}"></i>
+                        <span *ngIf="conversacion.fin_temp ==1 " title="{{ 'simulacion.umbral' | translate }}"
+                        class="umbral">&nbsp;U={{ conversacion.umbral }}&nbsp;</span>
+                        <i class="fas fa-history" title="{{ 'simulacion.reenvio' | translate }}"></i>
                     </span>
                     </td>
                     <td>
@@ -89,13 +93,13 @@
                       <span *ngIf="comprobarACKretardado_serv() && conversacion.emisor==1">
                         <i class="fas fa-exclamation " title="{{ 'simulacion.ack-retardado' | translate }}"></i>
                       </span>
-                      <span *ngIf="conversacion.fin_temp == 1 && conversacion.envio == 1">
+                    <span *ngIf="conversacion.fin_temp == 1 && conversacion.envio == 1">
+                        <i class="fas fa-history" title="{{ 'simulacion.reenvio' | translate }}"></i>
                         <span *ngIf="conversacion.vc != 0" title="{{ 'simulacion.vc' | translate }}"
                         class="vctemp">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc }}</span>
-                        <i class="fas fa-stopwatch" title="{{ 'simulacion.fin_timeout' | translate }}"></i>
+                        <span *ngIf="conversacion.fin_temp ==1 " title="{{ 'simulacion.umbral' | translate }}"
+                        class="umbral">&nbsp;U={{ conversacion.umbral }}&nbsp;</span>
                     </span>
-                    <span *ngIf="conversacion.fin_temp ==1" title="{{ 'simulacion.umbral' | translate }}"
-                    class="umbral">&nbsp;U={{ conversacion.umbral }}&nbsp;</span>
                     &nbsp;
                     <span *ngIf="conversacion.flagserv[3] != ''" title="{{ 'simulacion.al' | translate }}"
                     class="modo">&nbsp;{{ 'simulacion.al_letra' | translate }}&nbsp;</span>
@@ -122,12 +126,12 @@
                         <span title="{{ 'simulacion.datos' | translate }}" class="datos">D={{ conversacion.dcli }},</span>
                         <span title="{{ 'simulacion.w' | translate }}" class="datos">W={{ conversacion.wcli }} </span>
                         <span *ngIf="conversacion.pqt_rtx==1">
-                            <i class="fas fa-redo-alt" title="{{ 'simulacion.reenvio' | translate }}"></i>
+                            <i class="fas fa-redo" title="{{ 'simulacion.reenvio' | translate }}"></i>
                         </span>
                         <span *ngIf="conversacion.fin_temp == 1 && conversacion.envio == 0">
                             <span *ngIf="conversacion.vc != 0" title="{{ 'simulacion.vc' | translate }}"
                             class="vctemp">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc }}</span>
-                            <i class="fas fa-stopwatch" title="{{ 'simulacion.fin_timeout' | translate }}"></i>
+                            <i class="fas fa-history" title="{{ 'simulacion.reenvio' | translate }}"></i>
                         </span>
                     </td>
                     <td>
@@ -166,10 +170,10 @@
                     </td>
                     <td class="info-dcha">
                         <span *ngIf="conversacion.pqt_rtx==1">
-                            <i class="fas fa-redo-alt" title="{{ 'simulacion.reenvio' | translate }}"></i>
+                            <i class="fas fa-redo" title="{{ 'simulacion.reenvio' | translate }}"></i>
                         </span>
                         <span *ngIf="conversacion.fin_temp ==1">
-                            <i class="fas fa-stopwatch" title="{{ 'simulacion.fin_timeout' | translate }}"></i>
+                            <i class="fas fa-history" title="{{ 'simulacion.reenvio' | translate }}"></i>
                             <span *ngIf="conversacion.vc != 0" title="{{ 'simulacion.vc' | translate }}"
                             class="vctemp">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc }}&nbsp;</span>
                         </span>
@@ -219,13 +223,16 @@
                         </span>
                         <span title="{{ 'simulacion.datos' | translate }}" class="datos">D={{ conversacion.dcli }}, </span>
                         <span title="{{ 'simulacion.w' | translate }}" class="datos">W={{ conversacion.wcli }} </span>
-                        <span *ngIf="conversacion.pqt_rtx==1">
-                            <i class="fas fa-redo-alt" title="{{ 'simulacion.reenvio' | translate }}"></i>
-                        </span>
                         <span *ngIf="conversacion.fin_temp ==1 && conversacion.envio == 0">
                             <span *ngIf="conversacion.vc != 0" title="{{ 'simulacion.vc' | translate }}"
                             class="vctemp">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc }}&nbsp;</span>
-                            <i class="fas fa-stopwatch" title="{{ 'simulacion.fin_timeout' | translate }}"></i>
+                            <i class="fas fa-history" title="{{ 'simulacion.reenvio' | translate }}"></i>
+                        </span>
+                        <span *ngIf="conversacion.pqt_rtx==1">
+                            <span  title="{{ 'simulacion.umbral' | translate }}" class="umbral"> &nbsp;U={{ conversacion.umbral }}&nbsp;</span>
+                            <span *ngIf="conversacion.vc != 0" title="{{ 'simulacion.vc' | translate }}"
+                            class="vctemp">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc }}&nbsp;</span>
+                            <i class="fas fa-redo" title="{{ 'simulacion.reenvio' | translate }}"></i>
                         </span>
                     </td>
                     <td>
@@ -238,13 +245,10 @@
                         <span *ngIf="conversacion.fin_temp ==1 && conversacion.envio == 1">
                             <span *ngIf="conversacion.vc != 0" title="{{ 'simulacion.vc' | translate }}"
                             class="vctemp">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc }}&nbsp;</span>
-                            <i class="fas fa-stopwatch" title="{{ 'simulacion.fin_timeout' | translate }}"></i>
                         </span>
                         <span *ngIf="conversacion.flagserv[4] != ''" title="{{ 'simulacion.ec' | translate }}"
                             class="modo">&nbsp;{{ 'simulacion.ec_letra' | translate }}&nbsp;</span>
-                        <span *ngIf="conversacion.fin_temp ==1 && conversacion.envio == 1" title="{{ 'simulacion.umbral' | translate }}"
-                            class="umbral"> &nbsp;U={{ conversacion.umbral }}&nbsp;</span>
-                        <span *ngIf="conversacion.vc != 0 && conversacion.fin_temp !=1" title="{{ 'simulacion.vc' | translate }}"
+                        <span *ngIf="conversacion.vc != 0 && conversacion.fin_temp !=1 && conversacion.pqt_rtx!=1" title="{{ 'simulacion.vc' | translate }}"
                             class="vcserv">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc }}&nbsp;</span>
                     </td>
                 </span>
@@ -259,7 +263,9 @@
                         <span *ngIf="conversacion.fin_temp ==1 && conversacion.envio == 0">
                             <span *ngIf="conversacion.vc != 0" title="{{ 'simulacion.vc' | translate }}"
                                 class="vctemp">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc }}</span>
-                            <i class="fas fa-stopwatch" title="{{ 'simulacion.fin_timeout' | translate }}"></i>
+                            <span *ngIf="conversacion.fin_temp ==1" title="{{ 'simulacion.umbral' | translate }}"
+                            class="umbral">U={{ conversacion.umbral }},&nbsp;</span>
+                            <i class="fas fa-history" title="{{ 'simulacion.reenvio' | translate }}"></i>
                         </span>
                     </td>
                     <td>
@@ -270,12 +276,21 @@
                     </td>
                     <td class="info-dcha">
                         <span *ngIf="conversacion.pqt_rtx==1 ">
-                            <i class="fas fa-redo-alt" title="{{ 'simulacion.reenvio' | translate }}"></i>&nbsp;
+                            <i class="fas fa-redo" title="{{ 'simulacion.reenvio' | translate }}"></i>&nbsp;
+                            <span  title="{{ 'simulacion.umbral' | translate }}" class="umbral"> &nbsp;U={{ conversacion.umbral }}&nbsp;</span>
+                            <span *ngIf="conversacion.vc != 0" title="{{ 'simulacion.vc' | translate }}"
+                            class="vctemp">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc }}&nbsp;</span>
                         </span>
-                        <span *ngIf="conversacion.fin_temp ==1 && conversacion.envio == 1">
+                        <!--<span *ngIf="conversacion.fin_temp==1 ">
                             <span *ngIf="conversacion.vc != 0" title="{{ 'simulacion.vc' | translate }}"
                             class="vctemp">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc }}</span>
-                            <i class="fas fa-stopwatch" title="{{ 'simulacion.fin_timeout' | translate }}"></i>
+                        </span>-->
+                        <span *ngIf="conversacion.fin_temp ==1 && conversacion.envio == 1">
+                            <i class="fas fa-history" title="{{ 'simulacion.reenvio' | translate }}"></i>
+                            <span *ngIf="conversacion.vc != 0" title="{{ 'simulacion.vc' | translate }}"
+                            class="vctemp">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc }}</span>
+                            <span *ngIf="conversacion.fin_temp ==1" title="{{ 'simulacion.umbral' | translate }}"
+                            class="umbral">U={{ conversacion.umbral }},&nbsp;</span>  
                         </span>
                         <span title="{{ 'simulacion.sn' | translate }}" class="datos">SN={{ conversacion.snserv }}, </span>
                         <span *ngIf="conversacion.mssserv != 0" title="{{ 'simulacion.mss' | translate }}" class="datos">
@@ -296,9 +311,7 @@
                         <span *ngIf="conversacion.flagserv[4] != ''" title="{{ 'simulacion.ec' | translate }}"
                             class="modo">&nbsp;{{ 'simulacion.ec_letra' | translate }}&nbsp;</span>
                         <span *ngIf="conversacion.flagserv[5] != ''" title="{{ 'simulacion.rr' | translate }}"
-                            class="modo">&nbsp;{{ 'simulacion.rr_letra' | translate }}&nbsp;</span> 
-                        <span *ngIf="conversacion.fin_temp ==1" title="{{ 'simulacion.umbral' | translate }}"
-                            class="umbral">U={{ conversacion.umbral }},&nbsp;</span>            
+                            class="modo">&nbsp;{{ 'simulacion.rr_letra' | translate }}&nbsp;</span>           
                     </td>
                 </span>
 
