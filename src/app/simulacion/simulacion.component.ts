@@ -552,6 +552,7 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
     let finack: string[] = ["", "FIN", "ACK", "", "", "",""];
     let fin: string[] = ["", "FIN", "", "", "", "",""];
     let al: string[] = ["", "", "", "AL", "", "",""];
+    let ecal: string[] = ["", "", "", "AL", "EC", "",""];
     let rr: string[] = ["", "", "", "", "", "RR",""];
     // Cliente
     this.cli.sn = this.simular.snclien;
@@ -696,20 +697,25 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
           reconocido=0;
           ACK_inm = 1;
           pqtPerdido=0;
-          }  
+          this.comunicacion.push({ numseg: null, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0});
+
+        }  
         }
         else
         {
           timeout--;
           if (timeout==0)
           {
-            umbral = Math.floor(this.cli.vcrep/2);
+            umbral = this.cli.vcrep/2;
             if (umbral==0)umbral=1;
             this.cli.vcrep=1;
             this.cli.vc=1;
-            this.cli.ec = false;
-            this.cli.flags = nullflag;
-            this.comunicacion.push({ numseg: null, dir: null, flagcli: al, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0});
+            //this.cli.ec = false;
+            //this.cli.flags = nullflag;
+            this.comprobarEC(this.cli, umbral);
+            if (this.cli.ec==true) this.cli.flags=ecal;
+            else this.cli.flags = al;
+            this.comunicacion.push({ numseg: null, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0});
           }
           else
             this.comunicacion.push({ numseg: null, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0});
@@ -833,13 +839,16 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
           this.comprobarEC(this.cli, umbral);
           if(timeout==0 && pqtPerdido==1)
           {
-            umbral = Math.floor(this.cli.vcrep/2); 
+            umbral = this.cli.vcrep/2; 
             if (umbral==0)umbral=1;
             this.cli.vcrep=1;
             this.cli.vc=1;
-            this.cli.ec = false;
-            this.cli.flags = nullflag;
-            this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: al, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:0 });
+            //this.cli.flags = nullflag;
+            //this.cli.ec = false;
+            this.comprobarEC(this.cli, umbral);
+            if (this.cli.ec==true) this.cli.flags=ecal;
+            else this.cli.flags = al;
+            this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:0 });
           }
           else
             this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0 });
@@ -861,13 +870,16 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
           this.comprobarEC(this.cli, umbral);
           if(timeout==0 && pqtPerdido==1)
           {
-            umbral = Math.floor(this.cli.vcrep/2);
+            umbral = this.cli.vcrep/2;
             if (umbral==0)umbral=1;
             this.cli.vcrep=1;
             this.cli.vc=1;
-            this.cli.ec = false;
-            this.cli.flags = nullflag;
-            this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: al, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0});
+            //this.cli.flags = nullflag;
+            //this.cli.ec = false;
+            this.comprobarEC(this.cli, umbral);
+            if (this.cli.ec==true) this.cli.flags=ecal;
+            else this.cli.flags = al;
+            this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0});
           }
           else
             this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0});
@@ -936,13 +948,16 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         this.comprobarEC(this.cli, umbral);
         if(timeout==0 && pqtPerdido==1)
         { 
-          umbral = Math.floor(this.cli.vcrep/2); 
+          umbral = this.cli.vcrep/2; 
           if (umbral==0)umbral=1;
           this.cli.vcrep=1;
           this.cli.vc=1;
-          this.cli.ec = false;
-          this.cli.flags = nullflag;
-          this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: al, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:0});
+          //this.cli.flags = nullflag;
+          //this.cli.ec = false;
+          this.comprobarEC(this.cli, umbral);
+          if (this.cli.ec==true) this.cli.flags=ecal;
+          else this.cli.flags = al;
+          this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:0});
         }
         else
           this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 , emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0});
@@ -966,13 +981,16 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
           this.comprobarEC(this.cli, umbral);
           if(timeout==0 && pqtPerdido==1)
           { 
-            umbral = Math.floor(this.cli.vcrep/2);
+            umbral = this.cli.vcrep/2;
             if (umbral==0)umbral=1;
             this.cli.vcrep=1;
             this.cli.vc=1;
-            this.cli.ec = false;
-            this.cli.flags = nullflag;
-            this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: al, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:0, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0});
+            //this.cli.flags = nullflag;
+            //this.cli.ec = false;
+            this.comprobarEC(this.cli, umbral);
+            if (this.cli.ec==true) this.cli.flags=ecal;
+            else this.cli.flags = al;
+            this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:0, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0});
           }
           else
             this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:0, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0});
@@ -995,13 +1013,16 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
           this.comprobarEC(this.cli, umbral);
           if(timeout==0 && pqtPerdido==1)
           { 
-            umbral = Math.floor(this.cli.vcrep/2); 
+            umbral = this.cli.vcrep/2; 
             if (umbral==0)umbral=1;
             this.cli.vcrep=1;
             this.cli.vc=1;
-            this.cli.ec = false;
-            this.cli.flags = nullflag;
-            this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: al, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:0, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0});
+            //this.cli.flags = nullflag;
+            //this.cli.ec = false;
+            this.comprobarEC(this.cli, umbral);
+            if (this.cli.ec==true) this.cli.flags=ecal;
+            else this.cli.flags = al; 
+            this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:0, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0});
           }
           else
             this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:0, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0});
@@ -1032,6 +1053,9 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         {
         //this.cli.vcrep+=1;
         //this.cli.vc+=1;
+        this.comprobarEC(this.cli, umbral);
+        if (this.cli.ec==true) this.cli.flags=ecal;
+        else this.cli.flags = al;
         this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbral, envio:0});
         reconocido=0;
         ACK_inm = 1;
@@ -1055,13 +1079,16 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         timeout--;
         if (timeout==0)
         {
-          umbral = Math.floor(this.cli.vcrep/2);
+          umbral = this.cli.vcrep/2;
           if (umbral==0)umbral=1;
           this.cli.vcrep=1;
           this.cli.vc=1;
-          this.cli.ec = false;
-          this.cli.flags = nullflag;
-          this.comunicacion.push({ numseg: null, dir: null, flagcli: al, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0});
+          //this.cli.ec = false;
+          //this.cli.flags = nullflag;
+          this.comprobarEC(this.cli, umbral);
+          if (this.cli.ec==true) this.cli.flags=ecal;
+          else this.cli.flags = al;
+          this.comunicacion.push({ numseg: null, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0});
           
         }
         else
@@ -1069,11 +1096,11 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
       }
       }
     }
-    // El servidor espera 1 tick por si recibe otro paquete
+    /*// El servidor espera 1 tick por si recibe otro paquete
     if (envAck != 2 && ACK_inm!=1)
     {
       this.comunicacion.push({ numseg: null, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:1});
-    }
+    }*/
     // ----------------------------- LADO SERVIDOR -----------------------------------------
     contadorPqtEnv=0;
     numPqtServEnv=0;
@@ -1130,7 +1157,10 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
           {
             this.serv.vcrep=1;
             this.serv.vc=1;
-            this.comunicacion.push({ numseg: null, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: al, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep,emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1 });
+            this.comprobarEC(this.serv, umbral);
+            if (this.serv.ec==true) this.serv.flags=ecal;
+            else this.serv.flags = al;
+            this.comunicacion.push({ numseg: null, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep,emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1 });
           }
             else
             this.comunicacion.push({ numseg: null, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 });
@@ -1268,13 +1298,16 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
           this.comprobarEC(this.serv, umbral);
           if(timeout==0 && pqtPerdido==1)
           {
-            umbral = Math.floor(this.serv.vcrep/2);
+            umbral = this.serv.vcrep/2;
             if (umbral==0)umbral=1;
             this.serv.vcrep = 1;
             this.serv.vc = 1;
-            this.serv.ec = false;
-            this.serv.flags = nullflag;
-            this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: al, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1 });
+            //this.serv.ec = false;
+            //this.serv.flags = nullflag;
+            this.comprobarEC(this.serv, umbral);
+            if (this.serv.ec==true) this.serv.flags=ecal;
+            else this.serv.flags = al;
+            this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1 });
           }
           else 
             this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 });
@@ -1296,13 +1329,16 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
           this.comprobarEC(this.serv, umbral);
           if(timeout==0 && pqtPerdido==1)
           {
-            umbral = Math.floor(this.serv.vcrep/2);
+            umbral = this.serv.vcrep/2;
             if (umbral==0)umbral=1;
             this.serv.vcrep = 1;
             this.serv.vc = 1;
-            this.serv.ec = false;
-            this.serv.flags = nullflag;
-            this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: al, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1 });
+            //this.serv.ec = false;
+            //this.serv.flags = nullflag;
+            this.comprobarEC(this.serv, umbral);
+            if (this.serv.ec==true) this.serv.flags=ecal;
+            else this.serv.flags = al;
+            this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1 });
           }
           else 
             this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 });
@@ -1369,13 +1405,16 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         this.comprobarEC(this.serv, umbral);
         if(timeout==0 && pqtPerdido==1)
         {
-          umbral = Math.floor(this.cli.vcrep/2);
+          umbral = this.cli.vcrep/2;
           if (umbral==0)umbral=1;
           this.serv.vcrep = 1;
           this.serv.vc = 1;
-          this.serv.ec = false;
-          this.serv.flags = nullflag;
-          this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: al, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1 });
+          //this.serv.ec = false;
+          //this.serv.flags = nullflag;
+          this.comprobarEC(this.serv, umbral);
+          if (this.serv.ec==true) this.serv.flags=ecal;
+          else this.serv.flags = al;
+          this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1 });
         }
         else
           this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 });
@@ -1399,13 +1438,16 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
           this.comprobarEC(this.serv, umbral);
           if (timeout==0 && pqtPerdido==1)
           {
-            umbral = Math.floor(this.serv.vcrep/2);
+            umbral = this.serv.vcrep/2;
             if (umbral==0)umbral=1;
             this.serv.vcrep = 1;
             this.serv.vc = 1;
-            this.serv.ec = false;
-            this.serv.flags = nullflag;
-            this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: al, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1 });
+            //this.serv.ec = false;
+            //this.serv.flags = nullflag;
+            this.comprobarEC(this.serv, umbral);
+            if (this.serv.ec==true) this.serv.flags=ecal;
+            else this.serv.flags = al;
+            this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1 });
           }
           else
             this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 });
@@ -1428,13 +1470,16 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
           this.comprobarEC(this.serv, umbral);
           if (timeout==0 && pqtPerdido==1)
           {
-            umbral = Math.floor(this.serv.vcrep/2);
+            umbral = this.serv.vcrep/2;
             if (umbral==0)umbral=1;
             this.serv.vcrep = 1;
             this.serv.vc = 1;
-            this.serv.ec = false;
-            this.serv.flags = nullflag;
-            this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: al, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1 });
+            //this.serv.ec = false;
+            //this.serv.flags = nullflag;
+            this.comprobarEC(this.serv, umbral);
+            if (this.serv.ec==true) this.serv.flags=ecal;
+            else this.serv.flags = al;
+            this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1 });
           }
           else
             this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 });
@@ -1485,13 +1530,17 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         timeout--;
         if (timeout==0)
         {
-          umbral = Math.floor(this.cli.vcrep/2);
+          umbral = this.cli.vcrep/2;
           if (umbral==0)umbral=1;
           this.serv.vcrep=1;
           this.serv.vc=1;
-          this.serv.ec = false;
-          this.serv.flags = nullflag;
-          this.comunicacion.push({ numseg: null, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: al, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:1});
+          //this.serv.ec = false;
+          //this.serv.flags = nullflag;
+          this.comprobarEC(this.serv, umbral);
+          if (this.serv.ec==true) this.serv.flags=ecal;
+          else this.serv.flags = al;
+          this.comprobarEC(this.serv, umbral);
+          this.comunicacion.push({ numseg: null, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:1});
           
         }
         else
