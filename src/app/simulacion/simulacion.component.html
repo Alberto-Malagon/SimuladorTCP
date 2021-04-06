@@ -76,11 +76,17 @@
                       </span>
                       <span *ngIf="conversacion.flagcli[3] != ''" title="{{ 'simulacion.al' | translate }}"
                       class="modo">&nbsp;{{ 'simulacion.al_letra' | translate }}&nbsp;</span>
+                      &nbsp;
+                      <span *ngIf="conversacion.flagcli[4] != ''" title="{{ 'simulacion.ec' | translate }}"
+                      class="modo">&nbsp;{{ 'simulacion.ec_letra' | translate }}&nbsp;</span>
+                      &nbsp;
                      <span *ngIf="conversacion.fin_temp == 1 && conversacion.envio == 0">
                       <span *ngIf="conversacion.vc != 0" title="{{ 'simulacion.vc' | translate }}"
                         class="vctemp">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc }}</span>
+                        &nbsp;
                         <span *ngIf="conversacion.fin_temp ==1 " title="{{ 'simulacion.umbral' | translate }}"
                         class="umbral">&nbsp;U={{ conversacion.umbral }}&nbsp;</span>
+                        &nbsp;
                         <i class="fas fa-history" title="{{ 'simulacion.reenvio' | translate }}"></i>
                     </span>
                     </td>
@@ -97,12 +103,17 @@
                         <i class="fas fa-history" title="{{ 'simulacion.reenvio' | translate }}"></i>
                         <span *ngIf="conversacion.vc != 0" title="{{ 'simulacion.vc' | translate }}"
                         class="vctemp">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc }}</span>
+                        &nbsp;
                         <span *ngIf="conversacion.fin_temp ==1 " title="{{ 'simulacion.umbral' | translate }}"
                         class="umbral">&nbsp;U={{ conversacion.umbral }}&nbsp;</span>
                     </span>
                     &nbsp;
                     <span *ngIf="conversacion.flagserv[3] != ''" title="{{ 'simulacion.al' | translate }}"
                     class="modo">&nbsp;{{ 'simulacion.al_letra' | translate }}&nbsp;</span>
+                    &nbsp;
+                    <span *ngIf="conversacion.flagserv[4] != ''" title="{{ 'simulacion.ec' | translate }}"
+                    class="modo">&nbsp;{{ 'simulacion.ec_letra' | translate }}&nbsp;</span>
+                    &nbsp;
                     </td>
                 </span>
 
@@ -248,6 +259,7 @@
                         </span>
                         <span *ngIf="conversacion.flagserv[4] != ''" title="{{ 'simulacion.ec' | translate }}"
                             class="modo">&nbsp;{{ 'simulacion.ec_letra' | translate }}&nbsp;</span>
+                            &nbsp;
                         <span *ngIf="conversacion.vc != 0 && conversacion.fin_temp !=1 && conversacion.pqt_rtx!=1" title="{{ 'simulacion.vc' | translate }}"
                             class="vcserv">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc }}&nbsp;</span>
                     </td>
