@@ -191,6 +191,14 @@ span.modo {
     font-weight  : bold;
     border-radius: 2px;
 }
+span.ACK-dup {
+    color        : red;
+    border-style : dotted;
+    border-color : red;
+    font-size : 80%;
+    font-weight  : bold;
+    border-radius: 2px;
+}
 
 span.flagcli {
     color        : #3e3e7e;
