@@ -176,7 +176,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
       this.enprocMsg = false;
       this.destruirSimulacionComp(); // Destruimos la simulacion anterior
 
-      // Se compruban que los parametros introducidos sean correctos
+      // Se comprueba que los parametros introducidos sean correctos
       simular = this.comprobarParametros();
 
       if (simular) {
@@ -217,7 +217,6 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
       modalRef.componentInstance.merror = error;
     }
   }
-
 
   /**
    * @description Comprueba los parametros del formulario

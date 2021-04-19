@@ -61,6 +61,7 @@
     "cierre": "Cierre de conexión",
     "cierre-tooltip": "Dispositivo que inicia el cierre de conexión",
     "simular": "Simular",
+    "simularpaso": "Simular por partes",
     "rellenar": "Rellenar con datos aleatorios",
     "limpiar": "Limpiar formulario",
     "menu": "Ocultar/mostrar menú",
@@ -87,6 +88,7 @@
   "simulacion": {
     "ack_retardado": "ACK RETARDADO",
     "ack-retardado": "En la práctica, cuando el MSS del lado emisor es igual que la W del receptor, el ACK debería ser inmediato, pero por simplicidad se implementa el ACK retardado",
+    "NumeroACKdup": "Número de ACK's duplicados",
     "umbral": "Umbral",
     "fin_timeout": "Vence el temporizador",
     "reenvio": "Se reenvía el segmento perdido",

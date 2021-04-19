@@ -61,6 +61,7 @@
     "cierre": "Connection closure",
     "cierre-tooltip": "Device that initiates the connection closure",
     "simular": "Simulate",
+    "simularpaso": "Simulate by steps",
     "rellenar": "Fill with random data",
     "limpiar": "Clean form",
     "menu": "Hide/Show menu",
@@ -87,6 +88,7 @@
   "simulacion": {
     "ack_retardado": "DELAYED ACK",
     "ack-retardado": "In practice, when the MSS on the sending side is equal to the W on the receiving side, the ACK should be immediate, but for simplicity delayed ACK is implemented.",
+    "NumeroACKdup": "Number of duplicated ACK's",
     "fin_timeout":"The timer expires.",
     "umbral":"Threshold",
     "reenvio": "The missing segment is resent.",

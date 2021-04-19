@@ -13,7 +13,7 @@
   top     : 60px;
   bottom  : 0;
   left    : 5px;
-  right   : 0;
+  right   : 0px;
 }
 
 /* Boton para abrir y cerrar el formulario izquierdo */
@@ -43,6 +43,7 @@
   border-color: #004e99;
   margin-left : 10px;
   margin-top  : 10px;
+  width: 20%;
 }
 
 .btn-formulario:hover {
