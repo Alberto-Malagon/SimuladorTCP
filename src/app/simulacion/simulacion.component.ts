@@ -657,7 +657,8 @@ if (envAck == 2 && cierre == "1")
     let ultDataEnv: number = denv; // Tamanyo de los ultimos datos enviados
     let ACK_inm: number = 0;
     let flag_ACKdup: number = 0;
-    let ACK_dup: number =0;
+    let ACK_dup: number = 0;
+    let sin_ACK: number = 0;
     if (this.simular.segperdclien != null && contadorPqtEnv+1==segperdNumclien[x])
     {
       x++;
@@ -820,6 +821,7 @@ if (envAck == 2 && cierre == "1")
         envAck = 0; 
         ACK_inm=0;
         ACK_dup = 0;
+        sin_ACK = 0;
         this.cli.rr = false;
         if (this.cli.ec == true) this.cli.flags = ec;
         else this.cli.flags = al;
@@ -898,6 +900,7 @@ if (envAck == 2 && cierre == "1")
       else if (this.simular.segperdclien!= null && contadorPqtEnv+1==segperdNumclien[x])
       {
         x++;
+        sin_ACK++;
         this.cli.flags=nullflag;
         // Caso segmento perdido en la dirección cliente -> servidor
         if (envAck < 2 && denv !=0)
@@ -945,7 +948,7 @@ if (envAck == 2 && cierre == "1")
       }
       }
       //PAQUETES DE DATOS
-      else if (envAck < 2 && denv !=0 ) // El numero de paquetes enviados no alcanza al ACK
+      else if (envAck < 2 && denv !=0 && sin_ACK< this.cli.vc ) // El numero de paquetes enviados no alcanza al ACK
       {
         timeout --;
         this.serv.flags= nullflag;
@@ -968,12 +971,37 @@ if (envAck == 2 && cierre == "1")
         else
         {
           this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 , emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0});
-          if(pqtPerdido==1) flag_ACKdup=1;
+          if(pqtPerdido==1) 
+          {
+            flag_ACKdup=1;
+            sin_ACK++;
+          }
         }
         this.cli.ult_sn = this.cli.sn;
         ultDataEnv = denv;
         envAck++;
         contadorPqtEnv++;      
+      }
+      //Segmento vacío esperando a que caduque el temporizador
+      else if (sin_ACK >= this.cli.vc)
+      {
+        timeout--;
+        numPqtClienEnv--;
+        if(timeout==0 && pqtPerdido==1)
+        { 
+          umbral = this.cli.vcrep/2; 
+          if (umbral==0)umbral=1;
+          this.cli.vcrep=1;
+          this.cli.vc=1;
+          //this.cli.flags = nullflag;
+          //this.cli.ec = false;
+          this.comprobarEC(this.cli, umbral);
+          if (this.cli.ec==true) this.cli.flags=ecal;
+          else this.cli.flags = al;
+          this.comunicacion.push({ numseg: null, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep ,emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:0});
+        }
+        else
+        this.comunicacion.push({ numseg: null, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0});
       }
       //ACK Y DATOS 
       else if (denv !=0){ // Cada 2 paquetes enviados por el cliente, el servidor envia un ACK mientras el cliente envía datos (flechas cruzadas)
@@ -1296,6 +1324,7 @@ if (envAck == 2 && cierre == "1")
         envAck = 0;
         ACK_inm = 0;
         ACK_dup = 0;
+        sin_ACK = 0;
         this.serv.rr = false;
         if (this.serv.ec == true) this.serv.flags = ec;
         else this.serv.flags = al;
@@ -1374,6 +1403,7 @@ if (envAck == 2 && cierre == "1")
       else if (this.simular.segperdserv!= null && contadorPqtEnv==segperdNumserv[y])
       {
         y++;
+        sin_ACK++;
         this.serv.flags=nullflag;
         if (envAck < 2) // Segmento perdido dirección servidor --> cliente
         {
@@ -1419,7 +1449,7 @@ if (envAck == 2 && cierre == "1")
         }
       }
       //DATOS
-      else if (envAck < 2) // El numero de paquetes enviados no alcanza al ACK
+      else if (envAck < 2 && sin_ACK < this.serv.vc) // El numero de paquetes enviados no alcanza al ACK
       {
         timeout--;
         this.cli.flags = nullflag;
@@ -1442,12 +1472,37 @@ if (envAck == 2 && cierre == "1")
         else
         {
         this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 });
-        if(pqtPerdido==1) flag_ACKdup=1;
+        if(pqtPerdido==1)
+        {
+        sin_ACK++;
+        flag_ACKdup=1;
         }
+      }
         this.serv.ult_sn = this.serv.sn;
         ultDataEnv = denv;
         envAck++;
         contadorPqtEnv++;
+      }
+      //Segmento vacío esperando a que caduque el temporizador
+      else if (sin_ACK >= this.serv.vc)
+      {
+        timeout--;
+        numPqtServEnv--;
+        if(timeout==0 && pqtPerdido==1)
+        { 
+          umbral = this.serv.vcrep/2; 
+          if (umbral==0)umbral=1;
+          this.serv.vcrep=1;
+          this.serv.vc=1;
+          //this.cli.flags = nullflag;
+          //this.cli.ec = false;
+          this.comprobarEC(this.serv, umbral);
+          if (this.serv.ec==true) this.serv.flags=ecal;
+          else this.serv.flags = al;
+          this.comunicacion.push({ numseg: null, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep ,emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1, Num_ACKdup:0});
+        }
+        else
+          this.comunicacion.push({ numseg: null, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0});
       }
       //ACK Y DATOS
       else  { // Cada 2 paquetes enviados por el servidor, el cliente envía ack y el servidor envía datos (flechas cruzadas)
@@ -1771,11 +1826,12 @@ if (envAck == 2 && cierre == "1")
     let sn_perd: number;
     let an_perd: number;
     let d_perd: number;
-    let envAck: number = 0; // Cada dos paquetes enviados por el cliente, el servidor devuelve un ACK
+    let envAck: number = 0;        // Cada dos paquetes enviados por el cliente, el servidor devuelve un ACK
     let ultDataEnv: number = denv; // Tamanyo de los ultimos datos enviados
-    let ACK_inm: number = 0;
-    let ACK_dup: number =0;
-    let flag_ACKdup: number = 0;
+    let ACK_inm: number = 0;       // Indica si se debe enviar un ACK inmediato
+    let ACK_dup: number =0;        // Indica el número de ACKs duplicados enviados
+    let flag_ACKdup: number = 0;   // Flag que indica si el ACK es un ACK duplicado
+    let sin_ACK: number = 0;       //Número de segmentos sin reconocer
     if (this.simular.segperdclien != null && contadorPqtEnv+1==segperdNumclien[x])
     {
       x++;
@@ -1946,6 +2002,7 @@ if (envAck == 2 && cierre == "1")
         envAck = 0; 
         ACK_inm=0;
         ACK_dup = 0;
+        sin_ACK = 0;
       }
       //ACK
       else if (envAck == Math.min(this.cli.vcrep, envMaxClien)||flag_ACKdup==1) // Si se han enviado los paquetes que permite la VC pero no se ha recibido aun un ACK, se envia
@@ -2016,6 +2073,7 @@ if (envAck == 2 && cierre == "1")
       {
         x++;
         this.cli.flags=nullflag;
+        sin_ACK++;
         // Caso segmento perdido en la dirección cliente -> servidor
         if (envAck < 2 && denv !=0)
         {
@@ -2062,7 +2120,7 @@ if (envAck == 2 && cierre == "1")
       }
       }
       //PAQUETES DE DATOS
-      else if (envAck < 2 && denv !=0 ) // El numero de paquetes enviados no alcanza al ACK
+      else if (envAck < 2 && denv !=0 && sin_ACK < this.cli.vc ) // El numero de paquetes enviados no alcanza al ACK
       {
         timeout --;
         this.serv.flags= nullflag;
@@ -2085,12 +2143,37 @@ if (envAck == 2 && cierre == "1")
         else
         {
           this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 , emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0});
-          if(pqtPerdido==1) flag_ACKdup=1;
+          if(pqtPerdido==1) 
+          {
+            flag_ACKdup=1;
+            sin_ACK++;
+          }
         }
         this.cli.ult_sn = this.cli.sn;
         ultDataEnv = denv;
         envAck++;
         contadorPqtEnv++;      
+      }
+      //Segmento vacío esperando a que caduque el temporizador
+      else if (sin_ACK >= this.cli.vc)
+      {
+        timeout--;
+        numPqtClienEnv--;
+        if(timeout==0 && pqtPerdido==1)
+        { 
+          umbral = this.cli.vcrep/2; 
+          if (umbral==0)umbral=1;
+          this.cli.vcrep=1;
+          this.cli.vc=1;
+          //this.cli.flags = nullflag;
+          //this.cli.ec = false;
+          this.comprobarEC(this.cli, umbral);
+          if (this.cli.ec==true) this.cli.flags=ecal;
+          else this.cli.flags = al;
+          this.comunicacion.push({ numseg: null, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep ,emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:0});
+        }
+        else
+        this.comunicacion.push({ numseg: null, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0});
       }
       //ACK Y DATOS 
       else if (denv !=0){ // Cada 2 paquetes enviados por el cliente, el servidor envia un ACK mientras el cliente envía datos (flechas cruzadas)
@@ -2411,6 +2494,7 @@ if (envAck == 2 && cierre == "1")
         envAck = 0;
         ACK_inm = 0;
         ACK_dup = 0;
+        sin_ACK = 0;
       }
       //ACK
       else if (envAck == Math.min(this.serv.vcrep, envMaxServ)||flag_ACKdup==1) // Si se han enviado los paquetes que permite la VC pero no se ha recibido aun un ACK, se envia
@@ -2445,7 +2529,7 @@ if (envAck == 2 && cierre == "1")
           numPqtServEnv--;
           envAck = 0;
         }
-        else if (reconocido==1)
+        else if (reconocido==1) //ACK DUPLICADO
         {
           timeout--;
           this.cli.flags = ack;
@@ -2453,8 +2537,6 @@ if (envAck == 2 && cierre == "1")
           this.cli.ult_an = this.cli.an;
           let inc: number = this.serv.ult_sn - this.cli.ult_an;
           this.cli.an = this.serv.ult_sn + (inc == 0 ? denv : inc);
-          this.incrementarVC(this.serv, this.cli, mssServ);
-          this.comprobarEC(this.serv, umbral);
           ACK_dup++;
           if(timeout==0 && pqtPerdido==1)
           {
@@ -2482,6 +2564,7 @@ if (envAck == 2 && cierre == "1")
       {
         y++;
         this.serv.flags=nullflag;
+        sin_ACK++;
         if (envAck < 2) // Segmento perdido dirección servidor --> cliente
         {
           this.serv.ult_sn = this.serv.sn;
@@ -2526,7 +2609,7 @@ if (envAck == 2 && cierre == "1")
         }
       }
       //DATOS
-      else if (envAck < 2) // El numero de paquetes enviados no alcanza al ACK
+      else if (envAck < 2 && sin_ACK < this.serv.vcrep) // El numero de paquetes enviados no alcanza al ACK
       {
         timeout--;
         this.cli.flags = nullflag;
@@ -2549,12 +2632,37 @@ if (envAck == 2 && cierre == "1")
         else
         {
           this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0});
-          if(pqtPerdido==1) flag_ACKdup=1;
+          if(pqtPerdido==1) 
+          {
+            flag_ACKdup=1;
+            sin_ACK++;
+          }
         } 
         this.serv.ult_sn = this.serv.sn;
         ultDataEnv = denv;
         envAck++;
         contadorPqtEnv++;
+      }
+      //Segmento vacío esperando a que caduque el temporizador
+      else if (sin_ACK >= this.serv.vc)
+      {
+        timeout--;
+        numPqtServEnv--;
+        if(timeout==0 && pqtPerdido==1)
+        { 
+          umbral = this.serv.vcrep/2; 
+          if (umbral==0)umbral=1;
+          this.serv.vcrep=1;
+          this.serv.vc=1;
+          //this.cli.flags = nullflag;
+          //this.cli.ec = false;
+          this.comprobarEC(this.serv, umbral);
+          if (this.serv.ec==true) this.serv.flags=ecal;
+          else this.serv.flags = al;
+          this.comunicacion.push({ numseg: null, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep ,emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1, Num_ACKdup:0});
+        }
+        else
+        this.comunicacion.push({ numseg: null, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0});
       }
       //ACK Y DATOS
       else  { // Cada 2 paquetes enviados por el servidor, el cliente envía ack y el servidor envía datos (flechas cruzadas)
