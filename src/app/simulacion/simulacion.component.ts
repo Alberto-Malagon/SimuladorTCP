@@ -948,7 +948,7 @@ if (envAck == 2 && cierre == "1")
       }
       }
       //PAQUETES DE DATOS
-      else if (envAck < 2 && denv !=0 && sin_ACK< this.cli.vc ) // El numero de paquetes enviados no alcanza al ACK
+      else if (envAck < 2 && denv !=0 && sin_ACK < Math.floor(this.cli.vc) ) // El numero de paquetes enviados no alcanza al ACK
       {
         timeout --;
         this.serv.flags= nullflag;
@@ -983,7 +983,7 @@ if (envAck == 2 && cierre == "1")
         contadorPqtEnv++;      
       }
       //Segmento vacío esperando a que caduque el temporizador
-      else if (sin_ACK >= this.cli.vc)
+      else if (sin_ACK >= Math.floor(this.cli.vc))
       {
         timeout--;
         numPqtClienEnv--;
@@ -1449,7 +1449,7 @@ if (envAck == 2 && cierre == "1")
         }
       }
       //DATOS
-      else if (envAck < 2 && sin_ACK < this.serv.vc) // El numero de paquetes enviados no alcanza al ACK
+      else if (envAck < 2 && sin_ACK < Math.floor(this.serv.vc)) // El numero de paquetes enviados no alcanza al ACK
       {
         timeout--;
         this.cli.flags = nullflag;
@@ -1484,7 +1484,7 @@ if (envAck == 2 && cierre == "1")
         contadorPqtEnv++;
       }
       //Segmento vacío esperando a que caduque el temporizador
-      else if (sin_ACK >= this.serv.vc)
+      else if (sin_ACK >= Math.floor(this.serv.vc))
       {
         timeout--;
         numPqtServEnv--;
@@ -2120,7 +2120,7 @@ if (envAck == 2 && cierre == "1")
       }
       }
       //PAQUETES DE DATOS
-      else if (envAck < 2 && denv !=0 && sin_ACK < this.cli.vc ) // El numero de paquetes enviados no alcanza al ACK
+      else if (envAck < 2 && denv !=0 && sin_ACK < Math.floor(this.cli.vc) ) // El numero de paquetes enviados no alcanza al ACK
       {
         timeout --;
         this.serv.flags= nullflag;
@@ -2155,7 +2155,7 @@ if (envAck == 2 && cierre == "1")
         contadorPqtEnv++;      
       }
       //Segmento vacío esperando a que caduque el temporizador
-      else if (sin_ACK >= this.cli.vc)
+      else if (sin_ACK >= Math.floor(this.cli.vc))
       {
         timeout--;
         numPqtClienEnv--;
@@ -2422,7 +2422,7 @@ if (envAck == 2 && cierre == "1")
         {
           this.serv.vcrep+=1;
           this.serv.vc+=1;
-          this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0});
+          this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0});
           envAck++;
           reconocido = 0;
           ACK_inm = 1;
@@ -2434,7 +2434,7 @@ if (envAck == 2 && cierre == "1")
           this.serv.vc+=1;
           this.cli.ult_sn = this.cli.sn;
           this.cli.ult_an = this.cli.an;
-          this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0});
+          this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0});
           envAck++;
           reconocido = 0;
           ACK_inm = 1;
@@ -2609,7 +2609,7 @@ if (envAck == 2 && cierre == "1")
         }
       }
       //DATOS
-      else if (envAck < 2 && sin_ACK < this.serv.vcrep) // El numero de paquetes enviados no alcanza al ACK
+      else if (envAck < 2 && sin_ACK < Math.floor(this.serv.vc)) // El numero de paquetes enviados no alcanza al ACK
       {
         timeout--;
         this.cli.flags = nullflag;
@@ -2644,7 +2644,7 @@ if (envAck == 2 && cierre == "1")
         contadorPqtEnv++;
       }
       //Segmento vacío esperando a que caduque el temporizador
-      else if (sin_ACK >= this.serv.vc)
+      else if (sin_ACK >= Math.floor(this.serv.vc))
       {
         timeout--;
         numPqtServEnv--;
