@@ -114,7 +114,6 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
       this.serv = { sn: 0, ult_sn: 0, an: 0, ult_an: 0, data: 0, w: 0, segperd: "", vc: 0, vcrep: 0, flags: [], ec: false, rr: false};
       this.ipclien = this.simular.ipclien;
       this.ipserv = this.simular.ipserv;
-
       if (this.simular.algort == "1")
         this.simularReno();
       else
@@ -584,6 +583,7 @@ if (envAck == 2 && cierre == "1")
     let mss: number = Math.min(this.simular.mssclien, this.simular.mssserv); // Se elige el minimo MSS
     let nseg: number = 0;
     let denv: number = mss; // Datos a enviar
+    let pasoapaso: number = this.simular.pasoapaso;
     // Cliente
     let mssClien: number = Math.min(mss, this.serv.w);
     let numPqtClien: number = Math.floor(this.cli.data / mssClien);
@@ -598,7 +598,20 @@ if (envAck == 2 && cierre == "1")
     let modPqtServ: number = this.serv.data % mssServ;
     let envMaxServ: number = Math.floor(this.cli.w / mssServ);
 
+    //Variables auxialiares
     let pqtPerdido: number =0; //0 Si no hay pqt perdido o se ha retransmitido  1 Si hay paquete perdido sin retransmitir
+    let envAck: number = 0; // Cada dos paquetes enviados por el cliente, el servidor devuelve un ACK
+    let x: number=0;
+    let y: number=0;
+    let reconocido: number = 0; //1--> El segmento perdido no ha sido reconocido  0--> El segmento perdido ha sido reconocido
+    let sn_perd: number;
+    let an_perd: number;
+    let d_perd: number;
+    let ultDataEnv: number = denv; // Tamanyo de los ultimos datos enviados
+    let ACK_inm: number = 0;
+    let flag_ACKdup: number = 0;
+    let ACK_dup: number = 0;
+    let sin_ACK: number = 0;
     //Se comprueba que el número del segmento perdido es menor o igual que el numero de segmentos que se van a enviar
     if (this.simular.segperdclien != null)
     {
@@ -624,6 +637,8 @@ if (envAck == 2 && cierre == "1")
           segperdNumserv [z]==null;
     }
   }
+  if(pasoapaso==0||pasoapaso==1||pasoapaso==2||pasoapaso==3||pasoapaso==4)
+  {
     // ----- Conexion -----
     // Enviamos los segmentos de SYN; SYN, ACK; y ACK
     this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: 0, dcli: 0, wcli: this.cli.w, msscli: this.simular.mssclien, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0 });
@@ -638,6 +653,9 @@ if (envAck == 2 && cierre == "1")
     this.cli.flags = ack;
     this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0 });
     this.cli.flags = nullflag;
+  }
+  if(pasoapaso==0||pasoapaso==2||pasoapaso==3||pasoapaso==4)
+  {
 // ----------------------------- LADO CLIENTE -----------------------------------------   
  // >>>>> Envio de datos cliente->servidor <<<<<
     if (numPqtClien == 0)
@@ -647,18 +665,6 @@ if (envAck == 2 && cierre == "1")
     //PRIMER SEGMENTO
     //#########################
     // >>>>> Si el primer segmento se pierde <<<<<
-    let x: number=0;
-    let y: number=0;
-    let reconocido: number = 0; //1--> El segmento perdido no ha sido reconocido  0--> El segmento perdido ha sido reconocido
-    let sn_perd: number;
-    let an_perd: number;
-    let d_perd: number;
-    let envAck: number = 0; // Cada dos paquetes enviados por el cliente, el servidor devuelve un ACK
-    let ultDataEnv: number = denv; // Tamanyo de los ultimos datos enviados
-    let ACK_inm: number = 0;
-    let flag_ACKdup: number = 0;
-    let ACK_dup: number = 0;
-    let sin_ACK: number = 0;
     if (this.simular.segperdclien != null && contadorPqtEnv+1==segperdNumclien[x])
     {
       x++;
@@ -1138,6 +1144,9 @@ if (envAck == 2 && cierre == "1")
       }
       }
     }
+  }
+  if(pasoapaso==0||pasoapaso==3||pasoapaso==4)
+  {
     /*// El servidor espera 1 tick por si recibe otro paquete
     if (envAck != 2 && ACK_inm!=1)
     {
@@ -1655,7 +1664,9 @@ if (envAck == 2 && cierre == "1")
     { 
       this.comunicacion.push({ numseg: null, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0});
     }
-
+  }
+  if(pasoapaso==0||pasoapaso==4)
+  {
     // ----- Cierre -----
     // Enviamos los segmentos de FIN; FIN, ACK; y ACK
     if (cierre == "1") { // El cliente cierra la conexion
@@ -1699,7 +1710,7 @@ if (envAck == 2 && cierre == "1")
       this.serv.flags = ack;
       this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0 ,umbral:umbral, envio:1, Num_ACKdup:0});
     }
-
+  }
     return;
   }
 

@@ -19,4 +19,5 @@ export class Simulacion {
     umbral: number;
     algort: string;
     cierre: string;
+    pasoapaso:number;
 }
