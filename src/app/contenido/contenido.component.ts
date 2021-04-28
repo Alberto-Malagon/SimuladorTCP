@@ -502,7 +502,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     }
   }
   /**
-   * @description Envía a la simulación el valor de la variable pasoapaso
+   * @description Reduce una unidad el valor de la variable pasoapaso
    * 0-Simulacion completa
    * 1-Establecimiento
    * 2-Envío cliente -> servidor
@@ -512,10 +512,9 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
    */
    pasoapaso_avanza(): void {
      this.simulacion.pasoapaso++;
-     if (this.simulacion.pasoapaso==5)this.simulacion.pasoapaso=1
    }
      /**
-   * @description Envía a la simulación el valor de la variable pasoapaso
+   * @description Aumenta en una unidad el valor de la variable pasoapaso.
    * 0-Simulacion completa
    * 1-Establecimiento
    * 2-Envío cliente -> servidor
@@ -523,10 +522,25 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
    * 4-Fin
    * @author Alberto-Malagon
    */
-      pasoapaso_retrocede(): void {
-        this.simulacion.pasoapaso--;
-        if (this.simulacion.pasoapaso==-1)this.simulacion.pasoapaso=4
-      }
+    pasoapaso_retrocede(): void {
+      this.simulacion.pasoapaso--;
+      if (this.simulacion.pasoapaso==-1)this.simulacion.pasoapaso=0;
+    }
+  
+    /*
+   * @description Actualiza el valor de la variable pasoapaso a 0
+   * 0-Simulacion completa
+   * 1-Establecimiento
+   * 2-Envío cliente -> servidor
+   * 3-Envío servidor -> cliente
+   * 4-Fin
+   * @author Alberto-Malagon
+   */
+  /*
+    pasoapaso_aCero(): void {
+      this.simulacion.pasoapaso=0;
+    }
+   */ 
   /**
    * @description Cierra la alerta sobre la que se ha pulsado
    * @author javierorp
