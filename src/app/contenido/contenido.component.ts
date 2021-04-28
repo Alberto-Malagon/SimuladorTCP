@@ -67,7 +67,8 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     timeout: null,
     umbral: null,
     algort: "",
-    cierre: ""
+    cierre: "",
+    pasoapaso:0
   };
 
   // Objeto que se le enviara a SimulacionComponent para simular
@@ -90,7 +91,8 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     timeout: 0,
     umbral: 0,
     algort: "",
-    cierre: ""
+    cierre: "",
+    pasoapaso: 0
   };
 
   // Alertas
@@ -197,9 +199,10 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
         var umbral: number = this.simulacion.umbral;
         var algort: string = this.simulacion.algort;
         var cierre: string = this.simulacion.cierre;
+        var pasoapaso: number = this.simulacion.pasoapaso;
         this.simulacionEnv = { ipclien, mssclien, datosclien, snclien, segperdclien,
           wclien, ipserv, mssserv, datosserv, snserv, segperdserv, wserv, timeout,
-          umbral, algort, cierre };
+          umbral, algort, cierre, pasoapaso };
 
         this.sidenavOpened = this.movil == true ? false : true; // Ocultamos la barra de navegacion si es un movil
         // Permitimos que se visualice la simulacion
@@ -429,6 +432,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
       this.simulacion.algort = this.numAleatorio(1, 3, 1).toString();
       this.simulacion.umbral = this.numAleatorio(2, 10, 1);
       this.simulacion.cierre = this.numAleatorio(1, 3, 1).toString();
+      this.simulacion.pasoapaso = 0;
     }
     catch (error) {
       const modalRef = this.modalService.open(ErrorComponent, {windowClass: 'modal-entrada'});
@@ -483,8 +487,9 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
       let umbral: number = null;
       let algort: string = "";
       let cierre: string = "";
+      let pasoapaso: number = 0;
 
-      this.simulacion = { ipclien, mssclien, datosclien, snclien, segperdclien, wclien, ipserv, mssserv, datosserv, snserv, segperdserv, wserv, timeout, umbral, algort, cierre };
+      this.simulacion = { ipclien, mssclien, datosclien, snclien, segperdclien, wclien, ipserv, mssserv, datosserv, snserv, segperdserv, wserv, timeout, umbral, algort, cierre, pasoapaso };
 
       // Ocultamos la simulacion
       this.ejecutar = false;
@@ -496,8 +501,46 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
       modalRef.componentInstance.merror = error;
     }
   }
-
-
+  /**
+   * @description Reduce una unidad el valor de la variable pasoapaso
+   * 0-Simulacion completa
+   * 1-Establecimiento
+   * 2-Envío cliente -> servidor
+   * 3-Envío servidor -> cliente
+   * 4-Fin
+   * @author Alberto-Malagon
+   */
+   pasoapaso_avanza(): void {
+     this.simulacion.pasoapaso++;
+   }
+     /**
+   * @description Aumenta en una unidad el valor de la variable pasoapaso.
+   * 0-Simulacion completa
+   * 1-Establecimiento
+   * 2-Envío cliente -> servidor
+   * 3-Envío servidor -> cliente
+   * 4-Fin
+   * @author Alberto-Malagon
+   */
+    pasoapaso_retrocede(): void {
+      this.simulacion.pasoapaso--;
+      if (this.simulacion.pasoapaso==-1)this.simulacion.pasoapaso=0;
+    }
+  
+    /*
+   * @description Actualiza el valor de la variable pasoapaso a 0
+   * 0-Simulacion completa
+   * 1-Establecimiento
+   * 2-Envío cliente -> servidor
+   * 3-Envío servidor -> cliente
+   * 4-Fin
+   * @author Alberto-Malagon
+   */
+  /*
+    pasoapaso_aCero(): void {
+      this.simulacion.pasoapaso=0;
+    }
+   */ 
   /**
    * @description Cierra la alerta sobre la que se ha pulsado
    * @author javierorp
@@ -507,7 +550,8 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     this.alertas.splice(this.alertas.indexOf(alerta), 1);
   }
 
-  /**
+
+/**
  * @description Impide que se puedan poner decimales en la entrada de datos, redondeando el numero hacia abajo
  * @author javierorp
  * @param param parametro del input
@@ -543,6 +587,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     this.simulacion.umbral = 3;
     this.simulacion.algort = "2";
     this.simulacion.cierre = "1";
+    this.simulacion.pasoapaso = 0;
   }
 
   test2(): void {
@@ -564,6 +609,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     this.simulacion.umbral = 2;
     this.simulacion.algort = "1";
     this.simulacion.cierre = "1";
+    this.simulacion.pasoapaso = 0;
   }
 
 

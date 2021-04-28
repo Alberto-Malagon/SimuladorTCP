@@ -80,12 +80,18 @@
 
     <!-- Boton de simular, rellenar y limpiar formulario -->
     <div style="margin-bottom: 15px;">
+      <button type="button" class="btn btn-formulario" title="{{ 'contenido.simularpaso' | translate }}" (click)="pasoapaso_retrocede();simular()" >
+        <i class="fas fa-backward"></i>
+    </button>
       <button *ngIf="movil" type="button" class="btn btn-formulario" title="{{ 'contenido.simular' | translate }}" (click)="simular(); sidenav.toggle()">
         <fa-icon [icon]="faPlay"></fa-icon>
       </button>
       <button *ngIf="!movil" type="button" class="btn btn-formulario" title="{{ 'contenido.simular' | translate }}" (click)="simular()">
         <fa-icon [icon]="faPlay"></fa-icon>
       </button>
+      <button type="button" class="btn btn-formulario" title="{{ 'contenido.simularpaso' | translate }}" (click)="pasoapaso_avanza();simular()">
+        <i class="fas fa-forward"></i>
+    </button>
       <button type="button" class="btn btn-formulario" title="{{ 'contenido.rellenar' | translate }}" (click)="rellenarDatos()">
         <fa-icon [icon]="faRandom"></fa-icon>
       </button>
@@ -93,8 +99,14 @@
         <fa-icon [icon]="faEraser"></fa-icon>
       </button>
     </div>
+    <div style="text-align: left; font-weight: bold; margin-bottom: 5px;">Paso hasta el que simular</div>
+    <div style="text-align: left; font-weight: bold; margin-bottom: 5px;">
+      <mat-form-field title="{{ 'contenido.pasoapaso-tooltip' | translate }}">
+        <input matInput type="number" min="0" max="99999999" [(ngModel)]="simulacion.pasoapaso" placeholder="{{ 'contenido.simularpaso' | translate }}" (blur)="simulacion.pasoapaso = limpiarParametros(simulacion.pasoapaso)" />
+      </mat-form-field>
+    </div>
   </mat-sidenav>
-
+  
   <!-- Contenido -->
   <mat-sidenav-content>
     <!-- Boton para ocultar o mostar el menu -->

@@ -1,3 +1,4 @@
+
 <span *ngIf="mostrar | async; else loading">
     <a class="cont-opt" style="color: black" href="mailto:{{ pck.email }}?subject={{ 'simulacion.reportar' | translate }}
     &body={{ 'error.parametros' | translate }}%20{{ parametros }}%0A-----{{ 'error.tutexto' | translate }}-----%0A%0A">
@@ -91,7 +92,7 @@
                     </span>
                     </td>
                     <td>
-                        <span title="">
+                        <span title="{{ 'simulacion.seg' | translate }} {{ conversacion.numseg }}">
                             <img src="assets\img\vacio.svg" alt="null" class="flecha" draggable="false" />
                         </span>
                     </td>
