@@ -13,6 +13,19 @@
     </div>
     <!-- Parametros a introducir por el usuario -->
     <div class="params-container">
+      <!-- Número de envíos -->
+      <div style="text-align: left; font-weight: bold;">{{ 'contenido.envios' | translate }}</div>
+      <div style="margin-bottom: 10px;margin-left: 10px">
+      <button  type="button" class="btn btn-formulario" title="{{ 'contenido.envios' | translate }}" (click)="simulacion.envios=1">
+        1
+      </button>
+      <button  type="button" class="btn btn-formulario" title="{{ 'contenido.envios' | translate }}" (click)="simulacion.envios=2">
+        2
+      </button>
+      <button  type="button" class="btn btn-formulario" title="{{ 'contenido.envios' | translate }}" (click)="simulacion.envios=3">
+        3
+      </button>
+      </div>
       <!-- Cliente -->
       <div style="text-align: left; font-weight: bold; margin-bottom: 5px;">{{ 'contenido.clien' | translate }}</div>
       <mat-form-field title="{{ 'contenido.ipclien-tooltip' | translate }}">
@@ -21,17 +34,32 @@
       <mat-form-field title="{{ 'contenido.mssclien-tooltip' | translate }}">
         <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.mssclien" placeholder="{{ 'contenido.mssclien' | translate }}" (blur)="simulacion.mssclien = limpiarParametros(simulacion.mssclien)"/>
       </mat-form-field>
-      <mat-form-field title="{{ 'contenido.datosclien-tooltip' | translate }}">
-        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.datosclien" placeholder="{{ 'contenido.datosclien' | translate }}" (blur)="simulacion.datosclien = limpiarParametros(simulacion.datosclien)" />
-      </mat-form-field>
       <mat-form-field title="{{ 'contenido.snclien-tooltip' | translate }}">
         <input matInput type="number" min="0" max="9999999" [(ngModel)]="simulacion.snclien" placeholder="{{ 'contenido.snclien' | translate }}" (blur)="simulacion.snclien = limpiarParametros(simulacion.snclien)" />
       </mat-form-field>
-      <mat-form-field title="{{ 'contenido.segperdclien-tooltip' | translate }}">
-        <input matInput [(ngModel)]="simulacion.segperdclien" placeholder="{{ 'contenido.segperdclien' | translate }}"/>
-      </mat-form-field>
       <mat-form-field title="{{ 'contenido.wclien-tooltip' | translate }}">
         <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.wclien" placeholder="{{ 'contenido.wclien' | translate }}" (blur)="simulacion.wclien = limpiarParametros(simulacion.wclien)" />
+      </mat-form-field>
+      <div *ngIf="simulacion.envios==1 || simulacion.envios==2 || simulacion.envios==3" style="text-align: left; margin-bottom: 5px;">{{ 'contenido.primerenvio' | translate }}</div>
+      <mat-form-field *ngIf="simulacion.envios==1 || simulacion.envios==2 || simulacion.envios==3" title="{{ 'contenido.datosclien-tooltip' | translate }}">
+        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.datosclien" placeholder="{{ 'contenido.datosclien' | translate }}" (blur)="simulacion.datosclien = limpiarParametros(simulacion.datosclien)" />
+      </mat-form-field>
+      <mat-form-field *ngIf="simulacion.envios==1 || simulacion.envios==2 || simulacion.envios==3" title="{{ 'contenido.segperdclien-tooltip' | translate }}">
+        <input matInput [(ngModel)]="simulacion.segperdclien" placeholder="{{ 'contenido.segperdclien' | translate }}"/>
+      </mat-form-field>
+      <div *ngIf="simulacion.envios==2 || simulacion.envios==3" style="text-align: left; margin-bottom: 5px;">{{ 'contenido.segundoenvio' | translate }}</div>
+      <mat-form-field *ngIf="simulacion.envios==2 || simulacion.envios==3" title="{{ 'contenido.datosclien-tooltip' | translate }}">
+        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.datosclien2" placeholder="{{ 'contenido.datosclien' | translate }}" (blur)="simulacion.datosclien = limpiarParametros(simulacion.datosclien)" />
+      </mat-form-field>
+      <mat-form-field *ngIf="simulacion.envios==2 || simulacion.envios==3 " title="{{ 'contenido.segperdclien-tooltip' | translate }}">
+        <input matInput [(ngModel)]="simulacion.segperdclien" placeholder="{{ 'contenido.segperdclien2' | translate }}"/>
+      </mat-form-field>
+      <div *ngIf="simulacion.envios==3" style="text-align: left; margin-bottom: 5px;">{{ 'contenido.tercerenvio' | translate }}</div>
+      <mat-form-field *ngIf="simulacion.envios==3" title="{{ 'contenido.datosclien-tooltip' | translate }}">
+        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.datosclien3" placeholder="{{ 'contenido.datosclien' | translate }}" (blur)="simulacion.datosclien = limpiarParametros(simulacion.datosclien)" />
+      </mat-form-field>
+      <mat-form-field *ngIf="simulacion.envios==3 " title="{{ 'contenido.segperdclien-tooltip' | translate }}">
+        <input matInput [(ngModel)]="simulacion.segperdclien" placeholder="{{ 'contenido.segperdclien3' | translate }}"/>
       </mat-form-field>
       <!-- Servidor -->
       <div style="text-align: left; font-weight: bold; margin-bottom: 5px;">{{ 'contenido.serv' | translate }}</div>
@@ -41,18 +69,35 @@
       <mat-form-field title="{{ 'contenido.mssserv-tooltip' | translate }}">
         <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.mssserv" placeholder="{{ 'contenido.mssserv' | translate }}" (blur)="simulacion.mssserv = limpiarParametros(simulacion.mssserv)" />
       </mat-form-field>
-      <mat-form-field title="{{ 'contenido.datosserv-tooltip' | translate }}">
-        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.datosserv"
-          placeholder="{{ 'contenido.datosserv' | translate }}" (blur)="simulacion.datosserv = limpiarParametros(simulacion.datosserv)" />
-      </mat-form-field>
       <mat-form-field title="{{ 'contenido.snserv-tooltip' | translate }}">
         <input matInput type="number" min="0" max="9999999" [(ngModel)]="simulacion.snserv" placeholder="{{ 'contenido.snserv' | translate }}" (blur)="simulacion.snserv = limpiarParametros(simulacion.snserv)" />
       </mat-form-field>
-      <mat-form-field title="{{ 'contenido.segperdserv-tooltip' | translate }}">
-        <input matInput [(ngModel)]="simulacion.segperdserv" placeholder="{{ 'contenido.segperdserv' | translate }}" />
-      </mat-form-field>
       <mat-form-field title="{{ 'contenido.wserv-tooltip' | translate }}">
         <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.wserv" placeholder="{{ 'contenido.wserv' | translate }}" (blur)="simulacion.wserv = limpiarParametros(simulacion.wserv)" />
+      </mat-form-field>
+      <div *ngIf="simulacion.envios==1 || simulacion.envios==2 || simulacion.envios==3" style="text-align: left; margin-bottom: 5px;">{{ 'contenido.primerenvio' | translate }}</div>
+      <mat-form-field *ngIf="simulacion.envios==1 || simulacion.envios==2 || simulacion.envios==3" title="{{ 'contenido.datosserv-tooltip' | translate }}">
+        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.datosserv"
+          placeholder="{{ 'contenido.datosserv' | translate }}" (blur)="simulacion.datosserv = limpiarParametros(simulacion.datosserv)" />
+      </mat-form-field>
+      <mat-form-field *ngIf="simulacion.envios==1 || simulacion.envios==2 || simulacion.envios==3" title="{{ 'contenido.segperdserv-tooltip' | translate }}">
+        <input matInput [(ngModel)]="simulacion.segperdserv" placeholder="{{ 'contenido.segperdserv' | translate }}" />
+      </mat-form-field>
+      <div *ngIf="simulacion.envios==2 || simulacion.envios==3" style="text-align: left; margin-bottom: 5px;">{{ 'contenido.segundoenvio' | translate }}</div>
+      <mat-form-field *ngIf="simulacion.envios==2 || simulacion.envios==3" title="{{ 'contenido.datosserv-tooltip' | translate }}">
+        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.datosserv2"
+          placeholder="{{ 'contenido.datosserv' | translate }}" (blur)="simulacion.datosserv = limpiarParametros(simulacion.datosserv)" />
+      </mat-form-field>
+      <mat-form-field *ngIf="simulacion.envios==2 || simulacion.envios==3" title="{{ 'contenido.segperdserv-tooltip' | translate }}">
+        <input matInput [(ngModel)]="simulacion.segperdserv2" placeholder="{{ 'contenido.segperdserv' | translate }}" />
+      </mat-form-field>
+      <div *ngIf="simulacion.envios==3" style="text-align: left; margin-bottom: 5px;">{{ 'contenido.tercerenvio' | translate }}</div>
+      <mat-form-field *ngIf="simulacion.envios==3" title="{{ 'contenido.datosserv-tooltip' | translate }}">
+        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.datosserv3"
+          placeholder="{{ 'contenido.datosserv' | translate }}" (blur)="simulacion.datosserv = limpiarParametros(simulacion.datosserv)" />
+      </mat-form-field>
+      <mat-form-field *ngIf="simulacion.envios==3" title="{{ 'contenido.segperdserv-tooltip' | translate }}">
+        <input matInput [(ngModel)]="simulacion.segperdserv3" placeholder="{{ 'contenido.segperdserv' | translate }}" />
       </mat-form-field>
       <!-- General -->
       <div style="text-align: left; font-weight: bold; margin-bottom: 5px;">{{ 'contenido.general' | translate }}</div>
@@ -99,8 +144,8 @@
         <fa-icon [icon]="faEraser"></fa-icon>
       </button>
     </div>
-    <div style="text-align: left; font-weight: bold; margin-bottom: 5px;">Paso hasta el que simular</div>
-    <div style="text-align: left; font-weight: bold; margin-bottom: 5px;">
+    <div style="text-align: left; font-weight: bold; margin-bottom: 5px;margin-left: 5px;">Paso hasta el que simular</div>
+    <div style="text-align: left; font-weight: bold; margin-bottom: 5px;margin-left: 10px;">
       <mat-form-field title="{{ 'contenido.pasoapaso-tooltip' | translate }}">
         <input matInput type="number" min="0" max="99999999" [(ngModel)]="simulacion.pasoapaso" placeholder="{{ 'contenido.simularpaso' | translate }}" (blur)="simulacion.pasoapaso = limpiarParametros(simulacion.pasoapaso)" />
       </mat-form-field>
