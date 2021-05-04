@@ -53,22 +53,31 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     ipclien: "127.0.0.1",
     mssclien: null,
     datosclien: null,
+    datosclien2: null,
+    datosclien3: null,
     snclien: null,
     segperdclien: null,
+    segperdclien2: null,
+    segperdclien3: null,
     wclien: null,
     //Servidor
     ipserv: "192.168.0.1",
     mssserv: null,
     datosserv: null,
+    datosserv2: null,
+    datosserv3: null,
     snserv: null,
     segperdserv: null,
+    segperdserv2: null,
+    segperdserv3: null,
     wserv: null,
     //General
     timeout: null,
     umbral: null,
     algort: "",
     cierre: "",
-    pasoapaso:0
+    pasoapaso:0,
+    envios:1
   };
 
   // Objeto que se le enviara a SimulacionComponent para simular
@@ -77,22 +86,31 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     ipclien: "",
     mssclien: null,
     datosclien: null,
+    datosclien2: null,
+    datosclien3: null,
     snclien: null,
     segperdclien: "",
+    segperdclien2: "",
+    segperdclien3: "",
     wclien: null,
     //Servidor
     ipserv: "",
     mssserv: null,
     datosserv: null,
+    datosserv2: null,
+    datosserv3: null,
     snserv: null,
     segperdserv: "",
+    segperdserv2: "",
+    segperdserv3: "",
     wserv: null,
     //General
     timeout: 0,
     umbral: 0,
     algort: "",
     cierre: "",
-    pasoapaso: 0
+    pasoapaso: 0,
+    envios: 1
   };
 
   // Alertas
@@ -186,23 +204,32 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
         var ipclien: string = this.simulacion.ipclien;
         var mssclien: number = this.simulacion.mssclien;
         var datosclien: number = this.simulacion.datosclien;
+        var datosclien2: number = this.simulacion.datosclien2;
+        var datosclien3: number = this.simulacion.datosclien3;
         var snclien: number = this.simulacion.snclien;
         var segperdclien: string = this.simulacion.segperdclien;
+        var segperdclien2: string = this.simulacion.segperdclien2;
+        var segperdclien3: string = this.simulacion.segperdclien3;
         var wclien: number = this.simulacion.wclien;
         var ipserv: string = this.simulacion.ipserv;
         var mssserv: number = this.simulacion.mssserv;
         var datosserv: number = this.simulacion.datosserv;
+        var datosserv2: number = this.simulacion.datosserv2;
+        var datosserv3: number = this.simulacion.datosserv3;
         var snserv: number = this.simulacion.snserv;
         var segperdserv: string = this.simulacion.segperdserv;
+        var segperdserv2: string = this.simulacion.segperdserv2;
+        var segperdserv3: string = this.simulacion.segperdserv3;
         var wserv: number = this.simulacion.wserv;
         var timeout: number = this.simulacion.timeout;
         var umbral: number = this.simulacion.umbral;
         var algort: string = this.simulacion.algort;
         var cierre: string = this.simulacion.cierre;
         var pasoapaso: number = this.simulacion.pasoapaso;
-        this.simulacionEnv = { ipclien, mssclien, datosclien, snclien, segperdclien,
-          wclien, ipserv, mssserv, datosserv, snserv, segperdserv, wserv, timeout,
-          umbral, algort, cierre, pasoapaso };
+        var envios: number = this.simulacion.envios;
+        this.simulacionEnv = { ipclien, mssclien, datosclien, datosclien2, datosclien3, snclien, segperdclien, segperdclien2,
+          segperdclien3, wclien, ipserv, mssserv, datosserv, datosserv2,datosserv3, snserv, segperdserv, segperdserv2, segperdserv3, wserv, timeout,
+          umbral, algort, cierre, pasoapaso, envios };
 
         this.sidenavOpened = this.movil == true ? false : true; // Ocultamos la barra de navegacion si es un movil
         // Permitimos que se visualice la simulacion
@@ -251,7 +278,11 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     let mss: number = Math.min(this.simulacion.mssclien,this.simulacion.mssserv);
     let NumEnvMax_cli: number = Math.ceil(this.simulacion.datosclien/mss);
     let NumEnvMax_serv: number = Math.ceil(this.simulacion.datosserv/mss);
-    // Expresion regular para comprobar si segperd son numeros separados por comas
+    let NumEnvMax_cli2: number = Math.ceil(this.simulacion.datosclien2/mss);
+    let NumEnvMax_serv2: number = Math.ceil(this.simulacion.datosserv2/mss);
+    let NumEnvMax_cli3: number = Math.ceil(this.simulacion.datosclien3/mss);
+    let NumEnvMax_serv3: number = Math.ceil(this.simulacion.datosserv3/mss);
+    // Expresion regular para comprobar si segperd son numeros separados por comas (PRIMER ENVÍO)
     var segperdRegex = new RegExp('[0-9]+(,[0-9]+)+/g');
     var segperdclien: string = this.simulacion.segperdclien;
     var segperdserv: string = this.simulacion.segperdserv;
@@ -331,15 +362,179 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     }
     else 
       segperdserv="";
+    // Expresion regular para comprobar si segperd son numeros separados por comas (SEGUNDO ENVÍO)
+    var segperdRegex2 = new RegExp('[0-9]+(,[0-9]+)+/g');
+    var segperdclien2: string = this.simulacion.segperdclien2;
+    var segperdserv2: string = this.simulacion.segperdserv2;
+      if (segperdclien2 != null) { //Cliente
+        segperdclien2 = segperdclien2.replace(/[a-zA-Z]+/gi, ''); // se eliminan los caracteres que sean letras
+        segperdclien2 = segperdclien2.replace(/\s/g, ''); // se eliminan los espacios
+        segperdclien2 = segperdclien2.replace(/\W+/g, ','); // se cambian todos los caracteres no numericos por comas (,)
+  
+        var segperdNum2 = segperdclien2.split(',').map(Number); // se transforma la cadena de caracteres a un array numerico
+        segperdNum2 = segperdNum2.sort((n1, n2) => n1 - n2); // se ordenan los numeros de menor a mayor
+        //Se comprueba que ninguno de los valores introducidos es mayor que el número de sgmentos a enviar.
+        let x: number;
+        var segperdclialert2: number = 0;
+        var segperdservalert2: number = 0;
+        for(x=0;x<segperdNum2.length;x++)
+        {
+          if(segperdNum2[x]>NumEnvMax_cli2)
+            segperdclialert2=1;
+        }
+        segperdclien2 = segperdNum2.toString(); // se transforma el array numerico en una cadena de caracteres
+  
+        // Eliminamos los valores duplicados
+        var segperdArr2 = segperdclien2.split(',');
+        for (var i = 0; i < segperdArr2.length; i++) {
+          for (var j = i + 1; j < (segperdArr2.length); j++) {
+            if (segperdArr2[i] == segperdArr2[j])
+              delete segperdArr2[j];
+          }
+        }
+        segperdclien2 = segperdArr2.toString();
+        segperdclien2 = segperdclien2.replace(/\W+/g, ','); // se vuelve a ejecutar esta regex para eliminar las comas duplicadas
+        segperdclien2 = (segperdclien2[0] == ',') ? segperdclien2.substring(1) : segperdclien2; // si el primer caracter es una coma se elimina
+        segperdclien2 = (segperdclien2[segperdclien2.length - 1] == ',') ? segperdclien2.substring(0, segperdclien2.length - 1) : segperdclien2; // si el ultimo caracter es una coma se elimina
+  
+        if (segperdclien2 == "0")
+          segperdclien2 = ""
+        
+      }
+      else 
+        segperdclien2="";
+      
+      this.simulacion.segperdclien2 = segperdclien2;
+    
+      if (segperdserv2 != null) { //Servidor
+        segperdserv2 = segperdserv2.replace(/[a-zA-Z]+/gi, ''); // se eliminan los caracteres que sean letras
+        segperdserv2 = segperdserv2.replace(/\s/g, ''); // se eliminan los espacios
+        segperdserv2 = segperdserv2.replace(/\W+/g, ','); // se cambian todos los caracteres no numericos por comas (,)
+  
+        var segperdNum2 = segperdserv2.split(',').map(Number); // se transforma la cadena de caracteres a un array numerico
+        segperdNum2 = segperdNum2.sort((n1, n2) => n1 - n2); // se ordenan los numeros de menor a mayor
+      //Se comprueba que ninguno de los valores introducidos es mayor que el número de sgmentos a enviar
+        let y: number;
+        for(y=0;y<segperdNum2.length;y++)
+        {
+          if(segperdNum2[y]>NumEnvMax_serv2)
+            segperdservalert2=1;
+        }
+        segperdserv2 = segperdNum2.toString(); // se transforma el array numerico en una cadena de caracteres
+  
+        // Eliminamos los valores duplicados
+        var segperdArr2 = segperdserv2.split(',');
+        for (var i = 0; i < segperdArr2.length; i++) {
+          for (var j = i + 1; j < (segperdArr2.length); j++) {
+            if (segperdArr2[i] == segperdArr2[j])
+              delete segperdArr2[j];
+          }
+        }
+        segperdserv2 = segperdArr2.toString();
+        segperdserv2 = segperdserv2.replace(/\W+/g, ','); // se vuelve a ejecutar esta regex para eliminar las comas duplicadas
+        segperdserv2 = (segperdserv2[0] == ',') ? segperdserv2.substring(1) : segperdserv2; // si el primer caracter es una coma se elimina
+        segperdserv2 = (segperdserv2[segperdserv2.length - 1] == ',') ? segperdserv2.substring(0, segperdserv2.length - 1) : segperdserv2; // si el ultimo caracter es una coma se elimina
+  
+        if (segperdserv2 == "0")
+          segperdserv2 = ""
+  
+        this.simulacion.segperdserv2 = segperdserv2;
+      }
+      else 
+        segperdserv2="";
+    // Expresion regular para comprobar si segperd son numeros separados por comas (TERCER ENVÍO)
+    var segperdRegex3 = new RegExp('[0-9]+(,[0-9]+)+/g');
+    var segperdclien3: string = this.simulacion.segperdclien3;
+    var segperdserv3: string = this.simulacion.segperdserv3;
+      if (segperdclien3 != null) { //Cliente
+        segperdclien3 = segperdclien3.replace(/[a-zA-Z]+/gi, ''); // se eliminan los caracteres que sean letras
+        segperdclien3 = segperdclien3.replace(/\s/g, ''); // se eliminan los espacios
+        segperdclien3 = segperdclien3.replace(/\W+/g, ','); // se cambian todos los caracteres no numericos por comas (,)
+  
+        var segperdNum3 = segperdclien3.split(',').map(Number); // se transforma la cadena de caracteres a un array numerico
+        segperdNum3 = segperdNum3.sort((n1, n2) => n1 - n2); // se ordenan los numeros de menor a mayor
+        //Se comprueba que ninguno de los valores introducidos es mayor que el número de sgmentos a enviar.
+        let x: number;
+        var segperdclialert3: number = 0;
+        var segperdservalert3: number = 0;
+        for(x=0;x<segperdNum3.length;x++)
+        {
+          if(segperdNum3[x]>NumEnvMax_cli3)
+            segperdclialert3=1;
+        }
+        segperdclien3 = segperdNum3.toString(); // se transforma el array numerico en una cadena de caracteres
+  
+        // Eliminamos los valores duplicados
+        var segperdArr3 = segperdclien3.split(',');
+        for (var i = 0; i < segperdArr3.length; i++) {
+          for (var j = i + 1; j < (segperdArr3.length); j++) {
+            if (segperdArr3[i] == segperdArr3[j])
+              delete segperdArr3[j];
+          }
+        }
+        segperdclien3 = segperdArr3.toString();
+        segperdclien3 = segperdclien3.replace(/\W+/g, ','); // se vuelve a ejecutar esta regex para eliminar las comas duplicadas
+        segperdclien3 = (segperdclien3[0] == ',') ? segperdclien3.substring(1) : segperdclien3; // si el primer caracter es una coma se elimina
+        segperdclien3 = (segperdclien3[segperdclien3.length - 1] == ',') ? segperdclien3.substring(0, segperdclien3.length - 1) : segperdclien3; // si el ultimo caracter es una coma se elimina
+  
+        if (segperdclien3 == "0")
+          segperdclien3 = ""
+        
+      }
+      else 
+        segperdclien3="";
+      
+      this.simulacion.segperdclien3 = segperdclien3;
+    
+      if (segperdserv3 != null) { //Servidor
+        segperdserv3 = segperdserv3.replace(/[a-zA-Z]+/gi, ''); // se eliminan los caracteres que sean letras
+        segperdserv3 = segperdserv3.replace(/\s/g, ''); // se eliminan los espacios
+        segperdserv3 = segperdserv3.replace(/\W+/g, ','); // se cambian todos los caracteres no numericos por comas (,)
+  
+        var segperdNum3 = segperdserv3.split(',').map(Number); // se transforma la cadena de caracteres a un array numerico
+        segperdNum3 = segperdNum3.sort((n1, n2) => n1 - n2); // se ordenan los numeros de menor a mayor
+      //Se comprueba que ninguno de los valores introducidos es mayor que el número de sgmentos a enviar
+        let y: number;
+        for(y=0;y<segperdNum3.length;y++)
+        {
+          if(segperdNum3[y]>NumEnvMax_serv3)
+            segperdservalert3=1;
+        }
+        segperdserv3 = segperdNum3.toString(); // se transforma el array numerico en una cadena de caracteres
+  
+        // Eliminamos los valores duplicados
+        var segperdArr3 = segperdserv3.split(',');
+        for (var i = 0; i < segperdArr3.length; i++) {
+          for (var j = i + 1; j < (segperdArr3.length); j++) {
+            if (segperdArr3[i] == segperdArr3[j])
+              delete segperdArr3[j];
+          }
+        }
+        segperdserv3 = segperdArr3.toString();
+        segperdserv3 = segperdserv3.replace(/\W+/g, ','); // se vuelve a ejecutar esta regex para eliminar las comas duplicadas
+        segperdserv3 = (segperdserv3[0] == ',') ? segperdserv3.substring(1) : segperdserv3; // si el primer caracter es una coma se elimina
+        segperdserv3 = (segperdserv3[segperdserv3.length - 1] == ',') ? segperdserv3.substring(0, segperdserv3.length - 1) : segperdserv3; // si el ultimo caracter es una coma se elimina
+  
+        if (segperdserv3 == "0")
+          segperdserv3 = ""
+  
+        this.simulacion.segperdserv3 = segperdserv3;
+      }
+      else 
+        segperdserv3="";
 
     // ----DATOS NUMERICOS----
     // Se comprueba que los valores introducidos no son mayores a 99999999
     if (this.simulacion.mssclien > 99999999) this.simulacion.mssclien = 99999999;
     if (this.simulacion.datosclien > 99999999) this.simulacion.datosclien = 99999999;
+    if (this.simulacion.datosclien2 > 99999999) this.simulacion.datosclien2 = 99999999;
+    if (this.simulacion.datosclien3 > 99999999) this.simulacion.datosclien3 = 99999999;
     if (this.simulacion.snclien > 9999999) this.simulacion.snclien = 9999999;
     if (this.simulacion.wclien > 99999999) this.simulacion.wclien = 99999999;
     if (this.simulacion.mssserv > 99999999) this.simulacion.mssserv = 99999999;
     if (this.simulacion.datosserv > 99999999) this.simulacion.datosserv = 99999999;
+    if (this.simulacion.datosserv2 > 99999999) this.simulacion.datosserv2 = 99999999;
+    if (this.simulacion.datosserv3 > 99999999) this.simulacion.datosserv3 = 99999999;
     if (this.simulacion.snserv > 9999999) this.simulacion.snserv = 9999999;
     if (this.simulacion.wserv > 99999999) this.simulacion.wserv = 99999999;
     if (this.simulacion.timeout == null) this.simulacion.timeout = 0;
@@ -362,7 +557,11 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     if (this.simulacion.segperdclien != null && this.simulacion.segperdclien.indexOf(',') != -1 && segperdRegex.test(this.simulacion.segperdclien))
       this.alertas.push({ campo: this.translate.instant('contenido.clien') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.segperdclien') + ": ", msg: this.translate.instant('contenido.error-segperdclien') });
     if (segperdclialert==1)
-      this.alertas.push({ campo: this.translate.instant('contenido.clien') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.segperdclien') + ": ", msg: this.translate.instant('contenido.error-segperdalert') });
+      this.alertas.push({ campo: this.translate.instant('contenido.clien') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.primerenvio') + " " + this.translate.instant('contenido.segperdclien') + ": ", msg: this.translate.instant('contenido.error-segperdalert') });
+    if (segperdclialert2==1)
+      this.alertas.push({ campo: this.translate.instant('contenido.clien') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.segundoenvio') + " " + this.translate.instant('contenido.segperdclien') + ": ", msg: this.translate.instant('contenido.error-segperdalert') });
+    if (segperdclialert3==1)
+      this.alertas.push({ campo: this.translate.instant('contenido.clien') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.tercerenvio') + " " + this.translate.instant('contenido.segperdclien') + ": ", msg: this.translate.instant('contenido.error-segperdalert') });
     if (this.simulacion.wclien < 1)
       this.alertas.push({ campo: this.translate.instant('contenido.clien') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.wclien') + ": ", msg: this.translate.instant('contenido.error-wclien') });
     //Servidor
@@ -377,7 +576,11 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     if (this.simulacion.segperdserv != null && this.simulacion.segperdserv.indexOf(',') != -1 && segperdRegex.test(this.simulacion.segperdserv))
       this.alertas.push({ campo: this.translate.instant('contenido.serv') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.segperdserv') + ": ", msg: this.translate.instant('contenido.error-segperdserv') });
     if (segperdservalert==1)
-      this.alertas.push({ campo: this.translate.instant('contenido.serv') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.segperdserv') + ": ", msg: this.translate.instant('contenido.error-segperdalert') });
+      this.alertas.push({ campo: this.translate.instant('contenido.serv') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.primerenvio') + " " + this.translate.instant('contenido.segperdserv') + ": ", msg: this.translate.instant('contenido.error-segperdalert') });
+    if (segperdservalert2==1)
+      this.alertas.push({ campo: this.translate.instant('contenido.serv') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.segundoenvio') + " " + this.translate.instant('contenido.segperdserv') + ": ", msg: this.translate.instant('contenido.error-segperdalert') });
+    if (segperdservalert3==1)
+      this.alertas.push({ campo: this.translate.instant('contenido.serv') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.tercerenvio') + " " + this.translate.instant('contenido.segperdserv') + ": ", msg: this.translate.instant('contenido.error-segperdalert') });
     if (this.simulacion.wserv < 1)
       this.alertas.push({ campo: this.translate.instant('contenido.serv') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.wserv') + ": ", msg: this.translate.instant('contenido.error-wserv') });
     //General
@@ -472,15 +675,23 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
       let ipclien: string = "127.0.0.1";
       let mssclien: number = null;
       let datosclien: number = null;
+      let datosclien2: number = null;
+      let datosclien3: number = null;
       let snclien: number = null;
       let segperdclien: string = null;
+      let segperdclien2: string = null;
+      let segperdclien3: string = null;
       let wclien: number = null;
       //Servidor
       let ipserv: string = "192.168.0.1";
       let mssserv: number = null;
       let datosserv: number = null;
+      let datosserv2: number = null;
+      let datosserv3: number = null;
       let snserv: number = null;
       let segperdserv: string = null;
+      let segperdserv2: string = null;
+      let segperdserv3: string = null;
       let wserv: number = null;
       //General
       let timeout: number = null;
@@ -488,8 +699,9 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
       let algort: string = "";
       let cierre: string = "";
       let pasoapaso: number = 0;
+      let envios: number = 1;
 
-      this.simulacion = { ipclien, mssclien, datosclien, snclien, segperdclien, wclien, ipserv, mssserv, datosserv, snserv, segperdserv, wserv, timeout, umbral, algort, cierre, pasoapaso };
+      this.simulacion = { ipclien, mssclien, datosclien, datosclien2, datosclien3, snclien, segperdclien, segperdclien2, segperdclien3, wclien, ipserv, mssserv, datosserv, datosserv2, datosserv3, snserv, segperdserv, segperdserv2, segperdserv3, wserv, timeout, umbral, algort, cierre, pasoapaso,envios };
 
       // Ocultamos la simulacion
       this.ejecutar = false;
@@ -561,6 +773,13 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     return param;
   }
 
+  /**
+   * @description Muestra la parte final de la pagina
+   * @author Alberto-Malagon
+   */
+   /*scrollToBottom(): void {
+    window.scrollTo(0,200);
+  }*/
   /* TEST */
   test(): void {
     this.test1();

@@ -50,7 +50,11 @@
   background-color: #004e99;
   border-color    : #004e99
 }
-
+.btn-formulario:focus {
+  color           : rgb(255, 255, 255);
+  background-color: #004e99;
+  border-color    : #004e99
+}
 /* Contenedor de los parametros */
 .params-container {
   display       : flex;
