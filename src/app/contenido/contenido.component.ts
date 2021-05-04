@@ -773,6 +773,13 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     return param;
   }
 
+  /**
+   * @description Muestra la parte final de la pagina
+   * @author Alberto-Malagon
+   */
+   /*scrollToBottom(): void {
+    window.scrollTo(0,200);
+  }*/
   /* TEST */
   test(): void {
     this.test1();
