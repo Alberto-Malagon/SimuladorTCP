@@ -33,7 +33,6 @@ export function createTranslateLoader(http: HttpClient) {
   http.head("https://github.com/javierorp/tcp-simulador/tree/master/src/");
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
-
 @NgModule({
   declarations: [
     AppComponent,
