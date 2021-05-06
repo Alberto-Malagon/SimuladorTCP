@@ -989,7 +989,7 @@ if (envAck == 2 && cierre == "1")
         contadorPqtEnv++;      
       }
       //Segmento vacío esperando a que caduque el temporizador
-      else if (sin_ACK >= Math.floor(this.cli.vc) && flag_ACKdup ==0)
+      else if (sin_ACK >= Math.floor(this.cli.vc))
       {
         timeout--;
         numPqtClienEnv--;
@@ -1347,7 +1347,7 @@ if (envAck == 2 && cierre == "1")
         else this.serv.flags = al;
       }
       //ACK
-      else if (envAck == Math.min(this.serv.vcrep, envMaxServ)||(flag_ACKdup==1 && this.serv.vcrep <=2) || (flag_ACKdup==1 && Math.floor(this.serv.vcrep) == 4)) // Si se han enviado los paquetes que permite la VC pero no se ha recibido aun un ACK, se envia
+      else if (envAck == Math.min(this.serv.vcrep, envMaxServ)||(flag_ACKdup==1 && this.serv.vcrep <=2) || (flag_ACKdup==1 && Math.floor(this.serv.vcrep) == sin_ACK)) // Si se han enviado los paquetes que permite la VC pero no se ha recibido aun un ACK, se envia
       {
         if (reconocido==0)
         {
@@ -1503,7 +1503,7 @@ if (envAck == 2 && cierre == "1")
         contadorPqtEnv++;
       }
       //Segmento vacío esperando a que caduque el temporizador
-      else if (sin_ACK >= Math.floor(this.serv.vc) && flag_ACKdup==0)
+      else if (sin_ACK >= Math.floor(this.serv.vc))
       {
         timeout--;
         numPqtServEnv--;
@@ -2186,7 +2186,7 @@ if (envAck == 2 && cierre == "1")
         contadorPqtEnv++;      
       }
       //Segmento vacío esperando a que caduque el temporizador
-      else if (sin_ACK >= Math.floor(this.cli.vc) && flag_ACKdup == 0)
+      else if (sin_ACK >= Math.floor(this.cli.vc))
       {
         timeout--;
         numPqtClienEnv--;
@@ -2538,7 +2538,7 @@ if (envAck == 2 && cierre == "1")
         flag_ACKdup = 0;
       }
       //ACK
-      else if (envAck == Math.min(this.serv.vcrep, envMaxServ)||(flag_ACKdup==1 && this.serv.vcrep <=2)||(flag_ACKdup==1 && Math.floor (this.serv.vcrep) == 4)) // Si se han enviado los paquetes que permite la VC pero no se ha recibido aun un ACK, se envia
+      else if (envAck == Math.min(this.serv.vcrep, envMaxServ)||(flag_ACKdup==1 && this.serv.vcrep <=2)||(flag_ACKdup==1 && Math.floor (this.serv.vcrep) == sin_ACK)) // Si se han enviado los paquetes que permite la VC pero no se ha recibido aun un ACK, se envia
       {
         if (reconocido==0)
         {
@@ -2688,7 +2688,7 @@ if (envAck == 2 && cierre == "1")
         contadorPqtEnv++;
       }
       //Segmento vacío esperando a que caduque el temporizador
-      else if (sin_ACK >= Math.floor(this.serv.vc)&& flag_ACKdup == 0)
+      else if (sin_ACK >= Math.floor(this.serv.vc))
       {
         timeout--;
         numPqtServEnv--;
