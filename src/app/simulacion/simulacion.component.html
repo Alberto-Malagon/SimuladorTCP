@@ -215,6 +215,12 @@
                 <!-- Direccion cliente->servidor -->
                 <span *ngIf="conversacion.dir == 1">
                     <td class="info-izq">
+                        <span *ngIf="conversacion.NumEnvio ==1 " title="{{ 'contenido.primerenvio' | translate }}"
+                            class="envio"> &nbsp;{{ 'contenido.primerenvio' | translate }}&nbsp;</span>
+                            <span *ngIf="conversacion.NumEnvio ==2 " title="{{ 'contenido.segundoenvio' | translate }}"
+                            class="envio"> &nbsp;{{ 'contenido.segundoenvio' | translate }}&nbsp;</span>
+                            <span *ngIf="conversacion.NumEnvio ==3 " title="{{ 'contenido.tercerenvio' | translate }}"
+                            class="envio"> &nbsp;{{ 'contenido.tercerenvio' | translate }}&nbsp;</span>
                         <span *ngIf="conversacion.fin_temp ==1 && conversacion.envio == 0" title="{{ 'simulacion.umbral' | translate }}"
                             class="umbral"> &nbsp;U={{ conversacion.umbral }}&nbsp;</span>
                         <span *ngIf="conversacion.flagcli[3] != ''" title="{{ 'simulacion.al' | translate }}"

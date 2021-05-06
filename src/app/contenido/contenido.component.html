@@ -49,17 +49,17 @@
       </mat-form-field>
       <div *ngIf="simulacion.envios==2 || simulacion.envios==3" style="text-align: left; margin-bottom: 5px;">{{ 'contenido.segundoenvio' | translate }}</div>
       <mat-form-field *ngIf="simulacion.envios==2 || simulacion.envios==3" title="{{ 'contenido.datosclien-tooltip' | translate }}">
-        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.datosclien2" placeholder="{{ 'contenido.datosclien' | translate }}" (blur)="simulacion.datosclien = limpiarParametros(simulacion.datosclien)" />
+        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.datosclien2" placeholder="{{ 'contenido.datosclien2' | translate }}" (blur)="simulacion.datosclien2 = limpiarParametros(simulacion.datosclien2)" />
       </mat-form-field>
       <mat-form-field *ngIf="simulacion.envios==2 || simulacion.envios==3 " title="{{ 'contenido.segperdclien-tooltip' | translate }}">
-        <input matInput [(ngModel)]="simulacion.segperdclien" placeholder="{{ 'contenido.segperdclien2' | translate }}"/>
+        <input matInput [(ngModel)]="simulacion.segperdclien2" placeholder="{{ 'contenido.segperdclien2' | translate }}"/>
       </mat-form-field>
       <div *ngIf="simulacion.envios==3" style="text-align: left; margin-bottom: 5px;">{{ 'contenido.tercerenvio' | translate }}</div>
       <mat-form-field *ngIf="simulacion.envios==3" title="{{ 'contenido.datosclien-tooltip' | translate }}">
-        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.datosclien3" placeholder="{{ 'contenido.datosclien' | translate }}" (blur)="simulacion.datosclien = limpiarParametros(simulacion.datosclien)" />
+        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.datosclien3" placeholder="{{ 'contenido.datosclien3' | translate }}" (blur)="simulacion.datosclien3 = limpiarParametros(simulacion.datosclien3)" />
       </mat-form-field>
       <mat-form-field *ngIf="simulacion.envios==3 " title="{{ 'contenido.segperdclien-tooltip' | translate }}">
-        <input matInput [(ngModel)]="simulacion.segperdclien" placeholder="{{ 'contenido.segperdclien3' | translate }}"/>
+        <input matInput [(ngModel)]="simulacion.segperdclien3" placeholder="{{ 'contenido.segperdclien3' | translate }}"/>
       </mat-form-field>
       <!-- Servidor -->
       <div style="text-align: left; font-weight: bold; margin-bottom: 5px;">{{ 'contenido.serv' | translate }}</div>

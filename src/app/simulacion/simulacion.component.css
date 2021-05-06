@@ -168,7 +168,14 @@ span.vcserv {
     font-size : 80%;
     border-radius   : 4px;
 }
-
+span.envio {
+    background-color: #3e3e7e;
+    color           : white;
+    font-size : 100%;
+    border-radius   : 4px;
+    position: relative;
+    top: 0px; left: -70px;
+}
 span.vccli {
     background-color: #3e3e7e;
     color           : white;
