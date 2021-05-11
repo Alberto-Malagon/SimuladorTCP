@@ -24,21 +24,63 @@
             <p>
                 <b>{{ 'contenido.ipclien' | translate }}: </b> {{ simular.ipclien }}
                 <b>{{ 'contenido.mssclien' | translate }}: </b> {{ simular.mssclien }}
-                <b>{{ 'contenido.datosclien' | translate }}: </b> {{ simular.datosclien }}
                 <b>{{ 'contenido.snclien' | translate }}: </b> {{ simular.snclien }}
-                <span *ngIf="simular.segperdclien"><b>{{ 'contenido.segperdclien' | translate }}: </b>
-                    {{ simular.segperdclien }} </span>
                 <b>{{ 'contenido.wclien' | translate }}: </b> {{ simular.wclien }}
-            </p>
+                <b>{{ 'contenido.wclien' | translate }}: </b> {{ simular.wclien }}
+            </p>    
+                <p>
+                    <b>{{ 'contenido.primerenvio' | translate }}: </b> 
+                    <b>{{ 'contenido.datosclien' | translate }}: </b> {{ simular.datosclien }}
+                    <span *ngIf="simular.segperdclien"><b>{{ 'contenido.segperdclien' | translate }}: </b>
+                    {{ simular.segperdclien }} 
+                    </span>
+                </p>
+                <p>
+                    <span *ngIf="simular.envios>=2">
+                    <b>{{ 'contenido.segundoenvio' | translate }}: </b>
+                    <b>{{ 'contenido.datosclien2' | translate }}: </b> {{ simular.datosclien2 }}
+                        <span *ngIf="simular.segperdclien2"><b>{{ 'contenido.segperdclien2' | translate }}: </b>
+                        {{ simular.segperdclien2 }} 
+                        </span>
+                    </span>
+                </p>
+                <p>
+                    <span *ngIf="simular.envios==3">
+                    <b>{{ 'contenido.tercerenvio' | translate }}: </b>
+                    <b>{{ 'contenido.datosclien3' | translate }}: </b> {{ simular.datosclien3 }}
+                        <span *ngIf="simular.segperdclien3"><b>{{ 'contenido.segperdclien3' | translate }}: </b>
+                        {{ simular.segperdclien3 }} 
+                        </span>
+                    </span>
+                </p>   
             <h5>{{ 'contenido.serv' | translate }}</h5>
             <p>
                 <b>{{ 'contenido.ipserv' | translate }}: </b> {{ simular.ipserv }}
                 <b>{{ 'contenido.mssserv' | translate }}: </b> {{ simular.mssserv }}
-                <b>{{ 'contenido.datosserv' | translate }}: </b> {{ simular.datosserv }}
                 <b>{{ 'contenido.snserv' | translate }}: </b> {{ simular.snserv }}
+                <b>{{ 'contenido.wserv' | translate }}: </b> {{ simular.wserv }}
+            </p>
+            <p>
+                <b>{{ 'contenido.primerenvio' | translate }}: </b>
+                <b>{{ 'contenido.datosserv' | translate }}: </b> {{ simular.datosserv }}
                 <span *ngIf="simular.segperdserv"><b>{{ 'contenido.segperdserv' | translate }}: </b>
                     {{ simular.segperdserv }} </span>
-                <b>{{ 'contenido.wserv' | translate }}: </b> {{ simular.wserv }}
+            </p>    
+            <p>
+                <span *ngIf="simular.envios>=2">
+                <b>{{ 'contenido.segundoenvio' | translate }}: </b>
+                <b>{{ 'contenido.datosserv' | translate }}: </b> {{ simular.datosserv2 }}
+                <span *ngIf="simular.segperdserv2"><b>{{ 'contenido.segperdserv' | translate }}: </b>
+                    {{ simular.segperdserv2 }} </span>
+                </span>
+            </p>
+            <p>
+                <span *ngIf="simular.envios==3">
+                <b>{{ 'contenido.tercerenvio' | translate }}: </b>
+                <b>{{ 'contenido.datosserv' | translate }}: </b> {{ simular.datosserv3 }}
+                <span *ngIf="simular.segperdserv3"><b>{{ 'contenido.segperdserv' | translate }}: </b>
+                    {{ simular.segperdserv3 }} </span>
+                </span>
             </p>
             <h5>{{ 'contenido.general' | translate }}</h5>
             <p>
@@ -51,7 +93,7 @@
                     *ngIf="simular.cierre == '2'">{{ 'contenido.serv' | translate }}</span>
             </p>
         </div>
-        <table class="simu-animation">
+        <table class="simu-animation" style="margin:0 auto;">
             <tr>
                 <th class="clien">
                     <fa-icon class="fas fa-2x-laptop" [icon]="faLaptop"
@@ -506,7 +548,6 @@
                 </span>
             </tr>
         </table>
-
     </span>
 </span>
 

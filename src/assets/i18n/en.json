@@ -181,6 +181,8 @@
     "politicaACK6": "If the segment that is received partially or totally completes the gap detected in the received data an ACK is sent immediately if the segment begins with the lower limit of the gap",
     "introducir": "The parameters you can fill in are",
     "obligatorio": "mandatory",
+    "envios": "Number of data transmissions",
+    "envios-text" : "Specifies the number of transmissions to be made by the client to the server and by the server to the client.",
     "ip": "IP (Internet Protocol)",
     "ip-link": "https://en.wikipedia.org/wiki/IPv4",
     "ip-text": "Identifier of the network interface of a device. IPv4 (32 bits) will be used, with format [0-255].",
@@ -214,6 +216,8 @@
     "cierre": "Connection closure",
     "cierre-link": "",
     "cierre-text": "Which device will initiate the end of connection.",
+    "pasoapaso": "Step-by-step simulation",
+    "pasoapaso-text": "Using the step-by-step simulation, you can select the step up to which you want to simulate",
     "cerrar": "Close"
   },
   "error": {

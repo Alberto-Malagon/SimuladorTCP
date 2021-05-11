@@ -177,6 +177,8 @@
     "politicaACK6": "Si el segmento que se recibe completa parcial o totalmente el vacío detectado en los datos recibidos se envía un ACK de inmediato si el segmento comienza con el límite inferior del hueco",
     "introducir": "Los parámetros que puede rellenar son",
     "obligatorio": "obligatorio",
+    "envios": "Número de envíos de datos",
+    "envios-text" : "Indica el número de envíos que realizará el cliente al servidor y el servidor al cliente.",
     "ip": "IP (Internet Protocol)",
     "ip-link": "https://es.wikipedia.org/wiki/IPv4",
     "ip-text": "Identificador de la interfaz red de un dispositivo. Se usará IPv4 (32 bits), con formato [0-255].[0-255].[0-255].[0-255].",
@@ -210,6 +212,8 @@
     "cierre": "Cierre de conexión",
     "cierre-link": "",
     "cierre-text": "Qué dispositivo iniciará el fin de conexión.",
+    "pasoapaso": "Simulacíon paso a paso",
+    "pasoapaso-text":"Usando la simulación paso a paso, se puede seleccionar el paso hasta el que se desea simular.",
     "cerrar": "Cerrar"
   },
   "error": {
@@ -221,3 +225,4 @@
     "tutexto": "Escriba a partir de aquí"
   }
 }
+
