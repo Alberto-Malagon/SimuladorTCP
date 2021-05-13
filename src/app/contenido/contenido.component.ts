@@ -777,9 +777,11 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
    * @description Muestra la parte final de la pagina
    * @author Alberto-Malagon
    */
-   /*scrollToBottom(): void {
-    window.scrollTo(0,200);
-  }*/
+   scrollToBottom(): void {
+    var objDiv = document.getElementById("contenido");
+    objDiv.scrollTop = objDiv.scrollHeight;
+   }
+   
   /* TEST */
   test(): void {
     this.test1();
@@ -789,7 +791,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
 
   test1(): void {
     //envios
-    this.simulacion.envios =1;
+    this.simulacion.envios =3;
     // cliente
     this.simulacion.ipclien = "127.0.0.1";
     this.simulacion.mssclien = 1920;
@@ -798,20 +800,20 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     this.simulacion.datosclien = 3610;
     this.simulacion.segperdclien = "0";
     this.simulacion.datosclien2 = 8500;
-    this.simulacion.segperdclien2 = "5";
-    this.simulacion.datosclien3 = 4200;
-    this.simulacion.segperdclien3 = "2";
+    this.simulacion.segperdclien2 = "0";
+    this.simulacion.datosclien3 = 1200;
+    this.simulacion.segperdclien3 = "4";
     // servidor
     this.simulacion.ipserv = "192.168.0.1";
     this.simulacion.mssserv = 200;
     this.simulacion.snserv = 160;
     this.simulacion.wserv = 7000;
     this.simulacion.datosserv = 1200;
-    this.simulacion.segperdserv = "4";
-    this.simulacion.datosserv2 = 6200;
-    this.simulacion.segperdserv2 = "3";
-    this.simulacion.datosserv3 = 8500;
-    this.simulacion.segperdserv3 = "6";
+    this.simulacion.segperdserv = "0";
+    this.simulacion.datosserv2 = 6000;
+    this.simulacion.segperdserv2 = "0";
+    this.simulacion.datosserv3 = 1200;
+    this.simulacion.segperdserv3 = "4";
     //General
     this.simulacion.timeout = 15;
     this.simulacion.umbral = 3;
