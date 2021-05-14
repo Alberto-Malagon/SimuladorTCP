@@ -800,6 +800,9 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         this.cli.vc++;
         this.cli.vcrep++;
         envAck++;
+        this.cli.vcrep = umbral;
+        this.cli.vc = umbral;
+        this.cli.flags = ec;
         reconocido=0;
         sin_ACK=0;
         ACK_dup=0;
@@ -1385,6 +1388,9 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
           this.serv.vc++;
           this.serv.vcrep++;
           envAck++;
+          this.serv.vcrep = umbral;
+          this.serv.vc = umbral;
+          this.serv.flags = ec;
           reconocido = 0;
           ACK_dup=0;
           sin_ACK=0;
@@ -2011,6 +2017,9 @@ if (pqtPerdido==1)
     this.cli.vcrep++;
     envAck++;
     reconocido=0;
+    this.cli.vcrep = umbral;
+    this.cli.vc = umbral;
+    this.cli.flags = ec;
     sin_ACK=0;
     ACK_dup=0;
     pqtPerdido=0;
@@ -2232,7 +2241,7 @@ if ((this.simular.segperdserv2 != null && timeout==0 && pqtPerdido==1 )|| (this.
      umbral = Math.round((this.serv.vc/2)*100)/100;
      this.serv.vc=umbral+3;
      this.serv.vcrep= this.serv.vc;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep, emisor:2, pqt_rtx:1, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep, emisor:2, pqt_rtx:1, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
      this.serv.vc++;
      this.serv.vcrep++;
      envAck++;
@@ -2248,7 +2257,7 @@ if ((this.simular.segperdserv2 != null && timeout==0 && pqtPerdido==1 )|| (this.
      this.serv.vcrep= this.serv.vc;
      this.cli.ult_sn = this.cli.sn;
      this.cli.ult_an = this.cli.an;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:1, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:1, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
      this.serv.vc++;
      this.serv.vcrep++;
      envAck++;
@@ -2596,6 +2605,9 @@ if (pqtPerdido==1)
     this.serv.vcrep++;
     envAck++;
     reconocido = 0;
+    this.serv.vcrep = umbral;
+    this.serv.vc = umbral;
+    this.serv.flags = ec;
     ACK_dup=0;
     sin_ACK=0;
     pqtPerdido = 0;
@@ -3221,6 +3233,9 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
         this.cli.vc++;
         this.cli.vcrep++;
         envAck++;
+        this.cli.vcrep = umbral;
+        this.cli.vc = umbral;
+        this.cli.flags = ec;
         reconocido=0;
         sin_ACK=0;
         ACK_dup=0;
@@ -3802,10 +3817,13 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
         umbral = Math.round((this.serv.vc/2)*100)/100;
         this.serv.vc=umbral+3;
         this.serv.vcrep= this.serv.vc;
-        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep, emisor:2, pqt_rtx:1, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep, emisor:2, pqt_rtx:1, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
         this.serv.vc++;
         this.serv.vcrep++;
         envAck++;
+        this.serv.vcrep = umbral;
+        this.serv.vc = umbral;
+        this.serv.flags = ec;
         reconocido = 0;
         ACK_dup=0;
         sin_ACK=0;
