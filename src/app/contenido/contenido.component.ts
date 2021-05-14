@@ -791,14 +791,14 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
 
   test1(): void {
     //envios
-    this.simulacion.envios =3;
+    this.simulacion.envios =1;
     // cliente
     this.simulacion.ipclien = "127.0.0.1";
     this.simulacion.mssclien = 1920;
     this.simulacion.snclien = 490;
     this.simulacion.wclien = 1000;
     this.simulacion.datosclien = 3610;
-    this.simulacion.segperdclien = "0";
+    this.simulacion.segperdclien = "4";
     this.simulacion.datosclien2 = 8500;
     this.simulacion.segperdclien2 = "0";
     this.simulacion.datosclien3 = 1200;
@@ -808,8 +808,8 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     this.simulacion.mssserv = 200;
     this.simulacion.snserv = 160;
     this.simulacion.wserv = 7000;
-    this.simulacion.datosserv = 1200;
-    this.simulacion.segperdserv = "0";
+    this.simulacion.datosserv = 7600;
+    this.simulacion.segperdserv = "4";
     this.simulacion.datosserv2 = 6000;
     this.simulacion.segperdserv2 = "0";
     this.simulacion.datosserv3 = 1200;
