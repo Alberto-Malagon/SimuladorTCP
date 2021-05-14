@@ -691,7 +691,7 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
           this.cli.vcrep=1;
           this.cli.vc=1;
           //this.cli.flags = nullflag;
-          //this.cli.ec = false;
+          this.cli.ec = false;
           this.comprobarEC(this.cli, umbral);
           if (this.cli.ec==true) this.cli.flags=ecal;
           else this.cli.flags = al;
@@ -995,7 +995,7 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         {
           this.serv.vcrep+=1;
           this.serv.vc+=1;
-          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0 });
+          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0 });
           envAck++;
           reconocido = 0;
           ACK_inm = 1;
@@ -1274,7 +1274,7 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
           this.serv.vcrep=1;
           this.serv.vc=1;
           //this.cli.flags = nullflag;
-          //this.cli.ec = false;
+          this.serv.ec = false;
           this.comprobarEC(this.serv, umbral);
           if (this.serv.ec==true) this.serv.flags=ecal;
           else this.serv.flags = al;
@@ -1901,7 +1901,7 @@ if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this
      this.cli.vcrep=1;
      this.cli.vc=1;
      //this.cli.flags = nullflag;
-     //this.cli.ec = false;
+     this.cli.ec = false;
      this.comprobarEC(this.cli, umbral);
      if (this.cli.ec==true) this.cli.flags=ecal;
      else this.cli.flags = al;
@@ -2259,7 +2259,6 @@ if ((this.simular.segperdserv2 != null && timeout==0 && pqtPerdido==1 )|| (this.
  }
 }
  //ACK INMEDIATO
- //ACK INMEDIATO
  else if (ACK_inm==1)
  {
    if (this.serv.vcrep <= sin_ACK)
@@ -2485,7 +2484,7 @@ if ((this.simular.segperdserv2 != null && timeout==0 && pqtPerdido==1 )|| (this.
      this.serv.vcrep=1;
      this.serv.vc=1;
      //this.cli.flags = nullflag;
-     //this.cli.ec = false;
+     this.serv.ec = false;
      this.comprobarEC(this.serv, umbral);
      if (this.serv.ec==true) this.serv.flags=ecal;
      else this.serv.flags = al;
@@ -2887,7 +2886,6 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
      }
     }
      //ACK inmediato
-     //ACK inmediato
      else if (ACK_inm==1)
      {
        if (this.cli.vcrep <= sin_ACK)
@@ -3114,7 +3112,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
          this.cli.vcrep=1;
          this.cli.vc=1;
          //this.cli.flags = nullflag;
-         //this.cli.ec = false;
+         this.cli.ec = false;
          this.comprobarEC(this.cli, umbral);
          if (this.cli.ec==true) this.cli.flags=ecal;
          else this.cli.flags = al;
@@ -3697,7 +3695,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
          this.serv.vcrep=1;
          this.serv.vc=1;
          //this.cli.flags = nullflag;
-         //this.cli.ec = false;
+         this.serv.ec = false;
          this.comprobarEC(this.serv, umbral);
          if (this.serv.ec==true) this.serv.flags=ecal;
          else this.serv.flags = al;
@@ -4418,7 +4416,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
           this.cli.vcrep=1;
           this.cli.vc=1;
           //this.cli.flags = nullflag;
-          //this.cli.ec = false;
+          this.cli.ec = false;
           this.comprobarEC(this.cli, umbral);
           if (this.cli.ec==true) this.cli.flags=ecal;
           else this.cli.flags = al;
@@ -4954,7 +4952,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
           this.serv.vcrep=1;
           this.serv.vc=1;
           //this.cli.flags = nullflag;
-          //this.cli.ec = false;
+          this.serv.ec = false;
           this.comprobarEC(this.serv, umbral);
           if (this.serv.ec==true) this.serv.flags=ecal;
           else this.serv.flags = al;
@@ -5547,7 +5545,7 @@ if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this
      this.cli.vcrep=1;
      this.cli.vc=1;
      //this.cli.flags = nullflag;
-     //this.cli.ec = false;
+     this.cli.ec = false;
      this.comprobarEC(this.cli, umbral);
      if (this.cli.ec==true) this.cli.flags=ecal;
      else this.cli.flags = al;
@@ -6084,7 +6082,7 @@ if ((this.simular.segperdserv2 != null && timeout==0 && pqtPerdido==1 )|| (this.
      this.serv.vcrep=1;
      this.serv.vc=1;
      //this.cli.flags = nullflag;
-     //this.cli.ec = false;
+     this.serv.ec = false;
      this.comprobarEC(this.serv, umbral);
      if (this.serv.ec==true) this.serv.flags=ecal;
      else this.serv.flags = al;
@@ -6678,7 +6676,7 @@ if ((this.simular.segperdclien3 != null && timeout==0 && pqtPerdido==1) || (this
      this.cli.vcrep=1;
      this.cli.vc=1;
      //this.cli.flags = nullflag;
-     //this.cli.ec = false;
+     this.cli.ec = false;
      this.comprobarEC(this.cli, umbral);
      if (this.cli.ec==true) this.cli.flags=ecal;
      else this.cli.flags = al;
@@ -7215,7 +7213,7 @@ if ((this.simular.segperdserv3 != null && timeout==0 && pqtPerdido==1 )|| (this.
      this.serv.vcrep=1;
      this.serv.vc=1;
      //this.cli.flags = nullflag;
-     //this.cli.ec = false;
+     this.serv.ec = false;
      this.comprobarEC(this.serv, umbral);
      if (this.serv.ec==true) this.serv.flags=ecal;
      else this.serv.flags = al;
