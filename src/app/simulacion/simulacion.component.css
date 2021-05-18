@@ -24,13 +24,12 @@
   
   background: #F9EE03;
   color: #000;
-  font-size: 30px;
+  font-size: 25px;
   padding: 5px;
   width: 30px;
   height: 30px;
   text-align: center;
-  line-height: 35px;
-  border-radius: 50%;
+  border-radius: 100%;
 } 
 
 .fa-clock

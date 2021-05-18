@@ -362,6 +362,8 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     }
     else 
       segperdserv="";
+    if(this.simulacion.envios>=2)
+    {
     // Expresion regular para comprobar si segperd son numeros separados por comas (SEGUNDO ENVÍO)
     var segperdRegex2 = new RegExp('[0-9]+(,[0-9]+)+/g');
     var segperdclien2: string = this.simulacion.segperdclien2;
@@ -442,6 +444,9 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
       }
       else 
         segperdserv2="";
+    }
+    if(this.simulacion.envios==3)
+    {
     // Expresion regular para comprobar si segperd son numeros separados por comas (TERCER ENVÍO)
     var segperdRegex3 = new RegExp('[0-9]+(,[0-9]+)+/g');
     var segperdclien3: string = this.simulacion.segperdclien3;
@@ -522,7 +527,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
       }
       else 
         segperdserv3="";
-
+    }
     // ----DATOS NUMERICOS----
     // Se comprueba que los valores introducidos no son mayores a 99999999
     if (this.simulacion.mssclien > 99999999) this.simulacion.mssclien = 99999999;
