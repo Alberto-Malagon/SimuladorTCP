@@ -231,7 +231,8 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
     this.serv.ec = false;
     // General
     let timeout = this.simular.timeout;
-    let umbral: number = this.simular.umbral;
+    let umbralcli: number = this.simular.umbral;
+    let umbralserv: number = this.simular.umbral;
     let algort: string = this.simular.algort;
     let cierre: string = this.simular.cierre;
     /*-----VARIABLES-----*/
@@ -255,7 +256,7 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
     let modPqtServ: number = this.serv.data % mssServ;
     let envMaxServ: number = Math.floor(this.cli.w / mssServ);
 
-    //Variables auxialiares
+    //Variables auxiliares
     let pqtPerdido: number =0; //0 Si no hay pqt perdido o se ha retransmitido  1 Si hay paquete perdido sin retransmitir
     let envAck: number = 0; // Cada dos paquetes enviados por el cliente, el servidor devuelve un ACK
     let x: number=0;
@@ -296,17 +297,17 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
   }
     // ----- Conexion -----
     // Enviamos los segmentos de SYN; SYN, ACK; y ACK
-    if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: 0, dcli: 0, wcli: this.cli.w, msscli: this.simular.mssclien, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0 });
+    if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: 0, dcli: 0, wcli: this.cli.w, msscli: this.simular.mssclien, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0 });
     this.serv.ult_an = this.serv.an;
     this.serv.an = this.cli.sn + 1;
-    if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: this.simular.mssserv, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0 , Num_ACKdup:0,NumEnvio:0});
+    if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: this.simular.mssserv, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0 , Num_ACKdup:0,NumEnvio:0});
     this.serv.flags = nullflag;
     this.cli.ult_sn = this.cli.sn;
     this.cli.sn += 1;
     this.cli.ult_an = this.cli.an;
     this.cli.an = this.serv.sn + 1;
     this.cli.flags = ack;
-    if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0 });
+    if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0 });
     this.cli.flags = nullflag;
 
 // ----------------------------- LADO CLIENTE -----------------------------------------   
@@ -325,7 +326,7 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
       sn_perd = this.cli.sn;
       an_perd = this.cli.an;
       d_perd = denv;
-      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1 , pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:1});
+      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1 , pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:1});
       contadorPqtEnv++;
       timeout= this.simular.timeout;
       reconocido=1;
@@ -335,7 +336,7 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
     else 
     {
     // El cliente envía el primer paquete
-    if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1 , pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:1});
+    if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1 , pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:1});
     numPqtClienEnv++;
     contadorPqtEnv++;
     }
@@ -350,12 +351,11 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
           {
           this.cli.vcrep+=1;
           this.cli.vc+=1;
-          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc:0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc:0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
           reconocido=0;
           ACK_inm = 1;
           pqtPerdido=0;
-          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
-
+          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
         }  
         }
         else
@@ -363,19 +363,19 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
           timeout--;
           if (timeout==0)
           {
-            umbral = this.cli.vcrep/2;
-            if (umbral==0)umbral=1;
+            umbralcli = this.cli.vcrep/2;
+            if (umbralcli==0)umbralcli=1;
             this.cli.vcrep=1;
             this.cli.vc=1;
             //this.cli.ec = false;
             //this.cli.flags = nullflag;
-            this.comprobarEC(this.cli, umbral);
+            this.comprobarEC(this.cli, umbralcli);
             if (this.cli.ec==true) this.cli.flags=ecal;
             else this.cli.flags = al;
-            if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+            if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
           }
           else
-          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
         }
       }
     }
@@ -384,7 +384,7 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
     if (numPqtClien != 0 && segperdNumclien[0]!=1) // Si hay mas de un paquete a enviar
     {
       // El servidor espera 1 tick por si recibe otro paquete
-      if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+      if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
 
       // El servidor manda el ACK del primer paquete
       this.serv.flags = ack;
@@ -393,9 +393,9 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
       this.serv.ult_an = this.serv.an;
       this.serv.an = this.cli.sn + denv;
       this.incrementarVC(this.cli, this.serv, mssClien);
-      this.comprobarEC(this.cli, umbral);
+      this.comprobarEC(this.cli, umbralcli);
       //ACK
-      if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2 , pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+      if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2 , pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
       this.cli.ult_an = this.serv.an;
     }
 
@@ -412,7 +412,7 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         {
         this.cli.vcrep+=1;
         this.cli.vc+=1;
-        if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+        if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
         envAck++;
         reconocido=0;
         ACK_inm = 1;
@@ -424,7 +424,7 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         this.cli.vc+=1;
         this.serv.ult_sn = this.serv.sn;
         this.serv.ult_an = this.serv.an;
-        if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+        if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
         envAck++;
         reconocido=0;
         ACK_inm = 1;
@@ -435,10 +435,10 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
       {
         if (envAck < 2 && denv !=0 )
         {
-        umbral = Math.round ((this.cli.vc / 2)*100)/100;
-        this.cli.vc=umbral + 3;
+        umbralcli = Math.round ((this.cli.vc / 2)*100)/100;
+        this.cli.vc=umbralcli + 3;
         this.cli.vcrep=this.cli.vc;
-        if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+        if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
         this.cli.vc++;
         this.cli.vcrep++;
         envAck++;
@@ -448,12 +448,12 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         }  
         else if (denv !=0) //FLECHAS CRUZADAS
         {
-        umbral = Math.round((this.cli.vc / 2)*100)/100;
-        this.cli.vc=umbral + 3;
+        umbralcli = Math.round((this.cli.vc / 2)*100)/100;
+        this.cli.vc=umbralcli + 3;
         this.cli.vcrep=this.cli.vc;
         this.serv.ult_sn = this.serv.sn;
         this.serv.ult_an = this.serv.an;
-        if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+        if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
         this.cli.vc++;
         this.cli.vcrep++;
         envAck++;
@@ -474,15 +474,15 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
           this.serv.an = this.cli.ult_sn + (inc == 0 ? denv : inc);
           this.serv.flags = ack;
           this.incrementarVC(this.cli, this.serv, mssClien);
-          this.comprobarEC(this.cli, umbral);
+          this.comprobarEC(this.cli, umbralcli);
           this.serv.ult_an = this.serv.an;
           if (timeout !=0 && ACK_dup==3)
           {
-            this.cli.vcrep = umbral;
-            this.cli.vc = umbral;
+            this.cli.vcrep = umbralcli;
+            this.cli.vc = umbralcli;
             this.cli.flags = ec;
           }
-          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0 , Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0 , Num_ACKdup:0, NumEnvio:0});
           numPqtClienEnv--; // HACE QUE EL SEGMENTO PERDIDO SE REPITA DOS VECES!! Solucionado con contadorPqtEnv
           envAck = 0;
           flag_ACKdup = 0;
@@ -502,15 +502,15 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
           this.serv.flags = ack;
           this.cli.sn += ultDataEnv;
           this.incrementarVC(this.cli, this.serv, mssClien);
-          this.comprobarEC(this.cli, umbral);
+          this.comprobarEC(this.cli, umbralcli);
           this.serv.ult_an = this.serv.an;
           if (timeout !=0 && ACK_dup==3)
           {
-            this.cli.vcrep = umbral;
-            this.cli.vc = umbral;
+            this.cli.vcrep = umbralcli;
+            this.cli.vc = umbralcli;
             this.cli.flags = ec;
           }
-          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0 , Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0 , Num_ACKdup:0, NumEnvio:0});
           envAck = 1;
           flag_ACKdup = 0;
           ACK_inm=0;
@@ -533,23 +533,23 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
           let inc: number = this.cli.ult_sn - this.serv.ult_an;
           this.serv.an = this.cli.ult_sn + (inc == 0 ? denv : inc);
           this.incrementarVC(this.cli, this.serv, mssClien);
-          this.comprobarEC(this.cli, umbral);
+          this.comprobarEC(this.cli, umbralcli);
           if(timeout==0 && pqtPerdido==1)
           {
-            umbral = Math.round((this.cli.vcrep/2)*100)/100; 
-            if (umbral==0)umbral=1;
+            umbralcli = Math.round((this.cli.vcrep/2)*100)/100; 
+            if (umbralcli==0)umbralcli=1;
             this.cli.vcrep=1;
             this.cli.vc=1;
             //this.cli.flags = nullflag;
             //this.cli.ec = false;
-            this.comprobarEC(this.cli, umbral);
+            this.comprobarEC(this.cli, umbralcli);
             if (this.cli.ec==true) this.cli.flags=ecal;
             else this.cli.flags = al;
-            if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:0 , Num_ACKdup:0, NumEnvio:0});
+            if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbralcli, envio:0 , Num_ACKdup:0, NumEnvio:0});
           }
           else
           {
-          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0 , Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0 , Num_ACKdup:0, NumEnvio:0});
           }
           this.cli.ult_sn = this.cli.sn;
           this.cli.ult_an = this.cli.an;
@@ -573,20 +573,20 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
           }
           if(timeout==0 && pqtPerdido==1)
           {
-            umbral = Math.round((this.cli.vcrep/2)*100)/100;
-            if (umbral==0)umbral=1;
+            umbralcli = Math.round((this.cli.vcrep/2)*100)/100;
+            if (umbralcli==0)umbralcli=1;
             this.cli.vcrep=1;
             this.cli.vc=1;
             //this.cli.flags = nullflag;
             //this.cli.ec = false;
-            this.comprobarEC(this.cli, umbral);
+            this.comprobarEC(this.cli, umbralcli);
             if (this.cli.ec==true) this.cli.flags=ecal;
             else this.cli.flags = al;
-            if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
+            if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0 , fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
           }
           else
           {
-            if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
+            if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
           }
             numPqtClienEnv--; // HACE QUE EL SEGMENTO PERDIDO SE REPITA DOS VECES!! Solucionado con contadorPqtEnv
           envAck = 0; 
@@ -606,12 +606,12 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         this.cli.ult_sn = this.cli.sn;
         this.cli.sn += ultDataEnv;
         this.serv.flags= nullflag;
-        this.comprobarEC(this.cli, umbral);
+        this.comprobarEC(this.cli, umbralcli);
         sn_perd = this.cli.sn;
         an_perd = this.cli.an;
         d_perd = denv;
         this.serv.an += ultDataEnv;
-        if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+        if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
         ultDataEnv = denv;
         contadorPqtEnv++;
         numPqtClienEnv--;
@@ -629,12 +629,12 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         this.serv.ult_an = this.serv.an;
         this.serv.an = this.cli.ult_sn + (this.cli.ult_sn - this.serv.ult_an);
         this.incrementarVC(this.cli, this.serv, mssClien);
-        this.comprobarEC(this.cli, umbral);
+        this.comprobarEC(this.cli, umbralcli);
         sn_perd = this.cli.sn;
         an_perd = this.cli.an;
         d_perd = denv;
         this.serv.an += ultDataEnv;
-        if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0 , Num_ACKdup:0, NumEnvio:0});
+        if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0 , Num_ACKdup:0, NumEnvio:0});
         contadorPqtEnv++;
         numPqtClienEnv--;
         envAck = 0;
@@ -651,23 +651,23 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         this.serv.flags= nullflag;
         this.cli.ult_sn = this.cli.sn;
         this.cli.sn += ultDataEnv;
-        this.comprobarEC(this.cli, umbral);
+        this.comprobarEC(this.cli, umbralcli);
         if(timeout==0 && pqtPerdido==1)
         { 
-          umbral = Math.round((this.cli.vcrep/2)*100)/100; 
-          if (umbral==0)umbral=1;
+          umbralcli = Math.round((this.cli.vcrep/2)*100)/100; 
+          if (umbralcli==0)umbralcli=1;
           this.cli.vcrep=1;
           this.cli.vc=1;
           //this.cli.flags = nullflag;
           //this.cli.ec = false;
-          this.comprobarEC(this.cli, umbral);
+          this.comprobarEC(this.cli, umbralcli);
           if (this.cli.ec==true) this.cli.flags=ecal;
           else this.cli.flags = al;
-          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
         }
         else
         {
-          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 , emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 , emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
           if(pqtPerdido==1) 
           {
             flag_ACKdup=1;
@@ -686,20 +686,20 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         numPqtClienEnv--;
         if(timeout==0 && pqtPerdido==1)
         { 
-          umbral = this.cli.vcrep/2; 
-          if (umbral==0)umbral=1;
+          umbralcli = this.cli.vcrep/2; 
+          if (umbralcli==0)umbralcli=1;
           this.cli.vcrep=1;
           this.cli.vc=1;
           //this.cli.flags = nullflag;
           this.cli.ec = false;
-          this.comprobarEC(this.cli, umbral);
+          this.comprobarEC(this.cli, umbralcli);
           if (this.cli.ec==true) this.cli.flags=ecal;
           else this.cli.flags = al;
-          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep ,emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep ,emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
         }
         else
         {
-          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
         }
       }
       //ACK Y DATOS 
@@ -714,23 +714,23 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
           this.serv.ult_an = this.serv.an;
           this.serv.an = this.cli.ult_sn + (this.cli.ult_sn - this.serv.ult_an);
           this.incrementarVC(this.cli, this.serv, mssServ);
-          this.comprobarEC(this.cli, umbral);
+          this.comprobarEC(this.cli, umbralcli);
           if(timeout==0 && pqtPerdido==1)
           { 
-            umbral = Math.round((this.cli.vcrep/2)*100)/100;
-            if (umbral==0)umbral=1;
+            umbralcli = Math.round((this.cli.vcrep/2)*100)/100;
+            if (umbralcli==0)umbralcli=1;
             this.cli.vcrep=1;
             this.cli.vc=1;
             //this.cli.flags = nullflag;
             //this.cli.ec = false;
-            this.comprobarEC(this.cli, umbral);
+            this.comprobarEC(this.cli, umbralcli);
             if (this.cli.ec==true) this.cli.flags=ecal;
             else this.cli.flags = al;
-            if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:0, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+            if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:0, pqt_rtx:0 , fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
           }
           else
           {
-            if ( nseg+1<=pasoapaso|| pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:0, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+            if ( nseg+1<=pasoapaso|| pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:0, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
           }
             ultDataEnv = denv;
           this.cli.ult_sn = this.cli.sn;
@@ -756,20 +756,20 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
           }
           if(timeout==0 && pqtPerdido==1)
           { 
-            umbral = Math.round((this.cli.vcrep/2)*100)/100; 
-            if (umbral==0)umbral=1;
+            umbralcli = Math.round((this.cli.vcrep/2)*100)/100; 
+            if (umbralcli==0)umbralcli=1;
             this.cli.vcrep=1;
             this.cli.vc=1;
             //this.cli.flags = nullflag;
             //this.cli.ec = false;
-            this.comprobarEC(this.cli, umbral);
+            this.comprobarEC(this.cli, umbralcli);
             if (this.cli.ec==true) this.cli.flags=ecal;
             else this.cli.flags = al; 
-            if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:0, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
+            if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:0, pqt_rtx:0 , fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
           }
           else
           {
-            if (nseg+1<=pasoapaso|| pasoapaso==0)  this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:0, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
+            if (nseg+1<=pasoapaso|| pasoapaso==0)  this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:0, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
           }
             ultDataEnv = denv;
           this.cli.ult_sn = this.cli.sn;
@@ -793,15 +793,15 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
       {
       if (ACK_dup==3)
       {
-        umbral = Math.round ((this.cli.vc / 2)*100)/100;
-        this.cli.vc=umbral + 3;
+        umbralcli = Math.round ((this.cli.vc / 2)*100)/100;
+        this.cli.vc=umbralcli + 3;
         this.cli.vcrep=this.cli.vc;
-        if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+        if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
         this.cli.vc++;
         this.cli.vcrep++;
         envAck++;
-        this.cli.vcrep = umbral;
-        this.cli.vc = umbral;
+        this.cli.vcrep = umbralcli;
+        this.cli.vc = umbralcli;
         this.cli.flags = ec;
         reconocido=0;
         sin_ACK=0;
@@ -823,7 +823,7 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
           this.cli.flags = rr;
           this.cli.rr = true;
         }
-        if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
+        if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
         envAck = 0; 
         flag_ACKdup = 0;
       }
@@ -833,10 +833,10 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         {
         //this.cli.vcrep+=1;
         //this.cli.vc+=1;
-        this.comprobarEC(this.cli, umbral);
+        this.comprobarEC(this.cli, umbralcli);
         if (this.cli.ec==true) this.cli.flags=ecal;
         else this.cli.flags = al;
-        if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+        if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
         reconocido=0;
         ACK_inm = 1;
         pqtPerdido=0;
@@ -847,7 +847,7 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         //this.cli.vc+=1;
         this.serv.ult_sn = this.serv.sn;
         this.serv.ult_an = this.serv.an;
-        if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+        if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
         envAck++;
         reconocido=0;
         ACK_inm = 1;
@@ -859,21 +859,21 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         timeout--;
         if (timeout==0)
         {
-          umbral = this.cli.vcrep/2;
-          if (umbral==0)umbral=1;
+          umbralcli = this.cli.vcrep/2;
+          if (umbralcli==0)umbralcli=1;
           this.cli.vcrep=1;
           this.cli.vc=1;
           //this.cli.ec = false;
           //this.cli.flags = nullflag;
-          this.comprobarEC(this.cli, umbral);
+          this.comprobarEC(this.cli, umbralcli);
           if (this.cli.ec==true) this.cli.flags=ecal;
           else this.cli.flags = al;
-          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
           
         }
         else
         {
-          if (nseg+1<=pasoapaso|| pasoapaso==0)  this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso|| pasoapaso==0)  this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
         }
         }
       }
@@ -902,7 +902,7 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         denv = mssServ;
       this.serv.ult_sn = this.serv.sn;
       this.incrementarVC(this.cli, this.serv, mssClien);
-      this.comprobarEC(this.cli, umbral);
+      this.comprobarEC(this.cli, umbralserv);
       //Si el primer paquete se pierde
       for (;numPqtServEnv<1;)
       {
@@ -914,7 +914,7 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
           sn_perd = this.serv.sn;
           an_perd = this.serv.an;
           d_perd = denv;
-          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
           contadorPqtEnv++;
           reconocido = 1;
           pqtPerdido = 1;
@@ -922,7 +922,7 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         }
         else if (pqtPerdido != 1)//PRIMER PAQUETE
         {
-          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
           this.cli.ult_sn = this.cli.sn;
           this.cli.ult_an = this.cli.an;
           this.cli.an++;
@@ -931,7 +931,7 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
           contadorPqtEnv++;
           numPqtServEnv++;
           ACK_inm=0;
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
         }
         if (pqtPerdido == 1 && timeout != 0)
         {
@@ -940,25 +940,25 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
           {
             this.serv.vcrep=1;
             this.serv.vc=1;
-            this.comprobarEC(this.serv, umbral);
+            this.comprobarEC(this.serv, umbralserv);
             if (this.serv.ec==true) this.serv.flags=ecal;
             else this.serv.flags = al;
-            if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep,emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+            if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep,emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
           }
             else
             {
-              if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+              if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
             }
           }
         if (pqtPerdido == 1 && timeout ==0) //REENVÍO PRIMER PAQUETE SERVIDOR --> CLIENTE
         {
           this.serv.flags=nullflag;
-          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: ack, snserv: sn_perd, anserv: an_perd, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: ack, snserv: sn_perd, anserv: an_perd, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
           contadorPqtEnv++;
           numPqtServEnv++;
           pqtPerdido=0;
           // El cliente espera 1 tick por si recibe otro paquete
-          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
         }
     
     // >>>>> Envio de datos servidor->cliente <<<<<
@@ -971,8 +971,8 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
       this.cli.ult_an = this.cli.an;
       this.cli.an = this.serv.sn + denv;
       this.incrementarVC(this.serv, this.cli, mssServ);
-      this.comprobarEC(this.serv, umbral);
-      if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+      this.comprobarEC(this.serv, umbralserv);
+      if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
       this.serv.ult_an = this.serv.an;
       contadorPqtEnv++;
       reconocido = 0;
@@ -998,7 +998,7 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         {
           this.serv.vcrep+=1;
           this.serv.vc+=1;
-          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0 });
+          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0 });
           envAck++;
           reconocido = 0;
           ACK_inm = 1;
@@ -1010,7 +1010,7 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
           this.serv.vc+=1;
           this.cli.ult_sn = this.cli.sn;
           this.cli.ult_an = this.cli.an;
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
           envAck++;
           reconocido = 0;
           ACK_inm = 1;
@@ -1022,10 +1022,10 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         if (envAck < 2)
         {
           this.serv.ec = false;
-          umbral = Math.round((this.serv.vc/2)*100)/100;
-          this.serv.vc=umbral+3;
+          umbralserv = Math.round((this.serv.vc/2)*100)/100;
+          this.serv.vc=umbralserv+3;
           this.serv.vcrep= this.serv.vc;
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep, emisor:2, pqt_rtx:1, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep, emisor:2, pqt_rtx:1, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
           this.serv.vc++;
           this.serv.vcrep++;
           envAck++;
@@ -1036,12 +1036,12 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         else    //Flechas Cruzadas
         {
           this.serv.ec=false;
-          umbral = Math.round((this.serv.vc/2)*100)/100;
-          this.serv.vc=umbral+3;
+          umbralserv = Math.round((this.serv.vc/2)*100)/100;
+          this.serv.vc=umbralserv+3;
           this.serv.vcrep= this.serv.vc;
           this.cli.ult_sn = this.cli.sn;
           this.cli.ult_an = this.cli.an;
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:1, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:1, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
           this.serv.vc++;
           this.serv.vcrep++;
           envAck++;
@@ -1062,15 +1062,15 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
           let inc: number = Math.abs(this.serv.ult_sn - this.cli.ult_an);
           this.cli.an = this.serv.ult_sn + (inc == 0 ? denv : inc);
           this.incrementarVC(this.serv, this.cli, mssServ);
-          this.comprobarEC(this.serv, umbral);
+          this.comprobarEC(this.serv, umbralserv);
           this.cli.ult_an = this.cli.an;
           if (timeout !=0 && ACK_dup==3)
           {
-            this.serv.vcrep = umbral;
-            this.serv.vc = umbral;
+            this.serv.vcrep = umbralserv;
+            this.serv.vc = umbralserv;
             this.serv.flags = ec;
           }
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0 });
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0 });
           numPqtServEnv--;
           envAck = 0;
           ACK_inm = 0;
@@ -1090,15 +1090,15 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
           this.cli.an = this.serv.ult_sn + (inc == 0 ? denv : inc);
           this.serv.sn += ultDataEnv;
           this.incrementarVC(this.serv, this.cli, mssServ);
-          this.comprobarEC(this.serv, umbral);
+          this.comprobarEC(this.serv, umbralserv);
           this.cli.ult_an = this.cli.an;
           if (timeout !=0 && ACK_dup==3)
           {
-            this.serv.vcrep = umbral;
-            this.serv.vc = umbral;
+            this.serv.vcrep = umbralserv;
+            this.serv.vc = umbralserv;
             this.serv.flags = ec;
           }
-          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0 });
+          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0 });
           envAck = 1;
           ACK_inm = 0;
           ACK_dup = 0;
@@ -1121,23 +1121,23 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
           let inc: number = this.serv.ult_sn - this.cli.ult_an;
           this.cli.an = this.serv.ult_sn + (inc == 0 ? denv : inc);
           this.incrementarVC(this.serv, this.cli, mssServ);
-          this.comprobarEC(this.serv, umbral);
+          this.comprobarEC(this.serv, umbralserv);
           if(timeout==0 && pqtPerdido==1)
           {
-            umbral = this.serv.vcrep/2;
-            if (umbral==0)umbral=1;
+            umbralserv = this.serv.vcrep/2;
+            if (umbralserv==0)umbralserv=1;
             this.serv.vcrep = 1;
             this.serv.vc = 1;
             //this.serv.ec = false;
             //this.serv.flags = nullflag;
-            this.comprobarEC(this.serv, umbral);
+            this.comprobarEC(this.serv, umbralserv);
             if (this.serv.ec==true) this.serv.flags=ecal;
             else this.serv.flags = al;
-            if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+            if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
           }
           else 
           {
-            if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+            if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
           }
             this.serv.ult_sn = this.serv.sn;
           this.serv.ult_an = this.serv.an;
@@ -1161,20 +1161,20 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
           }
           if(timeout==0 && pqtPerdido==1)
           {
-            umbral = Math.round((this.serv.vcrep/2)*100)/100;
-            if (umbral==0)umbral=1;
+            umbralserv = Math.round((this.serv.vcrep/2)*100)/100;
+            if (umbralserv==0)umbralserv=1;
             this.serv.vcrep = 1;
             this.serv.vc = 1;
             //this.serv.ec = false;
             //this.serv.flags = nullflag;
-            this.comprobarEC(this.serv, umbral);
+            this.comprobarEC(this.serv, umbralserv);
             if (this.serv.ec==true) this.serv.flags=ecal;
             else this.serv.flags = al;
-            if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1, Num_ACKdup:ACK_dup, NumEnvio:0 });
+            if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1, Num_ACKdup:ACK_dup, NumEnvio:0 });
           }
           else 
           {
-            if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:ACK_dup , NumEnvio:0});
+            if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:ACK_dup , NumEnvio:0});
           }
           numPqtServEnv--;
           envAck = 0;
@@ -1191,12 +1191,12 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         {
           this.serv.ult_sn = this.serv.sn;
           this.serv.sn += ultDataEnv;
-          this.comprobarEC(this.serv, umbral);
+          this.comprobarEC(this.serv, umbralserv);
           sn_perd = this.serv.sn;
           an_perd = this.serv.an;
           d_perd = denv;
           this.cli.an += ultDataEnv;
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
           this.serv.ult_sn = this.serv.sn;
           ultDataEnv = denv;
           contadorPqtEnv++;
@@ -1215,12 +1215,12 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
           this.cli.ult_an = this.cli.an;
           this.cli.an = this.serv.ult_sn + (this.serv.ult_sn - this.cli.ult_an);
           this.incrementarVC(this.serv, this.cli, mssServ);
-          this.comprobarEC(this.serv, umbral);
+          this.comprobarEC(this.serv, umbralserv);
           sn_perd = this.serv.sn;
           an_perd = this.serv.an;
           d_perd = denv;
           this.cli.an += ultDataEnv;
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -20, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -20, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.serv.sn, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
           contadorPqtEnv++;
           numPqtServEnv--;
           timeout = this.simular.timeout;
@@ -1237,23 +1237,23 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         this.cli.flags = nullflag;
         this.serv.ult_sn = this.serv.sn;
         this.serv.sn += ultDataEnv;
-        this.comprobarEC(this.serv, umbral);
+        this.comprobarEC(this.serv, umbralserv);
         if(timeout==0 && pqtPerdido==1)
         {
-          umbral = this.cli.vcrep/2;
-          if (umbral==0)umbral=1;
+          umbralserv = this.cli.vcrep/2;
+          if (umbralserv==0)umbralserv=1;
           this.serv.vcrep = 1;
           this.serv.vc = 1;
           //this.serv.ec = false;
           //this.serv.flags = nullflag;
-          this.comprobarEC(this.serv, umbral);
+          this.comprobarEC(this.serv, umbralserv);
           if (this.serv.ec==true) this.serv.flags=ecal;
           else this.serv.flags = al;
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
         }
         else
         {
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0 });
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0 });
         if(pqtPerdido==1)
         {
         sin_ACK++;
@@ -1272,20 +1272,20 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         numPqtServEnv--;
         if(timeout==0 && pqtPerdido==1)
         { 
-          umbral = this.serv.vcrep/2; 
-          if (umbral==0)umbral=1;
+          umbralserv = this.serv.vcrep/2; 
+          if (umbralserv==0)umbralserv=1;
           this.serv.vcrep=1;
           this.serv.vc=1;
           //this.cli.flags = nullflag;
           this.serv.ec = false;
-          this.comprobarEC(this.serv, umbral);
+          this.comprobarEC(this.serv, umbralserv);
           if (this.serv.ec==true) this.serv.flags=ecal;
           else this.serv.flags = al;
-          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep ,emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso|| pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep ,emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
         }
         else
         {
-          if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:0, Num_ACKdup:0, NumEnvio:0});
         }
       }
       //ACK Y DATOS
@@ -1300,23 +1300,23 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
           this.cli.ult_an = this.cli.an;
           this.cli.an = this.serv.ult_sn + (this.serv.ult_sn - this.cli.ult_an);
           this.incrementarVC(this.serv, this.cli, mssServ);
-          this.comprobarEC(this.serv, umbral);
+          this.comprobarEC(this.serv, umbralserv);
           if (timeout==0 && pqtPerdido==1)
           {
-            umbral = this.serv.vcrep/2;
-            if (umbral==0)umbral=1;
+            umbralserv = this.serv.vcrep/2;
+            if (umbralserv==0)umbralserv=1;
             this.serv.vcrep = 1;
             this.serv.vc = 1;
             //this.serv.ec = false;
             //this.serv.flags = nullflag;
-            this.comprobarEC(this.serv, umbral);
+            this.comprobarEC(this.serv, umbralserv);
             if (this.serv.ec==true) this.serv.flags=ecal;
             else this.serv.flags = al;
-            if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+            if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
           }
           else
           {
-            if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0 });
+            if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0 });
           }
             ultDataEnv = denv;
           this.serv.ult_sn = this.serv.sn;
@@ -1342,20 +1342,20 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
           }
           if (timeout==0 && pqtPerdido==1)
           {
-            umbral = this.serv.vcrep/2;
-            if (umbral==0)umbral=1;
+            umbralserv = this.serv.vcrep/2;
+            if (umbralserv==0)umbralserv=1;
             this.serv.vcrep = 1;
             this.serv.vc = 1;
             //this.serv.ec = false;
             //this.serv.flags = nullflag;
-            this.comprobarEC(this.serv, umbral);
+            this.comprobarEC(this.serv, umbralserv);
             if (this.serv.ec==true) this.serv.flags=ecal;
             else this.serv.flags = al;
-            if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0,emisor:0, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1, Num_ACKdup:ACK_dup, NumEnvio:0 });
+            if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0,emisor:0, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1, Num_ACKdup:ACK_dup, NumEnvio:0 });
           }
           else
           {
-            if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:ACK_dup, NumEnvio:0});
+            if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:ACK_dup, NumEnvio:0});
           }
           ultDataEnv = denv;
           this.serv.ult_sn = this.serv.sn;
@@ -1381,15 +1381,15 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         if (ACK_dup==3)//REENVÍO POR 3 ACKs DUPLICADOS
         {
           this.serv.ec = false;
-          umbral = Math.round((this.serv.vc/2)*100)/100;
-          this.serv.vc=umbral+3;
+          umbralserv = Math.round((this.serv.vc/2)*100)/100;
+          this.serv.vc=umbralserv+3;
           this.serv.vcrep= this.serv.vc;
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep, emisor:2, pqt_rtx:1, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep, emisor:2, pqt_rtx:1, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
           this.serv.vc++;
           this.serv.vcrep++;
           envAck++;
-          this.serv.vcrep = umbral;
-          this.serv.vc = umbral;
+          this.serv.vcrep = umbralserv;
+          this.serv.vc = umbralserv;
           this.serv.flags = ec;
           reconocido = 0;
           ACK_dup=0;
@@ -1411,7 +1411,7 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
           this.serv.flags = rr;
           this.serv.rr = true;
         }
-        if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:ACK_dup , NumEnvio:0});
+        if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:ACK_dup , NumEnvio:0});
         envAck = 0;
         flag_ACKdup=0;
       }  
@@ -1419,7 +1419,7 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
       {
         if (envAck < 2 && denv !=0 )
         {
-        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0 });
+        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0 });
         reconocido=0;
         pqtPerdido=0;
         envAck++;
@@ -1428,7 +1428,7 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         {
         this.cli.ult_sn = this.cli.sn;
         this.cli.ult_an = this.cli.an;
-        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
         envAck++;
         reconocido=0;
         pqtPerdido=0;
@@ -1439,22 +1439,22 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
         timeout--;
         if (timeout==0)
         {
-          umbral = this.cli.vcrep/2;
-          if (umbral==0)umbral=1;
+          umbralserv = this.cli.vcrep/2;
+          if (umbralserv==0)umbralserv=1;
           this.serv.vcrep=1;
           this.serv.vc=1;
           //this.serv.ec = false;
           //this.serv.flags = nullflag;
-          this.comprobarEC(this.serv, umbral);
+          this.comprobarEC(this.serv, umbralserv);
           if (this.serv.ec==true) this.serv.flags=ecal;
           else this.serv.flags = al;
-          this.comprobarEC(this.serv, umbral);
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+          this.comprobarEC(this.serv, umbralserv);
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
           
         }
         else
         {
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralserv, envio:0, Num_ACKdup:0, NumEnvio:0});
         }
       }
       }
@@ -1467,10 +1467,10 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
       }
       this.cli.ult_sn = this.cli.sn;
       this.incrementarVC(this.serv, this.cli, mssServ);
-      this.comprobarEC(this.serv, umbral);
+      this.comprobarEC(this.serv, umbralserv);
       if (NumEnvios==1)
       {
-      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: ack, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: ack, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
       }
       this.serv.ult_sn = this.serv.sn;
       this.serv.ult_an = this.serv.an;
@@ -1536,14 +1536,14 @@ else
 //PRIMER SEGMENTO
 //#########################
 // >>>>> Si el primer segmento se pierde <<<<<
-if (this.simular.segperdclien2 != null && contadorPqtEnv+1==segperdNumclien2[x])
+/*if (this.simular.segperdclien2 != null && contadorPqtEnv+1==segperdNumclien2[x])
 {
  x++;
  this.cli.flags=nullflag;
  sn_perd = this.cli.sn;
  an_perd = this.cli.an;
  d_perd = denv;
- if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1 , pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:2});
+ if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1 , pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:2});
  contadorPqtEnv++;
  timeout= this.simular.timeout;
  reconocido=1;
@@ -1553,7 +1553,7 @@ if (this.simular.segperdclien2 != null && contadorPqtEnv+1==segperdNumclien2[x])
 else 
 {
 // El cliente envía el primer paquete
-if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: ack, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1 , pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:2});
+if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: ack, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1 , pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:2});
 numPqtClienEnv++;
 contadorPqtEnv++;
 }
@@ -1568,11 +1568,11 @@ if (pqtPerdido==1)
      {
      this.cli.vcrep+=1;
      this.cli.vc+=1;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: ack, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc:this.serv.vcrep, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: ack, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc:this.serv.vcrep, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
      reconocido=0;
      ACK_inm = 1;
      pqtPerdido=0;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
     }  
    }
    else
@@ -1580,19 +1580,19 @@ if (pqtPerdido==1)
      timeout--;
      if (timeout==0)
      {
-       umbral = this.cli.vcrep/2;
-       if (umbral==0)umbral=1;
+       umbralcli = this.cli.vcrep/2;
+       if (umbralcli==0)umbralcli=1;
        this.cli.vcrep=1;
        this.cli.vc=1;
        //this.cli.ec = false;
        //this.cli.flags = nullflag;
-       this.comprobarEC(this.cli, umbral);
+       this.comprobarEC(this.cli, umbralcli);
        if (this.cli.ec==true) this.cli.flags=ecal;
        else this.cli.flags = al;
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
      }
      else
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
    }
  }
 }
@@ -1601,7 +1601,7 @@ if (pqtPerdido==1)
 if (numPqtClien != 0 && segperdNumclien2[0]!=1) // Si hay mas de un paquete a enviar
 {
  // El servidor espera 1 tick por si recibe otro paquete
- if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+ if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
 
  // El servidor manda el ACK del primer paquete
  this.serv.flags = ack;
@@ -1610,16 +1610,19 @@ if (numPqtClien != 0 && segperdNumclien2[0]!=1) // Si hay mas de un paquete a en
  this.serv.ult_an = this.serv.an;
  this.serv.an = this.cli.sn + denv;
  this.incrementarVC(this.cli, this.serv, mssClien);
- this.comprobarEC(this.cli, umbral);
+ this.comprobarEC(this.cli, umbralcli);
  //ACK
- if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2 , pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+ if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2 , pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
  this.cli.ult_an = this.serv.an;
 }
-
+*/
 //RESTO DE PAQUETES
 //############################
 for (; numPqtClienEnv <= numPqtClien; numPqtClienEnv++) { //Segmentos enviados a partir del primero
 let x: number=0;
+let numenvio: number=0;
+if (numPqtClienEnv==0)numenvio=2;
+else numenvio=0;
 //REENVÍO PAQUETE PERDIDO
 if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this.simular.segperdclien2 != null && ACK_dup==3 && pqtPerdido==1))
 {
@@ -1629,7 +1632,7 @@ if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this
    {
    this.cli.vcrep+=1;
    this.cli.vc+=1;
-   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:numenvio, Num_ACKdup:0, NumEnvio:0});
    envAck++;
    reconocido=0;
    ACK_inm = 1;
@@ -1641,7 +1644,7 @@ if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this
    this.cli.vc+=1;
    this.serv.ult_sn = this.serv.sn;
    this.serv.ult_an = this.serv.an;
-   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:numenvio});
    envAck++;
    reconocido=0;
    ACK_inm = 1;
@@ -1652,10 +1655,10 @@ if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this
  {
    if (envAck < 2 && denv !=0 )
    {
-   umbral = Math.round ((this.cli.vc / 2)*100)/100;
-   this.cli.vc=umbral + 3;
+   umbralcli = Math.round ((this.cli.vc / 2)*100)/100;
+   this.cli.vc=umbralcli + 3;
    this.cli.vcrep=this.cli.vc;
-   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:numenvio});
    this.cli.vc++;
    this.cli.vcrep++;
    envAck++;
@@ -1665,12 +1668,12 @@ if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this
    }  
    else if (denv !=0) //FLECHAS CRUZADAS
    {
-   umbral = Math.round((this.cli.vc / 2)*100)/100;
-   this.cli.vc=umbral + 3;
+   umbralcli = Math.round((this.cli.vc / 2)*100)/100;
+   this.cli.vc=umbralcli + 3;
    this.cli.vcrep=this.cli.vc;
    this.serv.ult_sn = this.serv.sn;
    this.serv.ult_an = this.serv.an;
-   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:numenvio});
    this.cli.vc++;
    this.cli.vcrep++;
    envAck++;
@@ -1691,14 +1694,14 @@ if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this
      this.serv.an = this.cli.ult_sn + (inc == 0 ? denv : inc);
      this.serv.flags = ack;
      this.incrementarVC(this.cli, this.serv, mssClien);
-     this.comprobarEC(this.cli, umbral);
+     this.comprobarEC(this.cli, umbralcli);
      this.serv.ult_an = this.serv.an;
      if (timeout !=0 && ACK_dup==3)
      {
-       this.cli.vcrep = umbral;
+       this.cli.vcrep = umbralcli;
        this.cli.flags = ec;
      }
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0 , Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0 , Num_ACKdup:0, NumEnvio:numenvio});
      numPqtClienEnv--; // HACE QUE EL SEGMENTO PERDIDO SE REPITA DOS VECES!! Solucionado con contadorPqtEnv
      envAck = 0;
      flag_ACKdup = 0;
@@ -1718,15 +1721,15 @@ if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this
      this.serv.flags = ack;
      this.cli.sn += ultDataEnv;
      this.incrementarVC(this.cli, this.serv, mssClien);
-     this.comprobarEC(this.cli, umbral);
+     this.comprobarEC(this.cli, umbralcli);
      this.serv.ult_an = this.serv.an;
      if (timeout !=0 && ACK_dup==3)
      {
-       this.cli.vcrep = umbral;
-       this.cli.vc = umbral;
+       this.cli.vcrep = umbralcli;
+       this.cli.vc = umbralcli;
        this.cli.flags = ec;
      }
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0 , Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0 , Num_ACKdup:0, NumEnvio:numenvio});
      envAck = 1;
      flag_ACKdup = 0;
      ACK_inm=0;
@@ -1749,23 +1752,23 @@ if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this
      let inc: number = this.cli.ult_sn - this.serv.ult_an;
      this.serv.an = this.cli.ult_sn + (inc == 0 ? denv : inc);
      this.incrementarVC(this.cli, this.serv, mssClien);
-     this.comprobarEC(this.cli, umbral);
+     this.comprobarEC(this.cli, umbralcli);
      if(timeout==0 && pqtPerdido==1)
      {
-       umbral = Math.round((this.cli.vcrep/2)*100)/100; 
-       if (umbral==0)umbral=1;
+       umbralcli = Math.round((this.cli.vcrep/2)*100)/100; 
+       if (umbralcli==0)umbralcli=1;
        this.cli.vcrep=1;
        this.cli.vc=1;
        //this.cli.flags = nullflag;
        //this.cli.ec = false;
-       this.comprobarEC(this.cli, umbral);
+       this.comprobarEC(this.cli, umbralcli);
        if (this.cli.ec==true) this.cli.flags=ecal;
        else this.cli.flags = al;
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:0 , Num_ACKdup:0, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbralcli, envio:0 , Num_ACKdup:0, NumEnvio:numenvio});
      }
      else
      {
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0 , Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0 , Num_ACKdup:0, NumEnvio:numenvio});
      }
      this.cli.ult_sn = this.cli.sn;
      this.cli.ult_an = this.cli.an;
@@ -1789,20 +1792,20 @@ if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this
      }
      if(timeout==0 && pqtPerdido==1)
      {
-       umbral = Math.round((this.cli.vcrep/2)*100)/100;
-       if (umbral==0)umbral=1;
+       umbralcli = Math.round((this.cli.vcrep/2)*100)/100;
+       if (umbralcli==0)umbralcli=1;
        this.cli.vcrep=1;
        this.cli.vc=1;
        //this.cli.flags = nullflag;
        //this.cli.ec = false;
-       this.comprobarEC(this.cli, umbral);
+       this.comprobarEC(this.cli, umbralcli);
        if (this.cli.ec==true) this.cli.flags=ecal;
        else this.cli.flags = al;
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0 , fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:ACK_dup, NumEnvio:numenvio});
      }
      else
      {
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:ACK_dup, NumEnvio:numenvio});
      }
        numPqtClienEnv--; // HACE QUE EL SEGMENTO PERDIDO SE REPITA DOS VECES!! Solucionado con contadorPqtEnv
      envAck = 0; 
@@ -1822,12 +1825,12 @@ if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this
    this.cli.ult_sn = this.cli.sn;
    this.cli.sn += ultDataEnv;
    this.serv.flags= nullflag;
-   this.comprobarEC(this.cli, umbral);
+   this.comprobarEC(this.cli, umbralcli);
    sn_perd = this.cli.sn;
    an_perd = this.cli.an;
    d_perd = denv;
    this.serv.an += ultDataEnv;
-   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:numenvio});
    ultDataEnv = denv;
    contadorPqtEnv++;
    numPqtClienEnv--;
@@ -1845,12 +1848,12 @@ if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this
    this.serv.ult_an = this.serv.an;
    this.serv.an = this.cli.ult_sn + (this.cli.ult_sn - this.serv.ult_an);
    this.incrementarVC(this.cli, this.serv, mssClien);
-   this.comprobarEC(this.cli, umbral);
+   this.comprobarEC(this.cli, umbralcli);
    sn_perd = this.cli.sn;
    an_perd = this.cli.an;
    d_perd = denv;
    this.serv.an += ultDataEnv;
-   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0 , Num_ACKdup:0, NumEnvio:0});
+   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0 , Num_ACKdup:0, NumEnvio:numenvio});
    contadorPqtEnv++;
    numPqtClienEnv--;
    envAck = 0;
@@ -1867,23 +1870,23 @@ if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this
    this.serv.flags= nullflag;
    this.cli.ult_sn = this.cli.sn;
    this.cli.sn += ultDataEnv;
-   this.comprobarEC(this.cli, umbral);
+   this.comprobarEC(this.cli, umbralcli);
    if(timeout==0 && pqtPerdido==1)
    { 
-     umbral = Math.round((this.cli.vcrep/2)*100)/100; 
-     if (umbral==0)umbral=1;
+     umbralcli = Math.round((this.cli.vcrep/2)*100)/100; 
+     if (umbralcli==0)umbralcli=1;
      this.cli.vcrep=1;
      this.cli.vc=1;
      //this.cli.flags = nullflag;
      //this.cli.ec = false;
-     this.comprobarEC(this.cli, umbral);
+     this.comprobarEC(this.cli, umbralcli);
      if (this.cli.ec==true) this.cli.flags=ecal;
      else this.cli.flags = al;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:numenvio});
    }
    else
    {
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 , emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 , emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:numenvio});
      if(pqtPerdido==1) 
      {
        flag_ACKdup=1;
@@ -1902,20 +1905,20 @@ if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this
    numPqtClienEnv--;
    if(timeout==0 && pqtPerdido==1)
    { 
-     umbral = this.cli.vcrep/2; 
-     if (umbral==0)umbral=1;
+     umbralcli = this.cli.vcrep/2; 
+     if (umbralcli==0)umbralcli=1;
      this.cli.vcrep=1;
      this.cli.vc=1;
      //this.cli.flags = nullflag;
      this.cli.ec = false;
-     this.comprobarEC(this.cli, umbral);
+     this.comprobarEC(this.cli, umbralcli);
      if (this.cli.ec==true) this.cli.flags=ecal;
      else this.cli.flags = al;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep ,emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep ,emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
    }
    else
    {
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
    }
  }
  //ACK Y DATOS 
@@ -1930,23 +1933,23 @@ if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this
      this.serv.ult_an = this.serv.an;
      this.serv.an = this.cli.ult_sn + (this.cli.ult_sn - this.serv.ult_an);
      this.incrementarVC(this.cli, this.serv, mssServ);
-     this.comprobarEC(this.cli, umbral);
+     this.comprobarEC(this.cli, umbralcli);
      if(timeout==0 && pqtPerdido==1)
      { 
-       umbral = Math.round((this.cli.vcrep/2)*100)/100;
-       if (umbral==0)umbral=1;
+       umbralcli = Math.round((this.cli.vcrep/2)*100)/100;
+       if (umbralcli==0)umbralcli=1;
        this.cli.vcrep=1;
        this.cli.vc=1;
        //this.cli.flags = nullflag;
        //this.cli.ec = false;
-       this.comprobarEC(this.cli, umbral);
+       this.comprobarEC(this.cli, umbralcli);
        if (this.cli.ec==true) this.cli.flags=ecal;
        else this.cli.flags = al;
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:0, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:0, pqt_rtx:0 , fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:numenvio});
      }
      else
      {
-       if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:0, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:0, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:numenvio});
      }
        ultDataEnv = denv;
      this.cli.ult_sn = this.cli.sn;
@@ -1972,20 +1975,20 @@ if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this
      }
      if(timeout==0 && pqtPerdido==1)
      { 
-       umbral = Math.round((this.cli.vcrep/2)*100)/100; 
-       if (umbral==0)umbral=1;
+       umbralcli = Math.round((this.cli.vcrep/2)*100)/100; 
+       if (umbralcli==0)umbralcli=1;
        this.cli.vcrep=1;
        this.cli.vc=1;
        //this.cli.flags = nullflag;
        //this.cli.ec = false;
-       this.comprobarEC(this.cli, umbral);
+       this.comprobarEC(this.cli, umbralcli);
        if (this.cli.ec==true) this.cli.flags=ecal;
        else this.cli.flags = al; 
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:0, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:0, pqt_rtx:0 , fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:ACK_dup, NumEnvio:numenvio});
      }
      else
      {
-       if (nseg+1<=pasoapaso || pasoapaso==0)  this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:0, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)  this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:0, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:ACK_dup, NumEnvio:numenvio});
      }
        ultDataEnv = denv;
      this.cli.ult_sn = this.cli.sn;
@@ -2009,16 +2012,16 @@ if (pqtPerdido==1)
  {
   if (ACK_dup==3)
   {
-    umbral = Math.round ((this.cli.vc / 2)*100)/100;
-    this.cli.vc=umbral + 3;
+    umbralcli = Math.round ((this.cli.vc / 2)*100)/100;
+    this.cli.vc=umbralcli + 3;
     this.cli.vcrep=this.cli.vc;
-    if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+    if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
     this.cli.vc++;
     this.cli.vcrep++;
     envAck++;
     reconocido=0;
-    this.cli.vcrep = umbral;
-    this.cli.vc = umbral;
+    this.cli.vcrep = umbralcli;
+    this.cli.vc = umbralcli;
     this.cli.flags = ec;
     sin_ACK=0;
     ACK_dup=0;
@@ -2039,7 +2042,7 @@ if (pqtPerdido==1)
       this.cli.flags = rr;
       this.cli.rr = true;
     }
-    if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
+    if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
     envAck = 0; 
     flag_ACKdup = 0;
   }
@@ -2049,10 +2052,10 @@ if (pqtPerdido==1)
    {
    //this.cli.vcrep+=1;
    //this.cli.vc+=1;
-   this.comprobarEC(this.cli, umbral);
+   this.comprobarEC(this.cli, umbralcli);
    if (this.cli.ec==true) this.cli.flags=ecal;
    else this.cli.flags = al;
-   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
    reconocido=0;
    ACK_inm = 1;
    pqtPerdido=0;
@@ -2063,7 +2066,7 @@ if (pqtPerdido==1)
    //this.cli.vc+=1;
    this.serv.ult_sn = this.serv.sn;
    this.serv.ult_an = this.serv.an;
-   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
    envAck++;
    reconocido=0;
    ACK_inm = 1;
@@ -2075,21 +2078,21 @@ if (pqtPerdido==1)
    timeout--;
    if (timeout==0)
    {
-     umbral = this.cli.vcrep/2;
-     if (umbral==0)umbral=1;
+     umbralcli = this.cli.vcrep/2;
+     if (umbralcli==0)umbralcli=1;
      this.cli.vcrep=1;
      this.cli.vc=1;
      //this.cli.ec = false;
      //this.cli.flags = nullflag;
-     this.comprobarEC(this.cli, umbral);
+     this.comprobarEC(this.cli, umbralcli);
      if (this.cli.ec==true) this.cli.flags=ecal;
      else this.cli.flags = al;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
      
    }
    else
    {
-     if (nseg+1<=pasoapaso || pasoapaso==0)  this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)  this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
    }
    }
  }
@@ -2118,7 +2121,7 @@ if (envAck != 0 || (envAck == 0 && modPqtClien != 0)) { // Si el ACK no se ha en
    denv = mssServ;
  this.serv.ult_sn = this.serv.sn;
  this.incrementarVC(this.cli, this.serv, mssClien);
- this.comprobarEC(this.cli, umbral);
+ this.comprobarEC(this.cli, umbralserv);
  //Si el primer paquete se pierde
  for (;numPqtServEnv<1;)
  {
@@ -2130,7 +2133,7 @@ if (envAck != 0 || (envAck == 0 && modPqtClien != 0)) { // Si el ACK no se ha en
      sn_perd = this.serv.sn;
      an_perd = this.serv.an;
      d_perd = denv;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
      contadorPqtEnv++;
      reconocido = 1;
      pqtPerdido = 1;
@@ -2138,7 +2141,7 @@ if (envAck != 0 || (envAck == 0 && modPqtClien != 0)) { // Si el ACK no se ha en
    }
    else if (pqtPerdido != 1)
    {
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
      this.cli.ult_sn = this.cli.sn;
      this.cli.ult_an = this.cli.an;
      this.cli.an++;
@@ -2147,7 +2150,7 @@ if (envAck != 0 || (envAck == 0 && modPqtClien != 0)) { // Si el ACK no se ha en
      contadorPqtEnv++;
      numPqtServEnv++;
      ACK_inm=0;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
    }
    if (pqtPerdido == 1 && timeout != 0)
    {
@@ -2156,25 +2159,25 @@ if (envAck != 0 || (envAck == 0 && modPqtClien != 0)) { // Si el ACK no se ha en
      {
        this.serv.vcrep=1;
        this.serv.vc=1;
-       this.comprobarEC(this.serv, umbral);
+       this.comprobarEC(this.serv, umbralserv);
        if (this.serv.ec==true) this.serv.flags=ecal;
        else this.serv.flags = al;
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep,emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep,emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
      }
        else
        {
-         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
        }
      }
    if (pqtPerdido == 1 && timeout ==0) //REENVÍO PRIMER PAQUETE SERVIDOR --> CLIENTE
    {
      this.serv.flags=nullflag;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: ack, snserv: sn_perd, anserv: an_perd, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: ack, snserv: sn_perd, anserv: an_perd, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
      contadorPqtEnv++;
      numPqtServEnv++;
      pqtPerdido=0;
      // El cliente espera 1 tick por si recibe otro paquete
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
    }
 
 // >>>>> Envio de datos servidor->cliente <<<<<
@@ -2187,8 +2190,8 @@ if (numPqtServ != 0 && pqtPerdido !=1) // ACK -->Si hay mas de un paquete a envi
  this.cli.ult_an = this.cli.an;
  this.cli.an = this.serv.sn + denv;
  this.incrementarVC(this.serv, this.cli, mssServ);
- this.comprobarEC(this.serv, umbral);
- if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+ this.comprobarEC(this.serv, umbralserv);
+ if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
  this.serv.ult_an = this.serv.an;
  contadorPqtEnv++;
  reconocido = 0;
@@ -2214,7 +2217,7 @@ if ((this.simular.segperdserv2 != null && timeout==0 && pqtPerdido==1 )|| (this.
    {
      this.serv.vcrep+=1;
      this.serv.vc+=1;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0 });
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0 });
      envAck++;
      reconocido = 0;
      ACK_inm = 1;
@@ -2226,7 +2229,7 @@ if ((this.simular.segperdserv2 != null && timeout==0 && pqtPerdido==1 )|| (this.
      this.serv.vc+=1;
      this.cli.ult_sn = this.cli.sn;
      this.cli.ult_an = this.cli.an;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
      envAck++;
      reconocido = 0;
      ACK_inm = 1;
@@ -2238,10 +2241,10 @@ if ((this.simular.segperdserv2 != null && timeout==0 && pqtPerdido==1 )|| (this.
    if (envAck < 2)
    {
      this.serv.ec = false;
-     umbral = Math.round((this.serv.vc/2)*100)/100;
-     this.serv.vc=umbral+3;
+     umbralserv = Math.round((this.serv.vc/2)*100)/100;
+     this.serv.vc=umbralserv+3;
      this.serv.vcrep= this.serv.vc;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep, emisor:2, pqt_rtx:1, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep, emisor:2, pqt_rtx:1, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
      this.serv.vc++;
      this.serv.vcrep++;
      envAck++;
@@ -2252,12 +2255,12 @@ if ((this.simular.segperdserv2 != null && timeout==0 && pqtPerdido==1 )|| (this.
    else    //Flechas Cruzadas
    {
      this.serv.ec=false;
-     umbral = Math.round((this.serv.vc/2)*100)/100;
-     this.serv.vc=umbral+3;
+     umbralserv = Math.round((this.serv.vc/2)*100)/100;
+     this.serv.vc=umbralserv+3;
      this.serv.vcrep= this.serv.vc;
      this.cli.ult_sn = this.cli.sn;
      this.cli.ult_an = this.cli.an;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:1, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:1, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
      this.serv.vc++;
      this.serv.vcrep++;
      envAck++;
@@ -2278,15 +2281,15 @@ if ((this.simular.segperdserv2 != null && timeout==0 && pqtPerdido==1 )|| (this.
      let inc: number = Math.abs(this.serv.ult_sn - this.cli.ult_an);
      this.cli.an = this.serv.ult_sn + (inc == 0 ? denv : inc);
      this.incrementarVC(this.serv, this.cli, mssServ);
-     this.comprobarEC(this.serv, umbral);
+     this.comprobarEC(this.serv, umbralserv);
      this.cli.ult_an = this.cli.an;
      if (timeout !=0 && ACK_dup==3)
      {
-       this.serv.vcrep = umbral;
-       this.serv.vc = umbral;
+       this.serv.vcrep = umbralserv;
+       this.serv.vc = umbralserv;
        this.serv.flags = ec;
      }
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0 });
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0 });
      numPqtServEnv--;
      envAck = 0;
      ACK_inm = 0;
@@ -2306,15 +2309,15 @@ if ((this.simular.segperdserv2 != null && timeout==0 && pqtPerdido==1 )|| (this.
      this.cli.an = this.serv.ult_sn + (inc == 0 ? denv : inc);
      this.serv.sn += ultDataEnv;
      this.incrementarVC(this.serv, this.cli, mssServ);
-     this.comprobarEC(this.serv, umbral);
+     this.comprobarEC(this.serv, umbralserv);
      this.cli.ult_an = this.cli.an;
      if (timeout !=0 && ACK_dup==3)
      {
-       this.serv.vcrep = umbral;
-       this.serv.vc = umbral;
+       this.serv.vcrep = umbralserv;
+       this.serv.vc = umbralserv;
        this.serv.flags = ec;
      }
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0 });
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0 });
      envAck = 1;
      ACK_inm = 0;
      ACK_dup = 0;
@@ -2337,23 +2340,23 @@ if ((this.simular.segperdserv2 != null && timeout==0 && pqtPerdido==1 )|| (this.
      let inc: number = this.serv.ult_sn - this.cli.ult_an;
      this.cli.an = this.serv.ult_sn + (inc == 0 ? denv : inc);
      this.incrementarVC(this.serv, this.cli, mssServ);
-     this.comprobarEC(this.serv, umbral);
+     this.comprobarEC(this.serv, umbralserv);
      if(timeout==0 && pqtPerdido==1)
      {
-       umbral = this.serv.vcrep/2;
-       if (umbral==0)umbral=1;
+       umbralserv = this.serv.vcrep/2;
+       if (umbralserv==0)umbralserv=1;
        this.serv.vcrep = 1;
        this.serv.vc = 1;
        //this.serv.ec = false;
        //this.serv.flags = nullflag;
-       this.comprobarEC(this.serv, umbral);
+       this.comprobarEC(this.serv, umbralserv);
        if (this.serv.ec==true) this.serv.flags=ecal;
        else this.serv.flags = al;
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
      }
      else 
      {
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
      }
        this.serv.ult_sn = this.serv.sn;
      this.serv.ult_an = this.serv.an;
@@ -2377,20 +2380,20 @@ if ((this.simular.segperdserv2 != null && timeout==0 && pqtPerdido==1 )|| (this.
      }
      if(timeout==0 && pqtPerdido==1)
      {
-       umbral = Math.round((this.serv.vcrep/2)*100)/100;
-       if (umbral==0)umbral=1;
+       umbralserv = Math.round((this.serv.vcrep/2)*100)/100;
+       if (umbralserv==0)umbralserv=1;
        this.serv.vcrep = 1;
        this.serv.vc = 1;
        //this.serv.ec = false;
        //this.serv.flags = nullflag;
-       this.comprobarEC(this.serv, umbral);
+       this.comprobarEC(this.serv, umbralserv);
        if (this.serv.ec==true) this.serv.flags=ecal;
        else this.serv.flags = al;
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1, Num_ACKdup:ACK_dup, NumEnvio:0 });
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1, Num_ACKdup:ACK_dup, NumEnvio:0 });
      }
      else 
      {
-       if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:ACK_dup , NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:ACK_dup , NumEnvio:0});
      }
      numPqtServEnv--;
      envAck = 0;
@@ -2407,12 +2410,12 @@ if ((this.simular.segperdserv2 != null && timeout==0 && pqtPerdido==1 )|| (this.
    {
      this.serv.ult_sn = this.serv.sn;
      this.serv.sn += ultDataEnv;
-     this.comprobarEC(this.serv, umbral);
+     this.comprobarEC(this.serv, umbralserv);
      sn_perd = this.serv.sn;
      an_perd = this.serv.an;
      d_perd = denv;
      this.cli.an += ultDataEnv;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
      this.serv.ult_sn = this.serv.sn;
      ultDataEnv = denv;
      contadorPqtEnv++;
@@ -2431,12 +2434,12 @@ if ((this.simular.segperdserv2 != null && timeout==0 && pqtPerdido==1 )|| (this.
      this.cli.ult_an = this.cli.an;
      this.cli.an = this.serv.ult_sn + (this.serv.ult_sn - this.cli.ult_an);
      this.incrementarVC(this.serv, this.cli, mssServ);
-     this.comprobarEC(this.serv, umbral);
+     this.comprobarEC(this.serv, umbralserv);
      sn_perd = this.serv.sn;
      an_perd = this.serv.an;
      d_perd = denv;
      this.cli.an += ultDataEnv;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -20, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -20, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.serv.sn, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
      contadorPqtEnv++;
      numPqtServEnv--;
      timeout = this.simular.timeout;
@@ -2453,23 +2456,23 @@ if ((this.simular.segperdserv2 != null && timeout==0 && pqtPerdido==1 )|| (this.
    this.cli.flags = nullflag;
    this.serv.ult_sn = this.serv.sn;
    this.serv.sn += ultDataEnv;
-   this.comprobarEC(this.serv, umbral);
+   this.comprobarEC(this.serv, umbralserv);
    if(timeout==0 && pqtPerdido==1)
    {
-     umbral = this.cli.vcrep/2;
-     if (umbral==0)umbral=1;
+     umbralserv = this.cli.vcrep/2;
+     if (umbralserv==0)umbralserv=1;
      this.serv.vcrep = 1;
      this.serv.vc = 1;
      //this.serv.ec = false;
      //this.serv.flags = nullflag;
-     this.comprobarEC(this.serv, umbral);
+     this.comprobarEC(this.serv, umbralserv);
      if (this.serv.ec==true) this.serv.flags=ecal;
      else this.serv.flags = al;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
    }
    else
    {
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0 });
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0 });
    if(pqtPerdido==1)
    {
    sin_ACK++;
@@ -2488,20 +2491,20 @@ if ((this.simular.segperdserv2 != null && timeout==0 && pqtPerdido==1 )|| (this.
    numPqtServEnv--;
    if(timeout==0 && pqtPerdido==1)
    { 
-     umbral = this.serv.vcrep/2; 
-     if (umbral==0)umbral=1;
+     umbralserv = this.serv.vcrep/2; 
+     if (umbralserv==0)umbralserv=1;
      this.serv.vcrep=1;
      this.serv.vc=1;
      //this.cli.flags = nullflag;
      this.serv.ec = false;
-     this.comprobarEC(this.serv, umbral);
+     this.comprobarEC(this.serv, umbralserv);
      if (this.serv.ec==true) this.serv.flags=ecal;
      else this.serv.flags = al;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep ,emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep ,emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
    }
    else
    {
-     if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:0, Num_ACKdup:0, NumEnvio:0});
    }
  }
  //ACK Y DATOS
@@ -2516,23 +2519,23 @@ if ((this.simular.segperdserv2 != null && timeout==0 && pqtPerdido==1 )|| (this.
      this.cli.ult_an = this.cli.an;
      this.cli.an = this.serv.ult_sn + (this.serv.ult_sn - this.cli.ult_an);
      this.incrementarVC(this.serv, this.cli, mssServ);
-     this.comprobarEC(this.serv, umbral);
+     this.comprobarEC(this.serv, umbralserv);
      if (timeout==0 && pqtPerdido==1)
      {
-       umbral = this.serv.vcrep/2;
-       if (umbral==0)umbral=1;
+       umbralserv = this.serv.vcrep/2;
+       if (umbralserv==0)umbralserv=1;
        this.serv.vcrep = 1;
        this.serv.vc = 1;
        //this.serv.ec = false;
        //this.serv.flags = nullflag;
-       this.comprobarEC(this.serv, umbral);
+       this.comprobarEC(this.serv, umbralserv);
        if (this.serv.ec==true) this.serv.flags=ecal;
        else this.serv.flags = al;
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
      }
      else
      {
-       if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0 });
+       if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0 });
      }
        ultDataEnv = denv;
      this.serv.ult_sn = this.serv.sn;
@@ -2558,20 +2561,20 @@ if ((this.simular.segperdserv2 != null && timeout==0 && pqtPerdido==1 )|| (this.
      }
      if (timeout==0 && pqtPerdido==1)
      {
-       umbral = this.serv.vcrep/2;
-       if (umbral==0)umbral=1;
+       umbralserv = this.serv.vcrep/2;
+       if (umbralserv==0)umbralserv=1;
        this.serv.vcrep = 1;
        this.serv.vc = 1;
        //this.serv.ec = false;
        //this.serv.flags = nullflag;
-       this.comprobarEC(this.serv, umbral);
+       this.comprobarEC(this.serv, umbralserv);
        if (this.serv.ec==true) this.serv.flags=ecal;
        else this.serv.flags = al;
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0,emisor:0, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1, Num_ACKdup:ACK_dup, NumEnvio:0 });
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0,emisor:0, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1, Num_ACKdup:ACK_dup, NumEnvio:0 });
      }
      else
      {
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:ACK_dup, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:ACK_dup, NumEnvio:0});
      }
      ultDataEnv = denv;
      this.serv.ult_sn = this.serv.sn;
@@ -2597,16 +2600,16 @@ if (pqtPerdido==1)
   if (ACK_dup==3)//REENVÍO POR 3 ACKs DUPLICADOS
   {
     this.serv.ec = false;
-    umbral = Math.round((this.serv.vc/2)*100)/100;
-    this.serv.vc=umbral+3;
+    umbralserv = Math.round((this.serv.vc/2)*100)/100;
+    this.serv.vc=umbralserv+3;
     this.serv.vcrep= this.serv.vc;
-    if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep, emisor:2, pqt_rtx:1, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+    if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep, emisor:2, pqt_rtx:1, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
     this.serv.vc++;
     this.serv.vcrep++;
     envAck++;
     reconocido = 0;
-    this.serv.vcrep = umbral;
-    this.serv.vc = umbral;
+    this.serv.vcrep = umbralserv;
+    this.serv.vc = umbralserv;
     this.serv.flags = ec;
     ACK_dup=0;
     sin_ACK=0;
@@ -2627,7 +2630,7 @@ else if  (flag_ACKdup==1 && Math.floor(this.serv.vcrep) >= sin_ACK)
     this.serv.flags = rr;
     this.serv.rr = true;
   }
-  if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:ACK_dup , NumEnvio:0});
+  if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:ACK_dup , NumEnvio:0});
   envAck = 0;
   flag_ACKdup=0;
 }  
@@ -2635,7 +2638,7 @@ else if  (flag_ACKdup==1 && Math.floor(this.serv.vcrep) >= sin_ACK)
  {
    if (envAck < 2 && denv !=0 )
    {
-   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0 });
+   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0 });
    reconocido=0;
    pqtPerdido=0;
    envAck++;
@@ -2644,7 +2647,7 @@ else if  (flag_ACKdup==1 && Math.floor(this.serv.vcrep) >= sin_ACK)
    {
    this.cli.ult_sn = this.cli.sn;
    this.cli.ult_an = this.cli.an;
-   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
    envAck++;
    reconocido=0;
    pqtPerdido=0;
@@ -2655,22 +2658,22 @@ else if  (flag_ACKdup==1 && Math.floor(this.serv.vcrep) >= sin_ACK)
    timeout--;
    if (timeout==0)
    {
-     umbral = this.cli.vcrep/2;
-     if (umbral==0)umbral=1;
+     umbralserv = this.cli.vcrep/2;
+     if (umbralserv==0)umbralserv=1;
      this.serv.vcrep=1;
      this.serv.vc=1;
      //this.serv.ec = false;
      //this.serv.flags = nullflag;
-     this.comprobarEC(this.serv, umbral);
+     this.comprobarEC(this.serv, umbralserv);
      if (this.serv.ec==true) this.serv.flags=ecal;
      else this.serv.flags = al;
-     this.comprobarEC(this.serv, umbral);
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+     this.comprobarEC(this.serv, umbralserv);
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
      
    }
    else
    {
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralserv, envio:0, Num_ACKdup:0, NumEnvio:0});
    }
  }
  }
@@ -2683,10 +2686,10 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
  }
  this.cli.ult_sn = this.cli.sn;
  this.incrementarVC(this.serv, this.cli, mssServ);
- this.comprobarEC(this.serv, umbral);
+ this.comprobarEC(this.serv, umbralserv);
  if (NumEnvios==2)
  {
- if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: ack, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+ if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: ack, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
  }
  this.serv.ult_sn = this.serv.sn;
  this.serv.ult_an = this.serv.an;
@@ -2752,6 +2755,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
     //PRIMER SEGMENTO
     //#########################
     // >>>>> Si el primer segmento se pierde <<<<<
+    /*
     if (this.simular.segperdclien3 != null && contadorPqtEnv+1==segperdNumclien3[x])
     {
      x++;
@@ -2759,7 +2763,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
      sn_perd = this.cli.sn;
      an_perd = this.cli.an;
      d_perd = denv;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1 , pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:3});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1 , pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:3});
      contadorPqtEnv++;
      timeout= this.simular.timeout;
      reconocido=1;
@@ -2769,7 +2773,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
     else 
     {
     // El cliente envía el primer paquete
-    if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: ack, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1 , pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:3});
+    if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: ack, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1 , pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:3});
     numPqtClienEnv++;
     contadorPqtEnv++;
     }
@@ -2784,11 +2788,11 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
          {
          this.cli.vcrep+=1;
          this.cli.vc+=1;
-         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: ack, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc:this.serv.vcrep, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: ack, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc:this.serv.vcrep, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
          reconocido=0;
          ACK_inm = 1;
          pqtPerdido=0;
-         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
     
        }  
        }
@@ -2797,19 +2801,19 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
          timeout--;
          if (timeout==0)
          {
-           umbral = this.cli.vcrep/2;
-           if (umbral==0)umbral=1;
+           umbralcli = this.cli.vcrep/2;
+           if (umbralcli==0)umbralcli=1;
            this.cli.vcrep=1;
            this.cli.vc=1;
            //this.cli.ec = false;
            //this.cli.flags = nullflag;
-           this.comprobarEC(this.cli, umbral);
+           this.comprobarEC(this.cli, umbralcli);
            if (this.cli.ec==true) this.cli.flags=ecal;
            else this.cli.flags = al;
-           if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+           if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
          }
          else
-         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
        }
      }
     }
@@ -2818,7 +2822,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
     if (numPqtClien != 0 && segperdNumclien3[0]!=1) // Si hay mas de un paquete a enviar
     {
      // El servidor espera 1 tick por si recibe otro paquete
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
     
      // El servidor manda el ACK del primer paquete
      this.serv.flags = ack;
@@ -2827,16 +2831,20 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
      this.serv.ult_an = this.serv.an;
      this.serv.an = this.cli.sn + denv;
      this.incrementarVC(this.cli, this.serv, mssClien);
-     this.comprobarEC(this.cli, umbral);
+     this.comprobarEC(this.cli, umbralcli);
      //ACK
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2 , pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2 , pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
      this.cli.ult_an = this.serv.an;
     }
-    
+    */
     //RESTO DE PAQUETES
     //############################
+    numPqtClienEnv++;
     for (; numPqtClienEnv <= numPqtClien; numPqtClienEnv++) { //Segmentos enviados a partir del primero
     let x: number=0;
+    let numenvio: number=0;
+    if (numPqtClienEnv==1)numenvio=3;
+    else numenvio=0;
     //REENVÍO PAQUETE PERDIDO
     if ((this.simular.segperdclien3 != null && timeout==0 && pqtPerdido==1) || (this.simular.segperdclien3 != null && ACK_dup==3 && pqtPerdido==1))
     {
@@ -2846,7 +2854,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
        {
        this.cli.vcrep+=1;
        this.cli.vc+=1;
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:numenvio});
        envAck++;
        reconocido=0;
        ACK_inm = 1;
@@ -2858,7 +2866,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
        this.cli.vc+=1;
        this.serv.ult_sn = this.serv.sn;
        this.serv.ult_an = this.serv.an;
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:numenvio});
        envAck++;
        reconocido=0;
        ACK_inm = 1;
@@ -2869,10 +2877,10 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
      {
        if (envAck < 2 && denv !=0 )
        {
-       umbral = Math.round ((this.cli.vc / 2)*100)/100;
-       this.cli.vc=umbral + 3;
+       umbralcli = Math.round ((this.cli.vc / 2)*100)/100;
+       this.cli.vc=umbralcli + 3;
        this.cli.vcrep=this.cli.vc;
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:numenvio});
        this.cli.vc++;
        this.cli.vcrep++;
        envAck++;
@@ -2882,12 +2890,12 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
        }  
        else if (denv !=0) //FLECHAS CRUZADAS
        {
-       umbral = Math.round((this.cli.vc / 2)*100)/100;
-       this.cli.vc=umbral + 3;
+       umbralcli = Math.round((this.cli.vc / 2)*100)/100;
+       this.cli.vc=umbralcli + 3;
        this.cli.vcrep=this.cli.vc;
        this.serv.ult_sn = this.serv.sn;
        this.serv.ult_an = this.serv.an;
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:numenvio});
        this.cli.vc++;
        this.cli.vcrep++;
        envAck++;
@@ -2908,14 +2916,14 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
          this.serv.an = this.cli.ult_sn + (inc == 0 ? denv : inc);
          this.serv.flags = ack;
          this.incrementarVC(this.cli, this.serv, mssClien);
-         this.comprobarEC(this.cli, umbral);
+         this.comprobarEC(this.cli, umbralcli);
          this.serv.ult_an = this.serv.an;
          if (timeout !=0 && ACK_dup==3)
          {
-           this.cli.vcrep = umbral;
+           this.cli.vcrep = umbralcli;
            this.cli.flags = ec;
          }
-         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0 , Num_ACKdup:0, NumEnvio:0});
+         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0 , Num_ACKdup:0, NumEnvio:numenvio});
          numPqtClienEnv--; // HACE QUE EL SEGMENTO PERDIDO SE REPITA DOS VECES!! Solucionado con contadorPqtEnv
          envAck = 0;
          flag_ACKdup = 0;
@@ -2935,15 +2943,15 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
          this.serv.flags = ack;
          this.cli.sn += ultDataEnv;
          this.incrementarVC(this.cli, this.serv, mssClien);
-         this.comprobarEC(this.cli, umbral);
+         this.comprobarEC(this.cli, umbralcli);
          this.serv.ult_an = this.serv.an;
          if (timeout !=0 && ACK_dup==3)
          {
-           this.cli.vcrep = umbral;
-           this.cli.vc = umbral;
+           this.cli.vcrep = umbralcli;
+           this.cli.vc = umbralcli;
            this.cli.flags = ec;
          }
-         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0 , Num_ACKdup:0, NumEnvio:0});
+         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0 , Num_ACKdup:0, NumEnvio:numenvio});
          envAck = 1;
          flag_ACKdup = 0;
          ACK_inm=0;
@@ -2966,23 +2974,23 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
          let inc: number = this.cli.ult_sn - this.serv.ult_an;
          this.serv.an = this.cli.ult_sn + (inc == 0 ? denv : inc);
          this.incrementarVC(this.cli, this.serv, mssClien);
-         this.comprobarEC(this.cli, umbral);
+         this.comprobarEC(this.cli, umbralcli);
          if(timeout==0 && pqtPerdido==1)
          {
-           umbral = Math.round((this.cli.vcrep/2)*100)/100; 
-           if (umbral==0)umbral=1;
+           umbralcli = Math.round((this.cli.vcrep/2)*100)/100; 
+           if (umbralcli==0)umbralcli=1;
            this.cli.vcrep=1;
            this.cli.vc=1;
            //this.cli.flags = nullflag;
            //this.cli.ec = false;
-           this.comprobarEC(this.cli, umbral);
+           this.comprobarEC(this.cli, umbralcli);
            if (this.cli.ec==true) this.cli.flags=ecal;
            else this.cli.flags = al;
-           if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:0 , Num_ACKdup:0, NumEnvio:0});
+           if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbralcli, envio:0 , Num_ACKdup:0, NumEnvio:numenvio});
          }
          else
          {
-         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0 , Num_ACKdup:0, NumEnvio:0});
+         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0 , Num_ACKdup:0, NumEnvio:numenvio});
          }
          this.cli.ult_sn = this.cli.sn;
          this.cli.ult_an = this.cli.an;
@@ -3006,20 +3014,20 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
          }
          if(timeout==0 && pqtPerdido==1)
          {
-           umbral = Math.round((this.cli.vcrep/2)*100)/100;
-           if (umbral==0)umbral=1;
+           umbralcli = Math.round((this.cli.vcrep/2)*100)/100;
+           if (umbralcli==0)umbralcli=1;
            this.cli.vcrep=1;
            this.cli.vc=1;
            //this.cli.flags = nullflag;
            //this.cli.ec = false;
-           this.comprobarEC(this.cli, umbral);
+           this.comprobarEC(this.cli, umbralcli);
            if (this.cli.ec==true) this.cli.flags=ecal;
            else this.cli.flags = al;
-           if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
+           if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0 , fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:ACK_dup, NumEnvio:numenvio});
          }
          else
          {
-           if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
+           if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:ACK_dup, NumEnvio:numenvio});
          }
            numPqtClienEnv--; // HACE QUE EL SEGMENTO PERDIDO SE REPITA DOS VECES!! Solucionado con contadorPqtEnv
          envAck = 0; 
@@ -3039,12 +3047,12 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
        this.cli.ult_sn = this.cli.sn;
        this.cli.sn += ultDataEnv;
        this.serv.flags= nullflag;
-       this.comprobarEC(this.cli, umbral);
+       this.comprobarEC(this.cli, umbralcli);
        sn_perd = this.cli.sn;
        an_perd = this.cli.an;
        d_perd = denv;
        this.serv.an += ultDataEnv;
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:numenvio});
        ultDataEnv = denv;
        contadorPqtEnv++;
        numPqtClienEnv--;
@@ -3062,12 +3070,12 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
        this.serv.ult_an = this.serv.an;
        this.serv.an = this.cli.ult_sn + (this.cli.ult_sn - this.serv.ult_an);
        this.incrementarVC(this.cli, this.serv, mssClien);
-       this.comprobarEC(this.cli, umbral);
+       this.comprobarEC(this.cli, umbralcli);
        sn_perd = this.cli.sn;
        an_perd = this.cli.an;
        d_perd = denv;
        this.serv.an += ultDataEnv;
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0 , Num_ACKdup:0, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0 , Num_ACKdup:0, NumEnvio:numenvio});
        contadorPqtEnv++;
        numPqtClienEnv--;
        envAck = 0;
@@ -3084,23 +3092,23 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
        this.serv.flags= nullflag;
        this.cli.ult_sn = this.cli.sn;
        this.cli.sn += ultDataEnv;
-       this.comprobarEC(this.cli, umbral);
+       this.comprobarEC(this.cli, umbralcli);
        if(timeout==0 && pqtPerdido==1)
        { 
-         umbral = Math.round((this.cli.vcrep/2)*100)/100; 
-         if (umbral==0)umbral=1;
+         umbralcli = Math.round((this.cli.vcrep/2)*100)/100; 
+         if (umbralcli==0)umbralcli=1;
          this.cli.vcrep=1;
          this.cli.vc=1;
          //this.cli.flags = nullflag;
          //this.cli.ec = false;
-         this.comprobarEC(this.cli, umbral);
+         this.comprobarEC(this.cli, umbralcli);
          if (this.cli.ec==true) this.cli.flags=ecal;
          else this.cli.flags = al;
-         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:numenvio});
        }
        else
        {
-         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 , emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 , emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:numenvio});
          if(pqtPerdido==1) 
          {
            flag_ACKdup=1;
@@ -3119,20 +3127,20 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
        numPqtClienEnv--;
        if(timeout==0 && pqtPerdido==1)
        { 
-         umbral = this.cli.vcrep/2; 
-         if (umbral==0)umbral=1;
+         umbralcli = this.cli.vcrep/2; 
+         if (umbralcli==0)umbralcli=1;
          this.cli.vcrep=1;
          this.cli.vc=1;
          //this.cli.flags = nullflag;
          this.cli.ec = false;
-         this.comprobarEC(this.cli, umbral);
+         this.comprobarEC(this.cli, umbralcli);
          if (this.cli.ec==true) this.cli.flags=ecal;
          else this.cli.flags = al;
-         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep ,emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep ,emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
        }
        else
        {
-         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
        }
      }
      //ACK Y DATOS 
@@ -3147,23 +3155,23 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
          this.serv.ult_an = this.serv.an;
          this.serv.an = this.cli.ult_sn + (this.cli.ult_sn - this.serv.ult_an);
          this.incrementarVC(this.cli, this.serv, mssServ);
-         this.comprobarEC(this.cli, umbral);
+         this.comprobarEC(this.cli, umbralcli);
          if(timeout==0 && pqtPerdido==1)
          { 
-           umbral = Math.round((this.cli.vcrep/2)*100)/100;
-           if (umbral==0)umbral=1;
+           umbralcli = Math.round((this.cli.vcrep/2)*100)/100;
+           if (umbralcli==0)umbralcli=1;
            this.cli.vcrep=1;
            this.cli.vc=1;
            //this.cli.flags = nullflag;
            //this.cli.ec = false;
-           this.comprobarEC(this.cli, umbral);
+           this.comprobarEC(this.cli, umbralcli);
            if (this.cli.ec==true) this.cli.flags=ecal;
            else this.cli.flags = al;
-           if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:0, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+           if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:0, pqt_rtx:0 , fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:numenvio});
          }
          else
          {
-           if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:0, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+           if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:0, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:numenvio});
          }
            ultDataEnv = denv;
          this.cli.ult_sn = this.cli.sn;
@@ -3189,20 +3197,20 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
          }
          if(timeout==0 && pqtPerdido==1)
          { 
-           umbral = Math.round((this.cli.vcrep/2)*100)/100; 
-           if (umbral==0)umbral=1;
+           umbralcli = Math.round((this.cli.vcrep/2)*100)/100; 
+           if (umbralcli==0)umbralcli=1;
            this.cli.vcrep=1;
            this.cli.vc=1;
            //this.cli.flags = nullflag;
            //this.cli.ec = false;
-           this.comprobarEC(this.cli, umbral);
+           this.comprobarEC(this.cli, umbralcli);
            if (this.cli.ec==true) this.cli.flags=ecal;
            else this.cli.flags = al; 
-           if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:0, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
+           if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:0, pqt_rtx:0 , fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:ACK_dup, NumEnvio:numenvio});
          }
          else
          {
-           if (nseg+1<=pasoapaso || pasoapaso==0)  this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:0, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
+           if (nseg+1<=pasoapaso || pasoapaso==0)  this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:0, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:ACK_dup, NumEnvio:numenvio});
          }
            ultDataEnv = denv;
          this.cli.ult_sn = this.cli.sn;
@@ -3226,15 +3234,15 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
      {
       if (ACK_dup==3)
       {
-        umbral = Math.round ((this.cli.vc / 2)*100)/100;
-        this.cli.vc=umbral + 3;
+        umbralcli = Math.round ((this.cli.vc / 2)*100)/100;
+        this.cli.vc=umbralcli + 3;
         this.cli.vcrep=this.cli.vc;
-        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
         this.cli.vc++;
         this.cli.vcrep++;
         envAck++;
-        this.cli.vcrep = umbral;
-        this.cli.vc = umbral;
+        this.cli.vcrep = umbralcli;
+        this.cli.vc = umbralcli;
         this.cli.flags = ec;
         reconocido=0;
         sin_ACK=0;
@@ -3256,7 +3264,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
           this.cli.flags = rr;
           this.cli.rr = true;
         }
-        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
+        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
         envAck = 0; 
         flag_ACKdup = 0;
       }
@@ -3266,10 +3274,10 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
        {
        //this.cli.vcrep+=1;
        //this.cli.vc+=1;
-       this.comprobarEC(this.cli, umbral);
+       this.comprobarEC(this.cli, umbralcli);
        if (this.cli.ec==true) this.cli.flags=ecal;
        else this.cli.flags = al;
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
        reconocido=0;
        ACK_inm = 1;
        pqtPerdido=0;
@@ -3280,7 +3288,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
        //this.cli.vc+=1;
        this.serv.ult_sn = this.serv.sn;
        this.serv.ult_an = this.serv.an;
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
        envAck++;
        reconocido=0;
        ACK_inm = 1;
@@ -3292,21 +3300,21 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
        timeout--;
        if (timeout==0)
        {
-         umbral = this.cli.vcrep/2;
-         if (umbral==0)umbral=1;
+         umbralcli = this.cli.vcrep/2;
+         if (umbralcli==0)umbralcli=1;
          this.cli.vcrep=1;
          this.cli.vc=1;
          //this.cli.ec = false;
          //this.cli.flags = nullflag;
-         this.comprobarEC(this.cli, umbral);
+         this.comprobarEC(this.cli, umbralcli);
          if (this.cli.ec==true) this.cli.flags=ecal;
          else this.cli.flags = al;
-         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
          
        }
        else
        {
-         if (nseg+1<=pasoapaso || pasoapaso==0)  this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+         if (nseg+1<=pasoapaso || pasoapaso==0)  this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
        }
        }
      }
@@ -3335,7 +3343,8 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
        denv = mssServ;
      this.serv.ult_sn = this.serv.sn;
      this.incrementarVC(this.cli, this.serv, mssClien);
-     this.comprobarEC(this.cli, umbral);
+     this.comprobarEC(this.cli, umbralserv);
+    }
      //Si el primer paquete se pierde
      for (;numPqtServEnv<1;)
      {
@@ -3347,7 +3356,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
          sn_perd = this.serv.sn;
          an_perd = this.serv.an;
          d_perd = denv;
-         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
          contadorPqtEnv++;
          reconocido = 1;
          pqtPerdido = 1;
@@ -3355,7 +3364,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
        }
        else if (pqtPerdido != 1)
        {
-         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
          this.cli.ult_sn = this.cli.sn;
          this.cli.ult_an = this.cli.an;
          this.cli.an++;
@@ -3364,7 +3373,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
          contadorPqtEnv++;
          numPqtServEnv++;
          ACK_inm=0;
-         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
        }
        if (pqtPerdido == 1 && timeout != 0)
        {
@@ -3373,27 +3382,27 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
          {
            this.serv.vcrep=1;
            this.serv.vc=1;
-           this.comprobarEC(this.serv, umbral);
+           this.comprobarEC(this.serv, umbralserv);
            if (this.serv.ec==true) this.serv.flags=ecal;
            else this.serv.flags = al;
-           if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep,emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+           if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep,emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
          }
            else
            {
-             if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+             if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
            }
          }
        if (pqtPerdido == 1 && timeout ==0) //REENVÍO PRIMER PAQUETE SERVIDOR --> CLIENTE
        {
          this.serv.flags=nullflag;
-         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: ack, snserv: sn_perd, anserv: an_perd, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: ack, snserv: sn_perd, anserv: an_perd, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
          contadorPqtEnv++;
          numPqtServEnv++;
          pqtPerdido=0;
          // El cliente espera 1 tick por si recibe otro paquete
-         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
        }
-    
+      }
     // >>>>> Envio de datos servidor->cliente <<<<<
     if (numPqtServ != 0 && pqtPerdido !=1) // ACK -->Si hay mas de un paquete a enviar
     {
@@ -3404,8 +3413,8 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
      this.cli.ult_an = this.cli.an;
      this.cli.an = this.serv.sn + denv;
      this.incrementarVC(this.serv, this.cli, mssServ);
-     this.comprobarEC(this.serv, umbral);
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+     this.comprobarEC(this.serv, umbralserv);
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
      this.serv.ult_an = this.serv.an;
      contadorPqtEnv++;
      reconocido = 0;
@@ -3417,8 +3426,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
      this.cli.ult_an = this.cli.an;
      this.cli.an = this.serv.sn + denv;
     }
-    }
-    }
+    
     ultDataEnv = denv; // Tamanyo de los ultimos datos enviados
     envAck = 0;
     for (; numPqtServEnv <= numPqtServ; numPqtServEnv++) {
@@ -3431,7 +3439,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
        {
          this.serv.vcrep+=1;
          this.serv.vc+=1;
-         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0 });
+         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0 });
          envAck++;
          reconocido = 0;
          ACK_inm = 1;
@@ -3443,7 +3451,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
          this.serv.vc+=1;
          this.cli.ult_sn = this.cli.sn;
          this.cli.ult_an = this.cli.an;
-         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
          envAck++;
          reconocido = 0;
          ACK_inm = 1;
@@ -3455,10 +3463,10 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
        if (envAck < 2)
        {
          this.serv.ec = false;
-         umbral = Math.round((this.serv.vc/2)*100)/100;
-         this.serv.vc=umbral+3;
+         umbralserv = Math.round((this.serv.vc/2)*100)/100;
+         this.serv.vc=umbralserv+3;
          this.serv.vcrep= this.serv.vc;
-         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep, emisor:2, pqt_rtx:1, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep, emisor:2, pqt_rtx:1, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
          this.serv.vc++;
          this.serv.vcrep++;
          envAck++;
@@ -3469,12 +3477,12 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
        else    //Flechas Cruzadas
        {
          this.serv.ec=false;
-         umbral = Math.round((this.serv.vc/2)*100)/100;
-         this.serv.vc=umbral+3;
+         umbralserv = Math.round((this.serv.vc/2)*100)/100;
+         this.serv.vc=umbralserv+3;
          this.serv.vcrep= this.serv.vc;
          this.cli.ult_sn = this.cli.sn;
          this.cli.ult_an = this.cli.an;
-         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:1, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:1, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
          this.serv.vc++;
          this.serv.vcrep++;
          envAck++;
@@ -3495,15 +3503,15 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
          let inc: number = Math.abs(this.serv.ult_sn - this.cli.ult_an);
          this.cli.an = this.serv.ult_sn + (inc == 0 ? denv : inc);
          this.incrementarVC(this.serv, this.cli, mssServ);
-         this.comprobarEC(this.serv, umbral);
+         this.comprobarEC(this.serv, umbralserv);
          this.cli.ult_an = this.cli.an;
          if (timeout !=0 && ACK_dup==3)
          {
-           this.serv.vcrep = umbral;
-           this.serv.vc = umbral;
+           this.serv.vcrep = umbralserv;
+           this.serv.vc = umbralserv;
            this.serv.flags = ec;
          }
-         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0 });
+         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0 });
          numPqtServEnv--;
          envAck = 0;
          ACK_inm = 0;
@@ -3523,15 +3531,15 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
          this.cli.an = this.serv.ult_sn + (inc == 0 ? denv : inc);
          this.serv.sn += ultDataEnv;
          this.incrementarVC(this.serv, this.cli, mssServ);
-         this.comprobarEC(this.serv, umbral);
+         this.comprobarEC(this.serv, umbralserv);
          this.cli.ult_an = this.cli.an;
          if (timeout !=0 && ACK_dup==3)
          {
-           this.serv.vcrep = umbral;
-           this.serv.vc = umbral;
+           this.serv.vcrep = umbralserv;
+           this.serv.vc = umbralserv;
            this.serv.flags = ec;
          }
-         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0 });
+         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0 });
          envAck = 1;
          ACK_inm = 0;
          ACK_dup = 0;
@@ -3554,23 +3562,23 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
          let inc: number = this.serv.ult_sn - this.cli.ult_an;
          this.cli.an = this.serv.ult_sn + (inc == 0 ? denv : inc);
          this.incrementarVC(this.serv, this.cli, mssServ);
-         this.comprobarEC(this.serv, umbral);
+         this.comprobarEC(this.serv, umbralserv);
          if(timeout==0 && pqtPerdido==1)
          {
-           umbral = this.serv.vcrep/2;
-           if (umbral==0)umbral=1;
+           umbralserv = this.serv.vcrep/2;
+           if (umbralserv==0)umbralserv=1;
            this.serv.vcrep = 1;
            this.serv.vc = 1;
            //this.serv.ec = false;
            //this.serv.flags = nullflag;
-           this.comprobarEC(this.serv, umbral);
+           this.comprobarEC(this.serv, umbralserv);
            if (this.serv.ec==true) this.serv.flags=ecal;
            else this.serv.flags = al;
-           if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+           if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
          }
          else 
          {
-           if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+           if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
          }
            this.serv.ult_sn = this.serv.sn;
          this.serv.ult_an = this.serv.an;
@@ -3594,20 +3602,20 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
          }
          if(timeout==0 && pqtPerdido==1)
          {
-           umbral = Math.round((this.serv.vcrep/2)*100)/100;
-           if (umbral==0)umbral=1;
+           umbralserv = Math.round((this.serv.vcrep/2)*100)/100;
+           if (umbralserv==0)umbralserv=1;
            this.serv.vcrep = 1;
            this.serv.vc = 1;
            //this.serv.ec = false;
            //this.serv.flags = nullflag;
-           this.comprobarEC(this.serv, umbral);
+           this.comprobarEC(this.serv, umbralserv);
            if (this.serv.ec==true) this.serv.flags=ecal;
            else this.serv.flags = al;
-           if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1, Num_ACKdup:ACK_dup, NumEnvio:0 });
+           if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1, Num_ACKdup:ACK_dup, NumEnvio:0 });
          }
          else 
          {
-           if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:ACK_dup , NumEnvio:0});
+           if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:ACK_dup , NumEnvio:0});
          }
          numPqtServEnv--;
          envAck = 0;
@@ -3624,12 +3632,12 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
        {
          this.serv.ult_sn = this.serv.sn;
          this.serv.sn += ultDataEnv;
-         this.comprobarEC(this.serv, umbral);
+         this.comprobarEC(this.serv, umbralserv);
          sn_perd = this.serv.sn;
          an_perd = this.serv.an;
          d_perd = denv;
          this.cli.an += ultDataEnv;
-         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
          this.serv.ult_sn = this.serv.sn;
          ultDataEnv = denv;
          contadorPqtEnv++;
@@ -3648,12 +3656,12 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
          this.cli.ult_an = this.cli.an;
          this.cli.an = this.serv.ult_sn + (this.serv.ult_sn - this.cli.ult_an);
          this.incrementarVC(this.serv, this.cli, mssServ);
-         this.comprobarEC(this.serv, umbral);
+         this.comprobarEC(this.serv, umbralserv);
          sn_perd = this.serv.sn;
          an_perd = this.serv.an;
          d_perd = denv;
          this.cli.an += ultDataEnv;
-         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -20, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -20, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.serv.sn, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
          contadorPqtEnv++;
          numPqtServEnv--;
          timeout = this.simular.timeout;
@@ -3670,23 +3678,23 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
        this.cli.flags = nullflag;
        this.serv.ult_sn = this.serv.sn;
        this.serv.sn += ultDataEnv;
-       this.comprobarEC(this.serv, umbral);
+       this.comprobarEC(this.serv, umbralserv);
        if(timeout==0 && pqtPerdido==1)
        {
-         umbral = this.cli.vcrep/2;
-         if (umbral==0)umbral=1;
+         umbralserv = this.cli.vcrep/2;
+         if (umbralserv==0)umbralserv=1;
          this.serv.vcrep = 1;
          this.serv.vc = 1;
          //this.serv.ec = false;
          //this.serv.flags = nullflag;
-         this.comprobarEC(this.serv, umbral);
+         this.comprobarEC(this.serv, umbralserv);
          if (this.serv.ec==true) this.serv.flags=ecal;
          else this.serv.flags = al;
-         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
        }
        else
        {
-         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0 });
+         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0 });
        if(pqtPerdido==1)
        {
        sin_ACK++;
@@ -3705,20 +3713,20 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
        numPqtServEnv--;
        if(timeout==0 && pqtPerdido==1)
        { 
-         umbral = this.serv.vcrep/2; 
-         if (umbral==0)umbral=1;
+         umbralserv = this.serv.vcrep/2; 
+         if (umbralserv==0)umbralserv=1;
          this.serv.vcrep=1;
          this.serv.vc=1;
          //this.cli.flags = nullflag;
          this.serv.ec = false;
-         this.comprobarEC(this.serv, umbral);
+         this.comprobarEC(this.serv, umbralserv);
          if (this.serv.ec==true) this.serv.flags=ecal;
          else this.serv.flags = al;
-         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep ,emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep ,emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
        }
        else
        {
-         if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+         if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:0, Num_ACKdup:0, NumEnvio:0});
        }
      }
      //ACK Y DATOS
@@ -3733,23 +3741,23 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
          this.cli.ult_an = this.cli.an;
          this.cli.an = this.serv.ult_sn + (this.serv.ult_sn - this.cli.ult_an);
          this.incrementarVC(this.serv, this.cli, mssServ);
-         this.comprobarEC(this.serv, umbral);
+         this.comprobarEC(this.serv, umbralserv);
          if (timeout==0 && pqtPerdido==1)
          {
-           umbral = this.serv.vcrep/2;
-           if (umbral==0)umbral=1;
+           umbralserv = this.serv.vcrep/2;
+           if (umbralserv==0)umbralserv=1;
            this.serv.vcrep = 1;
            this.serv.vc = 1;
            //this.serv.ec = false;
            //this.serv.flags = nullflag;
-           this.comprobarEC(this.serv, umbral);
+           this.comprobarEC(this.serv, umbralserv);
            if (this.serv.ec==true) this.serv.flags=ecal;
            else this.serv.flags = al;
-           if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+           if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
          }
          else
          {
-           if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0 });
+           if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0 });
          }
            ultDataEnv = denv;
          this.serv.ult_sn = this.serv.sn;
@@ -3775,20 +3783,20 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
          }
          if (timeout==0 && pqtPerdido==1)
          {
-           umbral = this.serv.vcrep/2;
-           if (umbral==0)umbral=1;
+           umbralserv = this.serv.vcrep/2;
+           if (umbralserv==0)umbralserv=1;
            this.serv.vcrep = 1;
            this.serv.vc = 1;
            //this.serv.ec = false;
            //this.serv.flags = nullflag;
-           this.comprobarEC(this.serv, umbral);
+           this.comprobarEC(this.serv, umbralserv);
            if (this.serv.ec==true) this.serv.flags=ecal;
            else this.serv.flags = al;
-           if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0,emisor:0, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1, Num_ACKdup:ACK_dup, NumEnvio:0 });
+           if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0,emisor:0, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1, Num_ACKdup:ACK_dup, NumEnvio:0 });
          }
          else
          {
-           if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:ACK_dup, NumEnvio:0});
+           if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:ACK_dup, NumEnvio:0});
          }
          ultDataEnv = denv;
          this.serv.ult_sn = this.serv.sn;
@@ -3814,15 +3822,15 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
       if (ACK_dup==3)//REENVÍO POR 3 ACKs DUPLICADOS
       {
         this.serv.ec = false;
-        umbral = Math.round((this.serv.vc/2)*100)/100;
-        this.serv.vc=umbral+3;
+        umbralserv = Math.round((this.serv.vc/2)*100)/100;
+        this.serv.vc=umbralserv+3;
         this.serv.vcrep= this.serv.vc;
-        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep, emisor:2, pqt_rtx:1, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep, emisor:2, pqt_rtx:1, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
         this.serv.vc++;
         this.serv.vcrep++;
         envAck++;
-        this.serv.vcrep = umbral;
-        this.serv.vc = umbral;
+        this.serv.vcrep = umbralserv;
+        this.serv.vc = umbralserv;
         this.serv.flags = ec;
         reconocido = 0;
         ACK_dup=0;
@@ -3844,7 +3852,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
         this.serv.flags = rr;
         this.serv.rr = true;
       }
-      if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:ACK_dup , NumEnvio:0});
+      if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:ACK_dup , NumEnvio:0});
       envAck = 0;
       flag_ACKdup=0;
     }  
@@ -3852,7 +3860,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
      {
        if (envAck < 2 && denv !=0 )
        {
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0 });
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0 });
        reconocido=0;
        pqtPerdido=0;
        envAck++;
@@ -3861,7 +3869,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
        {
        this.cli.ult_sn = this.cli.sn;
        this.cli.ult_an = this.cli.an;
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
        envAck++;
        reconocido=0;
        pqtPerdido=0;
@@ -3872,22 +3880,22 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
        timeout--;
        if (timeout==0)
        {
-         umbral = this.cli.vcrep/2;
-         if (umbral==0)umbral=1;
+         umbralserv = this.cli.vcrep/2;
+         if (umbralserv==0)umbralserv=1;
          this.serv.vcrep=1;
          this.serv.vc=1;
          //this.serv.ec = false;
          //this.serv.flags = nullflag;
-         this.comprobarEC(this.serv, umbral);
+         this.comprobarEC(this.serv, umbralserv);
          if (this.serv.ec==true) this.serv.flags=ecal;
          else this.serv.flags = al;
-         this.comprobarEC(this.serv, umbral);
-         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+         this.comprobarEC(this.serv, umbralserv);
+         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
          
        }
        else
        {
-         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralserv, envio:0, Num_ACKdup:0, NumEnvio:0});
        }
      }
      }
@@ -3900,8 +3908,8 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
      }
      this.cli.ult_sn = this.cli.sn;
      this.incrementarVC(this.serv, this.cli, mssServ);
-     this.comprobarEC(this.serv, umbral);
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: ack, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+     this.comprobarEC(this.serv, umbralserv);
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: ack, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
      this.serv.ult_sn = this.serv.sn;
      this.serv.ult_an = this.serv.an;
      this.cli.ult_an = this.cli.an;
@@ -3910,7 +3918,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
     // El cliente espera 1 tick por si hay intercambio de informacion y luego se procede a cerrar
     if (envAck == 2 && cierre == "1")
     { 
-      if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+      if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
     }
   
     // ----- Cierre -----
@@ -3919,21 +3927,21 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
       //FIN
       this.cli.ult_sn = this.cli.sn;
       this.cli.flags = fin;
-      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0 , Num_ACKdup:0, NumEnvio:0});
+      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:1, pqt_rtx:0, fin_temp:0,umbral:0, envio:0 , Num_ACKdup:0, NumEnvio:0});
       // FIN, ACK
       this.serv.ult_sn = this.serv.sn;
       this.serv.sn += denv;
       this.serv.ult_an = this.serv.an;
       this.serv.an = this.cli.sn + 1;
       this.serv.flags = finack;
-      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0 ,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0 ,emisor:2, pqt_rtx:0, fin_temp:0,umbral:0, envio:0, Num_ACKdup:0, NumEnvio:0});
       // ACK
       this.cli.ult_sn = this.cli.sn;
       this.cli.sn++;
       this.cli.ult_an = this.cli.an;
       this.cli.an = this.serv.sn + 1;
       this.cli.flags = ack;
-      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0 });
+      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:1, pqt_rtx:0, fin_temp:0,umbral:0, envio:0, Num_ACKdup:0, NumEnvio:0 });
 
     } else { // El servidor cierra la conexion
       // FIN
@@ -3941,20 +3949,20 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
       this.serv.sn += denv;
       this.serv.ult_an = this.serv.an;
       this.serv.flags = fin;
-      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:0, envio:1, Num_ACKdup:0, NumEnvio:0});
       // FIN, ACK
       this.cli.ult_sn = this.cli.sn;
       this.cli.ult_an = this.cli.an;
       this.cli.an = this.serv.sn + 1;
       this.cli.flags = finack;
-      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0 });
+      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:1, pqt_rtx:0, fin_temp:0,umbral:0, envio:1, Num_ACKdup:0, NumEnvio:0 });
       // ACK
       this.serv.ult_sn = this.serv.sn;
       this.serv.sn++;
       this.serv.ult_an = this.serv.an;
       this.serv.an = this.cli.sn + 1;
       this.serv.flags = ack;
-      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0 ,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0 ,umbral:0, envio:1, Num_ACKdup:0, NumEnvio:0});
     }
   
     return;
@@ -4006,7 +4014,8 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
     this.serv.ec = false;
     // General
     let timeout = this.simular.timeout;
-    let umbral: number = this.simular.umbral;
+    let umbralcli: number = this.simular.umbral;
+    let umbralserv: number = this.simular.umbral;
     let algort: string = this.simular.algort;
     let cierre: string = this.simular.cierre;
     let pasoapaso: number = this.simular.pasoapaso;
@@ -4058,17 +4067,17 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
   }
     // ----- Conexion -----
     // Enviamos los segmentos de SYN; SYN, ACK; y ACK
-    if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: 0, dcli: 0, wcli: this.cli.w, msscli: this.simular.mssclien, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0 });
+    if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: 0, dcli: 0, wcli: this.cli.w, msscli: this.simular.mssclien, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0 });
     this.serv.ult_an = this.serv.an;
     this.serv.an = this.cli.sn + 1;
-    if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: this.simular.mssserv, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0 });
+    if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: this.simular.mssserv, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0 });
     this.serv.flags = nullflag;
     this.cli.ult_sn = this.cli.sn;
     this.cli.sn += 1;
     this.cli.ult_an = this.cli.an;
     this.cli.an = this.serv.sn + 1;
     this.cli.flags = ack;
-    if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0 });
+    if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0 });
     this.cli.flags = nullflag;
 // ----------------------------- LADO CLIENTE -----------------------------------------   
  // >>>>> Envio de datos cliente->servidor <<<<<
@@ -4100,7 +4109,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
       sn_perd = this.cli.sn;
       an_perd = this.cli.an;
       d_perd = denv;
-      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1 , pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:1});
+      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1 , pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:1});
       contadorPqtEnv++;
       timeout= this.simular.timeout;
       reconocido=1;
@@ -4110,7 +4119,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
     else 
     {
     // El cliente envía el primer paquete
-    if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1 , pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:1});
+    if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1 , pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:1});
     numPqtClienEnv++;
     contadorPqtEnv++;
     }
@@ -4125,11 +4134,11 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
           {
           this.cli.vcrep+=1;
           this.cli.vc+=1;
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc:0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc:0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
           reconocido=0;
           ACK_inm = 1;
           pqtPerdido=0;
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
 
         }  
         }
@@ -4138,20 +4147,20 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
           timeout--;
           if (timeout==0)
           {
-            umbral = this.cli.vcrep/2;
-            if (umbral==0)umbral=1;
+            umbralcli = this.cli.vcrep/2;
+            if (umbralcli==0)umbralcli=1;
             this.cli.vcrep=1;
             this.cli.vc=1;
             //this.cli.ec = false;
             //this.cli.flags = nullflag;
-            this.comprobarEC(this.cli, umbral);
+            this.comprobarEC(this.cli, umbralcli);
             if (this.cli.ec==true) this.cli.flags=ecal;
             else this.cli.flags = al;
-            if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+            if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
           }
           else
           {
-            if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+            if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
           }
         }
       }
@@ -4161,7 +4170,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
     if (numPqtClien != 0 && segperdNumclien[0]!=1) // Si hay mas de un paquete a enviar
     {
       // El servidor espera 1 tick por si recibe otro paquete
-      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
 
       // El servidor manda el ACK del primer paquete
       this.serv.flags = ack;
@@ -4170,9 +4179,9 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
       this.serv.ult_an = this.serv.an;
       this.serv.an = this.cli.sn + denv;
       this.incrementarVC(this.cli, this.serv, mssClien);
-      this.comprobarEC(this.cli, umbral);
+      this.comprobarEC(this.cli, umbralcli);
       //ACK
-      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2 , pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2 , pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
       this.cli.ult_an = this.serv.an;
     }
 
@@ -4189,7 +4198,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
         {
         this.cli.vcrep+=1;
         this.cli.vc+=1;
-        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
         envAck++;
         reconocido=0;
         ACK_inm = 1;
@@ -4201,7 +4210,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
         this.cli.vc+=1;
         this.serv.ult_sn = this.serv.sn;
         this.serv.ult_an = this.serv.an;
-        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
         envAck++;
         reconocido=0;
         ACK_inm = 1;
@@ -4212,14 +4221,14 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
       {
         if (envAck < 2 && denv !=0 )
         {
-        umbral = Math.round((this.cli.vc / 2)*100)/100;
+        umbralcli = Math.round((this.cli.vc / 2)*100)/100;
         this.cli.vc=1;
         this.cli.vcrep=1;
         this.cli.ec = false;
-        this.comprobarEC(this.cli, umbral);
+        this.comprobarEC(this.cli, umbralcli);
         if (this.cli.ec==true) this.cli.flags=ecal;
         else this.cli.flags = al;
-        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
         this.cli.vc++;
         this.cli.vcrep++;
         envAck++;
@@ -4230,16 +4239,16 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
         }  
         else if (denv !=0) //FLECHAS CRUZADAS
         {
-        umbral = Math.round((this.cli.vc / 2)*100)/100;
+        umbralcli = Math.round((this.cli.vc / 2)*100)/100;
         this.cli.vc=1;
         this.cli.vcrep=1;
         this.cli.ec = false;
         this.serv.ult_sn = this.serv.sn;
         this.serv.ult_an = this.serv.an;
-        this.comprobarEC(this.cli, umbral);
+        this.comprobarEC(this.cli, umbralcli);
         if (this.cli.ec==true) this.cli.flags=ecal;
         else this.cli.flags = al;
-        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: al, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: al, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
         this.cli.vc++;
         this.cli.vcrep++;
         envAck++;
@@ -4260,9 +4269,9 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
         this.serv.an = this.cli.ult_sn + (inc == 0 ? denv : inc);
         this.serv.flags = ack;
         this.incrementarVC(this.cli, this.serv, mssClien);
-        this.comprobarEC(this.cli, umbral);
+        this.comprobarEC(this.cli, umbralcli);
         this.serv.ult_an = this.serv.an;
-        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0 });
+        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0 });
         numPqtClienEnv--; // HACE QUE EL SEGMENTO PERDIDO SE REPITA DOS VECES!! Solucionado con contadorPqtEnv
         envAck = 0; 
         ACK_inm=0;
@@ -4282,23 +4291,23 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
           let inc: number = this.cli.ult_sn - this.serv.ult_an;
           this.serv.an = this.cli.ult_sn + (inc == 0 ? denv : inc);
           this.incrementarVC(this.cli, this.serv, mssClien);
-          this.comprobarEC(this.cli, umbral);
+          this.comprobarEC(this.cli, umbralcli);
           if(timeout==0 && pqtPerdido==1)
           {
-            umbral = Math.round((this.cli.vcrep/2)*100)/100; 
-            if (umbral==0)umbral=1;
+            umbralcli = Math.round((this.cli.vcrep/2)*100)/100; 
+            if (umbralcli==0)umbralcli=1;
             this.cli.vcrep=1;
             this.cli.vc=1;
             //this.cli.flags = nullflag;
             //this.cli.ec = false;
-            this.comprobarEC(this.cli, umbral);
+            this.comprobarEC(this.cli, umbralcli);
             if (this.cli.ec==true) this.cli.flags=ecal;
             else this.cli.flags = al;
-            if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:0 , Num_ACKdup:0, NumEnvio:0});
+            if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbralcli, envio:0 , Num_ACKdup:0, NumEnvio:0});
           }
           else
           {
-            if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0 , Num_ACKdup:0, NumEnvio:0});
+            if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0 , Num_ACKdup:0, NumEnvio:0});
           }
           this.cli.ult_sn = this.cli.sn;
           this.cli.ult_an = this.cli.an;
@@ -4316,20 +4325,20 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
           ACK_dup++;
           if(timeout==0 && pqtPerdido==1)
           {
-            umbral = Math.round((this.cli.vcrep/2)*100)/100;
-            if (umbral==0)umbral=1;
+            umbralcli = Math.round((this.cli.vcrep/2)*100)/100;
+            if (umbralcli==0)umbralcli=1;
             this.cli.vcrep=1;
             this.cli.vc=1;
             this.cli.flags = nullflag;
             this.cli.ec = false;
-            this.comprobarEC(this.cli, umbral);
+            this.comprobarEC(this.cli, umbralcli);
             if (this.cli.ec==true) this.cli.flags=ecal;
             else this.cli.flags = al;
-            if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
+            if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0 , fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
           }
           else
           {
-            if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
+            if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
           }
           numPqtClienEnv--; // HACE QUE EL SEGMENTO PERDIDO SE REPITA DOS VECES!! Solucionado con contadorPqtEnv
           envAck = 0; 
@@ -4349,12 +4358,12 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
         this.cli.ult_sn = this.cli.sn;
         this.cli.sn += ultDataEnv;
         this.serv.flags= nullflag;
-        this.comprobarEC(this.cli, umbral);
+        this.comprobarEC(this.cli, umbralcli);
         sn_perd = this.cli.sn;
         an_perd = this.cli.an;
         d_perd = denv;
         this.serv.an += ultDataEnv;
-        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
         ultDataEnv = denv;
         contadorPqtEnv++;
         numPqtClienEnv--;
@@ -4372,12 +4381,12 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
         this.serv.ult_an = this.serv.an;
         this.serv.an = this.cli.ult_sn + (this.cli.ult_sn - this.serv.ult_an);
         this.incrementarVC(this.cli, this.serv, mssClien);
-        this.comprobarEC(this.cli, umbral);
+        this.comprobarEC(this.cli, umbralcli);
         sn_perd = this.cli.sn;
         an_perd = this.cli.an;
         d_perd = denv;
         this.serv.an += ultDataEnv;
-        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0 , Num_ACKdup:0, NumEnvio:0});
+        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0 , Num_ACKdup:0, NumEnvio:0});
         contadorPqtEnv++;
         numPqtClienEnv--;
         envAck = 0;
@@ -4394,23 +4403,23 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
         this.serv.flags= nullflag;
         this.cli.ult_sn = this.cli.sn;
         this.cli.sn += ultDataEnv;
-        this.comprobarEC(this.cli, umbral);
+        this.comprobarEC(this.cli, umbralcli);
         if(timeout==0 && pqtPerdido==1)
         { 
-          umbral = this.cli.vcrep/2; 
-          if (umbral==0)umbral=1;
+          umbralcli = this.cli.vcrep/2; 
+          if (umbralcli==0)umbralcli=1;
           this.cli.vcrep=1;
           this.cli.vc=1;
           //this.cli.flags = nullflag;
           //this.cli.ec = false;
-          this.comprobarEC(this.cli, umbral);
+          this.comprobarEC(this.cli, umbralcli);
           if (this.cli.ec==true) this.cli.flags=ecal;
           else this.cli.flags = al;
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
         }
         else
         {
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 , emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 , emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
           if(pqtPerdido==1) 
           {
             flag_ACKdup=1;
@@ -4429,20 +4438,20 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
         numPqtClienEnv--;
         if(timeout==0 && pqtPerdido==1)
         { 
-          umbral = this.cli.vcrep/2; 
-          if (umbral==0)umbral=1;
+          umbralcli = this.cli.vcrep/2; 
+          if (umbralcli==0)umbralcli=1;
           this.cli.vcrep=1;
           this.cli.vc=1;
           //this.cli.flags = nullflag;
           this.cli.ec = false;
-          this.comprobarEC(this.cli, umbral);
+          this.comprobarEC(this.cli, umbralcli);
           if (this.cli.ec==true) this.cli.flags=ecal;
           else this.cli.flags = al;
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep ,emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep ,emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
         }
         else
         {
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
         }
       } 
       //ACK Y DATOS 
@@ -4457,23 +4466,23 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
           this.serv.ult_an = this.serv.an;
           this.serv.an = this.cli.ult_sn + (this.cli.ult_sn - this.serv.ult_an);
           this.incrementarVC(this.cli, this.serv, mssServ);
-          this.comprobarEC(this.cli, umbral);
+          this.comprobarEC(this.cli, umbralcli);
           if(timeout==0 && pqtPerdido==1)
           { 
-            umbral = this.cli.vcrep/2;
-            if (umbral==0)umbral=1;
+            umbralcli = this.cli.vcrep/2;
+            if (umbralcli==0)umbralcli=1;
             this.cli.vcrep=1;
             this.cli.vc=1;
             //this.cli.flags = nullflag;
             //this.cli.ec = false;
-            this.comprobarEC(this.cli, umbral);
+            this.comprobarEC(this.cli, umbralcli);
             if (this.cli.ec==true) this.cli.flags=ecal;
             else this.cli.flags = al;
-            if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:0, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+            if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:0, pqt_rtx:0 , fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
           }
           else
           {
-            if (nseg+1<=pasoapaso || pasoapaso==0)  this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:0, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+            if (nseg+1<=pasoapaso || pasoapaso==0)  this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:0, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
           }
           ultDataEnv = denv;
           this.cli.ult_sn = this.cli.sn;
@@ -4494,20 +4503,20 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
           sin_ACK++;
           if(timeout==0 && pqtPerdido==1)
           { 
-            umbral = this.cli.vcrep/2; 
-            if (umbral==0)umbral=1;
+            umbralcli = this.cli.vcrep/2; 
+            if (umbralcli==0)umbralcli=1;
             this.cli.vcrep=1;
             this.cli.vc=1;
             //this.cli.flags = nullflag;
             //this.cli.ec = false;
-            //this.comprobarEC(this.cli, umbral);
+            //this.comprobarEC(this.cli, umbralcli);
             //if (this.cli.ec==true) this.cli.flags=ecal;
             //else this.cli.flags = al; 
-            if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:0, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
+            if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:0, pqt_rtx:0 , fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
           }
           else
           {
-            if (nseg+1<=pasoapaso || pasoapaso==0)  this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:0, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
+            if (nseg+1<=pasoapaso || pasoapaso==0)  this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:0, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
           }
           ultDataEnv = denv;
           this.cli.ult_sn = this.cli.sn;
@@ -4531,14 +4540,14 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
       {
       if (ACK_dup==3)
       {
-        umbral = Math.round((this.cli.vc / 2)*100)/100;
+        umbralcli = Math.round((this.cli.vc / 2)*100)/100;
         this.cli.vc=1;
         this.cli.vcrep=1;
         this.cli.ec = false;
-        this.comprobarEC(this.cli, umbral);
+        this.comprobarEC(this.cli, umbralcli);
         if (this.cli.ec==true) this.cli.flags=ecal;
         else this.cli.flags = al;
-        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
         this.cli.vc++;
         this.cli.vcrep++;
         envAck++;
@@ -4557,7 +4566,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
         this.serv.an = this.cli.ult_sn + (inc == 0 ? denv : inc);
         this.serv.flags = ack;
         ACK_dup++;
-        if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
+        if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
         numPqtClienEnv--; // HACE QUE EL SEGMENTO PERDIDO SE REPITA DOS VECES!! Solucionado con contadorPqtEnv
         envAck = 0; 
         flag_ACKdup = 0;
@@ -4568,10 +4577,10 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
         {
         //this.cli.vcrep+=1;
         //this.cli.vc+=1;
-        this.comprobarEC(this.cli, umbral);
+        this.comprobarEC(this.cli, umbralcli);
         if (this.cli.ec==true) this.cli.flags=ecal;
         else this.cli.flags = al;
-        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
         reconocido=0;
         ACK_inm = 1;
         pqtPerdido=0;
@@ -4582,7 +4591,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
         //this.cli.vc+=1;
         this.serv.ult_sn = this.serv.sn;
         this.serv.ult_an = this.serv.an;
-        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
         envAck++;
         reconocido=0;
         ACK_inm = 1;
@@ -4594,20 +4603,20 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
         timeout--;
         if (timeout==0)
         {
-          umbral = this.cli.vcrep/2;
-          if (umbral==0)umbral=1;
+          umbralcli = this.cli.vcrep/2;
+          if (umbralcli==0)umbralcli=1;
           this.cli.vcrep=1;
           this.cli.vc=1;
           //this.cli.ec = false;
           //this.cli.flags = nullflag;
-          this.comprobarEC(this.cli, umbral);
+          this.comprobarEC(this.cli, umbralcli);
           if (this.cli.ec==true) this.cli.flags=ecal;
           else this.cli.flags = al;
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
         }
         else
         {
-          this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+          this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
         }
       }
 
@@ -4636,7 +4645,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
         denv = mssServ;
       this.serv.ult_sn = this.serv.sn;
       this.incrementarVC(this.cli, this.serv, mssClien);
-      this.comprobarEC(this.cli, umbral);
+      this.comprobarEC(this.cli, umbralserv);
       //Si el primer paquete se pierde
       for (;numPqtServEnv<1;)
       {
@@ -4648,7 +4657,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
           sn_perd = this.serv.sn;
           an_perd = this.serv.an;
           d_perd = denv;
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
           contadorPqtEnv++;
           reconocido = 1;
           pqtPerdido = 1;
@@ -4656,7 +4665,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
         }
         else if (pqtPerdido != 1)
         {
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
           this.cli.ult_sn = this.cli.sn;
           this.cli.ult_an = this.cli.an;
           this.cli.an++;
@@ -4665,7 +4674,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
           contadorPqtEnv++;
           numPqtServEnv++;
           ACK_inm=0;
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0 });
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0 });
         }
         if (pqtPerdido == 1 && timeout != 0)
         {
@@ -4674,25 +4683,25 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
           {
             this.serv.vcrep=1;
             this.serv.vc=1;
-            this.comprobarEC(this.serv, umbral);
+            this.comprobarEC(this.serv, umbralserv);
             if (this.serv.ec==true) this.serv.flags=ecal;
             else this.serv.flags = al;
-            if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep,emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+            if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep,emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
           }
             else
             {
-              if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0 });
+              if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0 });
             }
           }
         if (pqtPerdido == 1 && timeout ==0) //REENVÍO PRIMER PAQUETE SERVIDOR --> CLIENTE
         {
           this.serv.flags=nullflag;
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: ack, snserv: sn_perd, anserv: an_perd, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: ack, snserv: sn_perd, anserv: an_perd, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
           contadorPqtEnv++;
           numPqtServEnv++;
           pqtPerdido=0;
           // El cliente espera 1 tick por si recibe otro paquete
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0 });
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0 });
         }
     
     // >>>>> Envio de datos servidor->cliente <<<<<
@@ -4705,8 +4714,8 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
       this.cli.ult_an = this.cli.an;
       this.cli.an = this.serv.sn + denv;
       this.incrementarVC(this.serv, this.cli, mssServ);
-      this.comprobarEC(this.serv, umbral);
-      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+      this.comprobarEC(this.serv, umbralserv);
+      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
       this.serv.ult_an = this.serv.an;
       contadorPqtEnv++;
       reconocido = 0;
@@ -4732,7 +4741,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
         {
           this.serv.vcrep+=1;
           this.serv.vc+=1;
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
           envAck++;
           reconocido = 0;
           ACK_inm = 1;
@@ -4744,7 +4753,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
           this.serv.vc+=1;
           this.cli.ult_sn = this.cli.sn;
           this.cli.ult_an = this.cli.an;
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
           envAck++;
           reconocido = 0;
           ACK_inm = 1;
@@ -4756,14 +4765,14 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
         if (envAck < 2)
         {
           this.serv.ec = false;
-          umbral = Math.round((this.serv.vc/2)*100)/100;
+          umbralserv = Math.round((this.serv.vc/2)*100)/100;
           this.serv.vc=1;
           this.serv.vcrep=1;
           this.serv.ec = false;
-          this.comprobarEC(this.serv, umbral);
+          this.comprobarEC(this.serv, umbralserv);
           if (this.serv.ec==true) this.serv.flags=ecal;
           else this.serv.flags = al;
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep, emisor:2, pqt_rtx:1, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep, emisor:2, pqt_rtx:1, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
           this.serv.vc++;
           this.serv.vcrep++;
           envAck++;
@@ -4774,12 +4783,12 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
         else    //Flechas Cruzadas
         {
           this.serv.ec=false;
-          umbral = this.serv.vc/2;
-          this.serv.vc=umbral+3;
+          umbralserv = this.serv.vc/2;
+          this.serv.vc=umbralserv+3;
           this.serv.vcrep= this.serv.vc;
           this.cli.ult_sn = this.cli.sn;
           this.cli.ult_an = this.cli.an;
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: al, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:1, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: al, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:1, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
           this.serv.vc++;
           this.serv.vcrep++;
           envAck++;
@@ -4798,9 +4807,9 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
         let inc: number = Math.abs(this.serv.ult_sn - this.cli.ult_an);
         this.cli.an = this.serv.ult_sn + (inc == 0 ? denv : inc);
         this.incrementarVC(this.serv, this.cli, mssServ);
-        this.comprobarEC(this.serv, umbral);
+        this.comprobarEC(this.serv, umbralserv);
         this.cli.ult_an = this.cli.an;
-        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
         numPqtServEnv--;
         envAck = 0;
         ACK_inm = 0;
@@ -4820,23 +4829,23 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
           let inc: number = this.serv.ult_sn - this.cli.ult_an;
           this.cli.an = this.serv.ult_sn + (inc == 0 ? denv : inc);
           this.incrementarVC(this.serv, this.cli, mssServ);
-          this.comprobarEC(this.serv, umbral);
+          this.comprobarEC(this.serv, umbralserv);
           if(timeout==0 && pqtPerdido==1)
           {
-            umbral = this.serv.vcrep/2;
-            if (umbral==0)umbral=1;
+            umbralserv = this.serv.vcrep/2;
+            if (umbralserv==0)umbralserv=1;
             this.serv.vcrep = 1;
             this.serv.vc = 1;
             //this.serv.ec = false;
             //this.serv.flags = nullflag;
-            this.comprobarEC(this.serv, umbral);
+            this.comprobarEC(this.serv, umbralserv);
             if (this.serv.ec==true) this.serv.flags=ecal;
             else this.serv.flags = al;
-            if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+            if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
           }
           else 
           {
-            if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+            if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
           }
           this.serv.ult_sn = this.serv.sn;
           this.serv.ult_an = this.serv.an;
@@ -4854,20 +4863,20 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
           ACK_dup++;
           if(timeout==0 && pqtPerdido==1)
           {
-            umbral = this.serv.vcrep/2;
-            if (umbral==0)umbral=1;
+            umbralserv = this.serv.vcrep/2;
+            if (umbralserv==0)umbralserv=1;
             this.serv.vcrep = 1;
             this.serv.vc = 1;
             //this.serv.ec = false;
             //this.serv.flags = nullflag;
-            this.comprobarEC(this.serv, umbral);
+            this.comprobarEC(this.serv, umbralserv);
             if (this.serv.ec==true) this.serv.flags=ecal;
             else this.serv.flags = al;
-            if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1, Num_ACKdup: ACK_dup , NumEnvio:0});
+            if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1, Num_ACKdup: ACK_dup , NumEnvio:0});
           }
           else 
           {
-            if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup: ACK_dup, NumEnvio:0});
+            if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup: ACK_dup, NumEnvio:0});
           }
           numPqtServEnv--;
           envAck = 0; 
@@ -4884,12 +4893,12 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
         {
           this.serv.ult_sn = this.serv.sn;
           this.serv.sn += ultDataEnv;
-          this.comprobarEC(this.serv, umbral);
+          this.comprobarEC(this.serv, umbralserv);
           sn_perd = this.serv.sn;
           an_perd = this.serv.an;
           d_perd = denv;
           this.cli.an += ultDataEnv;
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
           this.serv.ult_sn = this.serv.sn;
           ultDataEnv = denv;
           contadorPqtEnv++;
@@ -4908,12 +4917,12 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
           this.cli.ult_an = this.cli.an;
           this.cli.an = this.serv.ult_sn + (this.serv.ult_sn - this.cli.ult_an);
           this.incrementarVC(this.serv, this.cli, mssServ);
-          this.comprobarEC(this.serv, umbral);
+          this.comprobarEC(this.serv, umbralserv);
           sn_perd = this.serv.sn;
           an_perd = this.serv.an;
           d_perd = denv;
           this.cli.an += ultDataEnv;
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -20, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -20, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.serv.sn, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
           contadorPqtEnv++;
           numPqtServEnv--;
           timeout = this.simular.timeout;
@@ -4930,23 +4939,23 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
         this.cli.flags = nullflag;
         this.serv.ult_sn = this.serv.sn;
         this.serv.sn += ultDataEnv;
-        this.comprobarEC(this.serv, umbral);
+        this.comprobarEC(this.serv, umbralserv);
         if(timeout==0 && pqtPerdido==1)
         {
-          umbral = this.cli.vcrep/2;
-          if (umbral==0)umbral=1;
+          umbralserv = this.cli.vcrep/2;
+          if (umbralserv==0)umbralserv=1;
           this.serv.vcrep = 1;
           this.serv.vc = 1;
           //this.serv.ec = false;
           //this.serv.flags = nullflag;
-          this.comprobarEC(this.serv, umbral);
+          this.comprobarEC(this.serv, umbralserv);
           if (this.serv.ec==true) this.serv.flags=ecal;
           else this.serv.flags = al;
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
         }
         else
         {
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
           if(pqtPerdido==1) 
           {
             flag_ACKdup=1;
@@ -4965,20 +4974,20 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
         numPqtServEnv--;
         if(timeout==0 && pqtPerdido==1)
         { 
-          umbral = this.serv.vcrep/2; 
-          if (umbral==0)umbral=1;
+          umbralserv = this.serv.vcrep/2; 
+          if (umbralserv==0)umbralserv=1;
           this.serv.vcrep=1;
           this.serv.vc=1;
           //this.cli.flags = nullflag;
           this.serv.ec = false;
-          this.comprobarEC(this.serv, umbral);
+          this.comprobarEC(this.serv, umbralserv);
           if (this.serv.ec==true) this.serv.flags=ecal;
           else this.serv.flags = al;
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep ,emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep ,emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
         }
         else
         {
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:0, Num_ACKdup:0, NumEnvio:0});
         }
       }
       //ACK Y DATOS
@@ -4993,23 +5002,23 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
           this.cli.ult_an = this.cli.an;
           this.cli.an = this.serv.ult_sn + (this.serv.ult_sn - this.cli.ult_an);
           this.incrementarVC(this.serv, this.cli, mssServ);
-          this.comprobarEC(this.serv, umbral);
+          this.comprobarEC(this.serv, umbralserv);
           if (timeout==0 && pqtPerdido==1)
           {
-            umbral = this.serv.vcrep/2;
-            if (umbral==0)umbral=1;
+            umbralserv = this.serv.vcrep/2;
+            if (umbralserv==0)umbralserv=1;
             this.serv.vcrep = 1;
             this.serv.vc = 1;
             //this.serv.ec = false;
             //this.serv.flags = nullflag;
-            this.comprobarEC(this.serv, umbral);
+            this.comprobarEC(this.serv, umbralserv);
             if (this.serv.ec==true) this.serv.flags=ecal;
             else this.serv.flags = al;
-            if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+            if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
           }
           else
           {
-            if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+            if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
           }
           ultDataEnv = denv;
           this.serv.ult_sn = this.serv.sn;
@@ -5030,20 +5039,20 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
           sin_ACK++;
           if (timeout==0 && pqtPerdido==1)
           {
-            umbral = this.serv.vcrep/2;
-            if (umbral==0)umbral=1;
+            umbralserv = this.serv.vcrep/2;
+            if (umbralserv==0)umbralserv=1;
             this.serv.vcrep = 1;
             this.serv.vc = 1;
             //this.serv.ec = false;
             //this.serv.flags = nullflag;
-            this.comprobarEC(this.serv, umbral);
+            this.comprobarEC(this.serv, umbralserv);
             if (this.serv.ec==true) this.serv.flags=ecal;
             else this.serv.flags = al;
-            if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0,emisor:0, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1 , Num_ACKdup:ACK_dup, NumEnvio:0});
+            if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0,emisor:0, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1 , Num_ACKdup:ACK_dup, NumEnvio:0});
           }
           else
           {
-            if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:ACK_dup, NumEnvio:0});
+            if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:ACK_dup, NumEnvio:0});
           }
           ultDataEnv = denv;
           this.serv.ult_sn = this.serv.sn;
@@ -5070,14 +5079,14 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
         if (ACK_dup==3)
         {
           this.serv.ec = false;
-          umbral = Math.round((this.serv.vc/2)*100)/100;
+          umbralserv = Math.round((this.serv.vc/2)*100)/100;
           this.serv.vc=1;
           this.serv.vcrep=1;
           this.serv.ec = false;
-          this.comprobarEC(this.serv, umbral);
+          this.comprobarEC(this.serv, umbralserv);
           if (this.serv.ec==true) this.serv.flags=ecal;
           else this.serv.flags = al;
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep, emisor:2, pqt_rtx:1, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep, emisor:2, pqt_rtx:1, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
           this.serv.vc++;
           this.serv.vcrep++;
           envAck++;
@@ -5096,7 +5105,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
           let inc: number = this.serv.ult_sn - this.cli.ult_an;
           this.cli.an = this.serv.ult_sn + (inc == 0 ? denv : inc);
           ACK_dup++;
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup: ACK_dup, NumEnvio:0});
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup: ACK_dup, NumEnvio:0});
           envAck = 0; 
           flag_ACKdup = 0;
         }
@@ -5104,7 +5113,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
       {
         if (envAck < 2 && denv !=0 )
         {
-        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
         reconocido=0;
         pqtPerdido=0;
         envAck++;
@@ -5113,7 +5122,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
         {
         this.cli.ult_sn = this.cli.sn;
         this.cli.ult_an = this.cli.an;
-        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+        if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
         envAck++;
         reconocido=0;
         pqtPerdido=0;
@@ -5124,22 +5133,22 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
         timeout--;
         if (timeout==0)
         {
-          umbral = this.cli.vcrep/2;
-          if (umbral==0)umbral=1;
+          umbralserv = this.cli.vcrep/2;
+          if (umbralserv==0)umbralserv=1;
           this.serv.vcrep=1;
           this.serv.vc=1;
           //this.serv.ec = false;
           //this.serv.flags = nullflag;
-          this.comprobarEC(this.serv, umbral);
+          this.comprobarEC(this.serv, umbralserv);
           if (this.serv.ec==true) this.serv.flags=ecal;
           else this.serv.flags = al;
-          this.comprobarEC(this.serv, umbral);
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+          this.comprobarEC(this.serv, umbralserv);
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
           
         }
         else
         {
-          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+          if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralserv, envio:0, Num_ACKdup:0, NumEnvio:0});
         }
       }
     }
@@ -5152,10 +5161,10 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
       }
       this.cli.ult_sn = this.cli.sn;
       this.incrementarVC(this.serv, this.cli, mssServ);
-      this.comprobarEC(this.serv, umbral);
+      this.comprobarEC(this.serv, umbralserv);
       if (NumEnvios==1)
       {
-      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: ack, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: ack, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
       }
       this.serv.ult_sn = this.serv.sn;
       this.serv.ult_an = this.serv.an;
@@ -5222,6 +5231,7 @@ else
 //PRIMER SEGMENTO
 //#########################
 // >>>>> Si el primer segmento se pierde <<<<<
+/*
 if (this.simular.segperdclien2 != null && contadorPqtEnv +1==segperdNumclien2[x])
 {
  x++;
@@ -5229,7 +5239,7 @@ if (this.simular.segperdclien2 != null && contadorPqtEnv +1==segperdNumclien2[x]
  sn_perd = this.cli.sn;
  an_perd = this.cli.an;
  d_perd = denv;
- if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1 , pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:2});
+ if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1 , pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:2});
  contadorPqtEnv++;
  timeout= this.simular.timeout;
  reconocido=1;
@@ -5239,7 +5249,7 @@ if (this.simular.segperdclien2 != null && contadorPqtEnv +1==segperdNumclien2[x]
 else 
 {
 // El cliente envía el primer paquete
-if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: ack, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1 , pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:2});
+if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: ack, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1 , pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:2});
 numPqtClienEnv++;
 contadorPqtEnv++;
 }
@@ -5254,11 +5264,11 @@ if (pqtPerdido==1)
      {
      this.cli.vcrep+=1;
      this.cli.vc+=1;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: ack, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc:this.serv.vcrep, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: ack, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc:this.serv.vcrep, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
      reconocido=0;
      ACK_inm = 1;
      pqtPerdido=0;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
 
    }  
    }
@@ -5267,20 +5277,20 @@ if (pqtPerdido==1)
      timeout--;
      if (timeout==0)
      {
-       umbral = this.cli.vcrep/2;
-       if (umbral==0)umbral=1;
+       umbralcli = this.cli.vcrep/2;
+       if (umbralcli==0)umbralcli=1;
        this.cli.vcrep=1;
        this.cli.vc=1;
        //this.cli.ec = false;
        //this.cli.flags = nullflag;
-       this.comprobarEC(this.cli, umbral);
+       this.comprobarEC(this.cli, umbralcli);
        if (this.cli.ec==true) this.cli.flags=ecal;
        else this.cli.flags = al;
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
      }
      else
      {
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
      }
    }
  }
@@ -5290,7 +5300,7 @@ if (pqtPerdido==1)
 if (numPqtClien != 0 && segperdNumclien2[0]!=1) // Si hay mas de un paquete a enviar
 {
  // El servidor espera 1 tick por si recibe otro paquete
- if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+ if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
 
  // El servidor manda el ACK del primer paquete
  this.serv.flags = ack;
@@ -5299,16 +5309,18 @@ if (numPqtClien != 0 && segperdNumclien2[0]!=1) // Si hay mas de un paquete a en
  this.serv.ult_an = this.serv.an;
  this.serv.an = this.cli.sn + denv;
  this.incrementarVC(this.cli, this.serv, mssClien);
- this.comprobarEC(this.cli, umbral);
+ this.comprobarEC(this.cli, umbralcli);
  //ACK
- if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2 , pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+ if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2 , pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
  this.cli.ult_an = this.serv.an;
 }
-
+*/
 //RESTO DE PAQUETES
 //############################
 for (; numPqtClienEnv <= numPqtClien; numPqtClienEnv++) { //Segmentos enviados a partir del primero
 let x: number=0;
+let numenvio: number=0;
+if (numPqtClienEnv==0)numenvio=2;
 //REENVÍO PAQUETE PERDIDO
 if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this.simular.segperdclien2 != null && ACK_dup==3 && pqtPerdido==1))
 {
@@ -5318,7 +5330,7 @@ if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this
    {
    this.cli.vcrep+=1;
    this.cli.vc+=1;
-   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:numenvio});
    envAck++;
    reconocido=0;
    ACK_inm = 1;
@@ -5330,7 +5342,7 @@ if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this
    this.cli.vc+=1;
    this.serv.ult_sn = this.serv.sn;
    this.serv.ult_an = this.serv.an;
-   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:numenvio});
    envAck++;
    reconocido=0;
    ACK_inm = 1;
@@ -5341,14 +5353,14 @@ if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this
  {
    if (envAck < 2 && denv !=0 )
    {
-   umbral = Math.round((this.cli.vc / 2)*100)/100;
+   umbralcli = Math.round((this.cli.vc / 2)*100)/100;
    this.cli.vc=1;
    this.cli.vcrep=1;
    this.cli.ec = false;
-   this.comprobarEC(this.cli, umbral);
+   this.comprobarEC(this.cli, umbralcli);
    if (this.cli.ec==true) this.cli.flags=ecal;
    else this.cli.flags = al;
-   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:numenvio});
    this.cli.vc++;
    this.cli.vcrep++;
    envAck++;
@@ -5359,16 +5371,16 @@ if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this
    }  
    else if (denv !=0) //FLECHAS CRUZADAS
    {
-   umbral = Math.round((this.cli.vc / 2)*100)/100;
+   umbralcli = Math.round((this.cli.vc / 2)*100)/100;
    this.cli.vc=1;
    this.cli.vcrep=1;
    this.cli.ec = false;
    this.serv.ult_sn = this.serv.sn;
    this.serv.ult_an = this.serv.an;
-   this.comprobarEC(this.cli, umbral);
+   this.comprobarEC(this.cli, umbralcli);
    if (this.cli.ec==true) this.cli.flags=ecal;
    else this.cli.flags = al;
-   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: al, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: al, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:numenvio});
    this.cli.vc++;
    this.cli.vcrep++;
    envAck++;
@@ -5389,9 +5401,9 @@ if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this
    this.serv.an = this.cli.ult_sn + (inc == 0 ? denv : inc);
    this.serv.flags = ack;
    this.incrementarVC(this.cli, this.serv, mssClien);
-   this.comprobarEC(this.cli, umbral);
+   this.comprobarEC(this.cli, umbralcli);
    this.serv.ult_an = this.serv.an;
-   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0 });
+   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:numenvio });
    numPqtClienEnv--; // HACE QUE EL SEGMENTO PERDIDO SE REPITA DOS VECES!! Solucionado con contadorPqtEnv
    envAck = 0; 
    ACK_inm=0;
@@ -5411,23 +5423,23 @@ if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this
      let inc: number = this.cli.ult_sn - this.serv.ult_an;
      this.serv.an = this.cli.ult_sn + (inc == 0 ? denv : inc);
      this.incrementarVC(this.cli, this.serv, mssClien);
-     this.comprobarEC(this.cli, umbral);
+     this.comprobarEC(this.cli, umbralcli);
      if(timeout==0 && pqtPerdido==1)
      {
-       umbral = Math.round((this.cli.vcrep/2)*100)/100; 
-       if (umbral==0)umbral=1;
+       umbralcli = Math.round((this.cli.vcrep/2)*100)/100; 
+       if (umbralcli==0)umbralcli=1;
        this.cli.vcrep=1;
        this.cli.vc=1;
        //this.cli.flags = nullflag;
        //this.cli.ec = false;
-       this.comprobarEC(this.cli, umbral);
+       this.comprobarEC(this.cli, umbralcli);
        if (this.cli.ec==true) this.cli.flags=ecal;
        else this.cli.flags = al;
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:0 , Num_ACKdup:0, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbralcli, envio:0 , Num_ACKdup:0, NumEnvio:numenvio});
      }
      else
      {
-       if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0 , Num_ACKdup:0, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0 , Num_ACKdup:0, NumEnvio:numenvio});
      }
      this.cli.ult_sn = this.cli.sn;
      this.cli.ult_an = this.cli.an;
@@ -5445,20 +5457,20 @@ if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this
      ACK_dup++;
      if(timeout==0 && pqtPerdido==1)
      {
-       umbral = Math.round((this.cli.vcrep/2)*100)/100;
-       if (umbral==0)umbral=1;
+       umbralcli = Math.round((this.cli.vcrep/2)*100)/100;
+       if (umbralcli==0)umbralcli=1;
        this.cli.vcrep=1;
        this.cli.vc=1;
        this.cli.flags = nullflag;
        this.cli.ec = false;
-       this.comprobarEC(this.cli, umbral);
+       this.comprobarEC(this.cli, umbralcli);
        if (this.cli.ec==true) this.cli.flags=ecal;
        else this.cli.flags = al;
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0 , fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:ACK_dup, NumEnvio:numenvio});
      }
      else
      {
-       if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:ACK_dup, NumEnvio:numenvio});
      }
      numPqtClienEnv--; // HACE QUE EL SEGMENTO PERDIDO SE REPITA DOS VECES!! Solucionado con contadorPqtEnv
      envAck = 0; 
@@ -5478,12 +5490,12 @@ if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this
    this.cli.ult_sn = this.cli.sn;
    this.cli.sn += ultDataEnv;
    this.serv.flags= nullflag;
-   this.comprobarEC(this.cli, umbral);
+   this.comprobarEC(this.cli, umbralcli);
    sn_perd = this.cli.sn;
    an_perd = this.cli.an;
    d_perd = denv;
    this.serv.an += ultDataEnv;
-   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:numenvio});
    ultDataEnv = denv;
    contadorPqtEnv++;
    numPqtClienEnv--;
@@ -5501,12 +5513,12 @@ if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this
    this.serv.ult_an = this.serv.an;
    this.serv.an = this.cli.ult_sn + (this.cli.ult_sn - this.serv.ult_an);
    this.incrementarVC(this.cli, this.serv, mssClien);
-   this.comprobarEC(this.cli, umbral);
+   this.comprobarEC(this.cli, umbralcli);
    sn_perd = this.cli.sn;
    an_perd = this.cli.an;
    d_perd = denv;
    this.serv.an += ultDataEnv;
-   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0 , Num_ACKdup:0, NumEnvio:0});
+   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0 , Num_ACKdup:0, NumEnvio:numenvio});
    contadorPqtEnv++;
    numPqtClienEnv--;
    envAck = 0;
@@ -5523,23 +5535,23 @@ if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this
    this.serv.flags= nullflag;
    this.cli.ult_sn = this.cli.sn;
    this.cli.sn += ultDataEnv;
-   this.comprobarEC(this.cli, umbral);
+   this.comprobarEC(this.cli, umbralcli);
    if(timeout==0 && pqtPerdido==1)
    { 
-     umbral = this.cli.vcrep/2; 
-     if (umbral==0)umbral=1;
+     umbralcli = this.cli.vcrep/2; 
+     if (umbralcli==0)umbralcli=1;
      this.cli.vcrep=1;
      this.cli.vc=1;
      //this.cli.flags = nullflag;
      //this.cli.ec = false;
-     this.comprobarEC(this.cli, umbral);
+     this.comprobarEC(this.cli, umbralcli);
      if (this.cli.ec==true) this.cli.flags=ecal;
      else this.cli.flags = al;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:numenvio});
    }
    else
    {
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 , emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 , emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:numenvio});
      if(pqtPerdido==1) 
      {
        flag_ACKdup=1;
@@ -5558,20 +5570,20 @@ if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this
    numPqtClienEnv--;
    if(timeout==0 && pqtPerdido==1)
    { 
-     umbral = this.cli.vcrep/2; 
-     if (umbral==0)umbral=1;
+     umbralcli = this.cli.vcrep/2; 
+     if (umbralcli==0)umbralcli=1;
      this.cli.vcrep=1;
      this.cli.vc=1;
      //this.cli.flags = nullflag;
      this.cli.ec = false;
-     this.comprobarEC(this.cli, umbral);
+     this.comprobarEC(this.cli, umbralcli);
      if (this.cli.ec==true) this.cli.flags=ecal;
      else this.cli.flags = al;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep ,emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep ,emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
    }
    else
    {
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
    }
  } 
  //ACK Y DATOS 
@@ -5586,23 +5598,23 @@ if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this
      this.serv.ult_an = this.serv.an;
      this.serv.an = this.cli.ult_sn + (this.cli.ult_sn - this.serv.ult_an);
      this.incrementarVC(this.cli, this.serv, mssServ);
-     this.comprobarEC(this.cli, umbral);
+     this.comprobarEC(this.cli, umbralcli);
      if(timeout==0 && pqtPerdido==1)
      { 
-       umbral = this.cli.vcrep/2;
-       if (umbral==0)umbral=1;
+       umbralcli = this.cli.vcrep/2;
+       if (umbralcli==0)umbralcli=1;
        this.cli.vcrep=1;
        this.cli.vc=1;
        //this.cli.flags = nullflag;
        //this.cli.ec = false;
-       this.comprobarEC(this.cli, umbral);
+       this.comprobarEC(this.cli, umbralcli);
        if (this.cli.ec==true) this.cli.flags=ecal;
        else this.cli.flags = al;
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:0, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:0, pqt_rtx:0 , fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:numenvio});
      }
      else
      {
-       if (nseg+1<=pasoapaso || pasoapaso==0)  this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:0, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)  this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:0, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:numenvio});
      }
      ultDataEnv = denv;
      this.cli.ult_sn = this.cli.sn;
@@ -5623,8 +5635,8 @@ if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this
      sin_ACK++;
      if(timeout==0 && pqtPerdido==1)
      { 
-       umbral = this.cli.vcrep/2; 
-       if (umbral==0)umbral=1;
+       umbralcli = this.cli.vcrep/2; 
+       if (umbralcli==0)umbralcli=1;
        this.cli.vcrep=1;
        this.cli.vc=1;
        //this.cli.flags = nullflag;
@@ -5632,11 +5644,11 @@ if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this
        //this.comprobarEC(this.cli, umbral);
        //if (this.cli.ec==true) this.cli.flags=ecal;
        //else this.cli.flags = al; 
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:0, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:0, pqt_rtx:0 , fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:ACK_dup, NumEnvio:numenvio});
      }
      else
      {
-       if (nseg+1<=pasoapaso || pasoapaso==0)  this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:0, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)  this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:0, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:ACK_dup, NumEnvio:numenvio});
      }
      ultDataEnv = denv;
      this.cli.ult_sn = this.cli.sn;
@@ -5660,14 +5672,14 @@ if (pqtPerdido==1)
  {
   if (ACK_dup==3)
   {
-    umbral = Math.round((this.cli.vc / 2)*100)/100;
+    umbralcli = Math.round((this.cli.vc / 2)*100)/100;
     this.cli.vc=1;
     this.cli.vcrep=1;
     this.cli.ec = false;
-    this.comprobarEC(this.cli, umbral);
+    this.comprobarEC(this.cli, umbralcli);
     if (this.cli.ec==true) this.cli.flags=ecal;
     else this.cli.flags = al;
-    if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+    if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
     this.cli.vc++;
     this.cli.vcrep++;
     envAck++;
@@ -5686,7 +5698,7 @@ if (pqtPerdido==1)
     this.serv.an = this.cli.ult_sn + (inc == 0 ? denv : inc);
     this.serv.flags = ack;
     ACK_dup++;
-    if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
+    if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
     numPqtClienEnv--; // HACE QUE EL SEGMENTO PERDIDO SE REPITA DOS VECES!! Solucionado con contadorPqtEnv
     envAck = 0; 
     flag_ACKdup = 0;
@@ -5697,10 +5709,10 @@ if (pqtPerdido==1)
    {
    //this.cli.vcrep+=1;
    //this.cli.vc+=1;
-   this.comprobarEC(this.cli, umbral);
+   this.comprobarEC(this.cli, umbralcli);
    if (this.cli.ec==true) this.cli.flags=ecal;
    else this.cli.flags = al;
-   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
    reconocido=0;
    ACK_inm = 1;
    pqtPerdido=0;
@@ -5711,7 +5723,7 @@ if (pqtPerdido==1)
    //this.cli.vc+=1;
    this.serv.ult_sn = this.serv.sn;
    this.serv.ult_an = this.serv.an;
-   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
    envAck++;
    reconocido=0;
    ACK_inm = 1;
@@ -5723,20 +5735,20 @@ if (pqtPerdido==1)
    timeout--;
    if (timeout==0)
    {
-     umbral = this.cli.vcrep/2;
-     if (umbral==0)umbral=1;
+     umbralcli = this.cli.vcrep/2;
+     if (umbralcli==0)umbralcli=1;
      this.cli.vcrep=1;
      this.cli.vc=1;
      //this.cli.ec = false;
      //this.cli.flags = nullflag;
-     this.comprobarEC(this.cli, umbral);
+     this.comprobarEC(this.cli, umbralcli);
      if (this.cli.ec==true) this.cli.flags=ecal;
      else this.cli.flags = al;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
    }
    else
    {
-     this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+     this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
    }
  }
 
@@ -5765,7 +5777,7 @@ if (envAck != 0 || (envAck == 0 && modPqtClien != 0)) { // Si el ACK no se ha en
    denv = mssServ;
  this.serv.ult_sn = this.serv.sn;
  this.incrementarVC(this.cli, this.serv, mssClien);
- this.comprobarEC(this.cli, umbral);
+ this.comprobarEC(this.cli, umbralserv);
  //Si el primer paquete se pierde
  for (;numPqtServEnv<1;)
  {
@@ -5777,7 +5789,7 @@ if (envAck != 0 || (envAck == 0 && modPqtClien != 0)) { // Si el ACK no se ha en
      sn_perd = this.serv.sn;
      an_perd = this.serv.an;
      d_perd = denv;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
      contadorPqtEnv++;
      reconocido = 1;
      pqtPerdido = 1;
@@ -5785,7 +5797,7 @@ if (envAck != 0 || (envAck == 0 && modPqtClien != 0)) { // Si el ACK no se ha en
    }
    else if (pqtPerdido != 1)
    {
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
      this.cli.ult_sn = this.cli.sn;
      this.cli.ult_an = this.cli.an;
      this.cli.an++;
@@ -5794,7 +5806,7 @@ if (envAck != 0 || (envAck == 0 && modPqtClien != 0)) { // Si el ACK no se ha en
      contadorPqtEnv++;
      numPqtServEnv++;
      ACK_inm=0;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0 });
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0 });
    }
    if (pqtPerdido == 1 && timeout != 0)
    {
@@ -5803,25 +5815,25 @@ if (envAck != 0 || (envAck == 0 && modPqtClien != 0)) { // Si el ACK no se ha en
      {
        this.serv.vcrep=1;
        this.serv.vc=1;
-       this.comprobarEC(this.serv, umbral);
+       this.comprobarEC(this.serv, umbralserv);
        if (this.serv.ec==true) this.serv.flags=ecal;
        else this.serv.flags = al;
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep,emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep,emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
      }
        else
        {
-         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
        }
      }
    if (pqtPerdido == 1 && timeout ==0) //REENVÍO PRIMER PAQUETE SERVIDOR --> CLIENTE
    {
      this.serv.flags=nullflag;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: ack, snserv: sn_perd, anserv: an_perd, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: ack, snserv: sn_perd, anserv: an_perd, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
      contadorPqtEnv++;
      numPqtServEnv++;
      pqtPerdido=0;
      // El cliente espera 1 tick por si recibe otro paquete
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0 });
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0 });
    }
 
 // >>>>> Envio de datos servidor->cliente <<<<<
@@ -5834,8 +5846,8 @@ if (numPqtServ != 0 && pqtPerdido !=1) // ACK -->Si hay mas de un paquete a envi
  this.cli.ult_an = this.cli.an;
  this.cli.an = this.serv.sn + denv;
  this.incrementarVC(this.serv, this.cli, mssServ);
- this.comprobarEC(this.serv, umbral);
- if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+ this.comprobarEC(this.serv, umbralserv);
+ if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
  this.serv.ult_an = this.serv.an;
  contadorPqtEnv++;
  reconocido = 0;
@@ -5861,7 +5873,7 @@ if ((this.simular.segperdserv2 != null && timeout==0 && pqtPerdido==1 )|| (this.
    {
      this.serv.vcrep+=1;
      this.serv.vc+=1;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
      envAck++;
      reconocido = 0;
      ACK_inm = 1;
@@ -5873,7 +5885,7 @@ if ((this.simular.segperdserv2 != null && timeout==0 && pqtPerdido==1 )|| (this.
      this.serv.vc+=1;
      this.cli.ult_sn = this.cli.sn;
      this.cli.ult_an = this.cli.an;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
      envAck++;
      reconocido = 0;
      ACK_inm = 1;
@@ -5885,14 +5897,14 @@ if ((this.simular.segperdserv2 != null && timeout==0 && pqtPerdido==1 )|| (this.
    if (envAck < 2)
    {
      this.serv.ec = false;
-     umbral = Math.round((this.serv.vc/2)*100)/100;
+     umbralserv = Math.round((this.serv.vc/2)*100)/100;
      this.serv.vc=1;
      this.serv.vcrep=1;
      this.serv.ec = false;
-     this.comprobarEC(this.serv, umbral);
+     this.comprobarEC(this.serv, umbralserv);
      if (this.serv.ec==true) this.serv.flags=ecal;
      else this.serv.flags = al;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep, emisor:2, pqt_rtx:1, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep, emisor:2, pqt_rtx:1, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
      this.serv.vc++;
      this.serv.vcrep++;
      envAck++;
@@ -5903,13 +5915,13 @@ if ((this.simular.segperdserv2 != null && timeout==0 && pqtPerdido==1 )|| (this.
    else    //Flechas Cruzadas
    {
      this.serv.ec=false;
-     umbral = this.serv.vc/2;
+     umbralserv = this.serv.vc/2;
      this.serv.vc=1;
      this.serv.vcrep=1;
      this.serv.ec = false;
      this.cli.ult_sn = this.cli.sn;
      this.cli.ult_an = this.cli.an;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: al, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:1, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: al, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:1, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
      this.serv.vc++;
      this.serv.vcrep++;
      envAck++;
@@ -5928,9 +5940,9 @@ if ((this.simular.segperdserv2 != null && timeout==0 && pqtPerdido==1 )|| (this.
    let inc: number = Math.abs(this.serv.ult_sn - this.cli.ult_an);
    this.cli.an = this.serv.ult_sn + (inc == 0 ? denv : inc);
    this.incrementarVC(this.serv, this.cli, mssServ);
-   this.comprobarEC(this.serv, umbral);
+   this.comprobarEC(this.serv, umbralserv);
    this.cli.ult_an = this.cli.an;
-   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
    numPqtServEnv--;
    envAck = 0;
    ACK_inm = 0;
@@ -5950,23 +5962,23 @@ if ((this.simular.segperdserv2 != null && timeout==0 && pqtPerdido==1 )|| (this.
      let inc: number = this.serv.ult_sn - this.cli.ult_an;
      this.cli.an = this.serv.ult_sn + (inc == 0 ? denv : inc);
      this.incrementarVC(this.serv, this.cli, mssServ);
-     this.comprobarEC(this.serv, umbral);
+     this.comprobarEC(this.serv, umbralserv);
      if(timeout==0 && pqtPerdido==1)
      {
-       umbral = this.serv.vcrep/2;
-       if (umbral==0)umbral=1;
+       umbralserv = this.serv.vcrep/2;
+       if (umbralserv==0)umbralserv=1;
        this.serv.vcrep = 1;
        this.serv.vc = 1;
        //this.serv.ec = false;
        //this.serv.flags = nullflag;
-       this.comprobarEC(this.serv, umbral);
+       this.comprobarEC(this.serv, umbralserv);
        if (this.serv.ec==true) this.serv.flags=ecal;
        else this.serv.flags = al;
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
      }
      else 
      {
-       if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
      }
      this.serv.ult_sn = this.serv.sn;
      this.serv.ult_an = this.serv.an;
@@ -5984,20 +5996,20 @@ if ((this.simular.segperdserv2 != null && timeout==0 && pqtPerdido==1 )|| (this.
      ACK_dup++;
      if(timeout==0 && pqtPerdido==1)
      {
-       umbral = this.serv.vcrep/2;
-       if (umbral==0)umbral=1;
+       umbralserv = this.serv.vcrep/2;
+       if (umbralserv==0)umbralserv=1;
        this.serv.vcrep = 1;
        this.serv.vc = 1;
        //this.serv.ec = false;
        //this.serv.flags = nullflag;
-       this.comprobarEC(this.serv, umbral);
+       this.comprobarEC(this.serv, umbralserv);
        if (this.serv.ec==true) this.serv.flags=ecal;
        else this.serv.flags = al;
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1, Num_ACKdup: ACK_dup , NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1, Num_ACKdup: ACK_dup , NumEnvio:0});
      }
      else 
      {
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup: ACK_dup, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup: ACK_dup, NumEnvio:0});
      }
      numPqtServEnv--;
      envAck = 0; 
@@ -6014,12 +6026,12 @@ if ((this.simular.segperdserv2 != null && timeout==0 && pqtPerdido==1 )|| (this.
    {
      this.serv.ult_sn = this.serv.sn;
      this.serv.sn += ultDataEnv;
-     this.comprobarEC(this.serv, umbral);
+     this.comprobarEC(this.serv, umbralserv);
      sn_perd = this.serv.sn;
      an_perd = this.serv.an;
      d_perd = denv;
      this.cli.an += ultDataEnv;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
      this.serv.ult_sn = this.serv.sn;
      ultDataEnv = denv;
      contadorPqtEnv++;
@@ -6038,12 +6050,12 @@ if ((this.simular.segperdserv2 != null && timeout==0 && pqtPerdido==1 )|| (this.
      this.cli.ult_an = this.cli.an;
      this.cli.an = this.serv.ult_sn + (this.serv.ult_sn - this.cli.ult_an);
      this.incrementarVC(this.serv, this.cli, mssServ);
-     this.comprobarEC(this.serv, umbral);
+     this.comprobarEC(this.serv, umbralserv);
      sn_perd = this.serv.sn;
      an_perd = this.serv.an;
      d_perd = denv;
      this.cli.an += ultDataEnv;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -20, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -20, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.serv.sn, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
      contadorPqtEnv++;
      numPqtServEnv--;
      timeout = this.simular.timeout;
@@ -6060,23 +6072,23 @@ if ((this.simular.segperdserv2 != null && timeout==0 && pqtPerdido==1 )|| (this.
    this.cli.flags = nullflag;
    this.serv.ult_sn = this.serv.sn;
    this.serv.sn += ultDataEnv;
-   this.comprobarEC(this.serv, umbral);
+   this.comprobarEC(this.serv, umbralserv);
    if(timeout==0 && pqtPerdido==1)
    {
-     umbral = this.cli.vcrep/2;
-     if (umbral==0)umbral=1;
+     umbralserv = this.cli.vcrep/2;
+     if (umbralserv==0)umbralserv=1;
      this.serv.vcrep = 1;
      this.serv.vc = 1;
      //this.serv.ec = false;
      //this.serv.flags = nullflag;
-     this.comprobarEC(this.serv, umbral);
+     this.comprobarEC(this.serv, umbralserv);
      if (this.serv.ec==true) this.serv.flags=ecal;
      else this.serv.flags = al;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
    }
    else
    {
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
      if(pqtPerdido==1) 
      {
        flag_ACKdup=1;
@@ -6095,20 +6107,20 @@ if ((this.simular.segperdserv2 != null && timeout==0 && pqtPerdido==1 )|| (this.
    numPqtServEnv--;
    if(timeout==0 && pqtPerdido==1)
    { 
-     umbral = this.serv.vcrep/2; 
-     if (umbral==0)umbral=1;
+     umbralserv = this.serv.vcrep/2; 
+     if (umbralserv==0)umbralserv=1;
      this.serv.vcrep=1;
      this.serv.vc=1;
      //this.cli.flags = nullflag;
      this.serv.ec = false;
-     this.comprobarEC(this.serv, umbral);
+     this.comprobarEC(this.serv, umbralserv);
      if (this.serv.ec==true) this.serv.flags=ecal;
      else this.serv.flags = al;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep ,emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep ,emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
    }
    else
    {
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:0, Num_ACKdup:0, NumEnvio:0});
    }
  }
  //ACK Y DATOS
@@ -6123,23 +6135,23 @@ if ((this.simular.segperdserv2 != null && timeout==0 && pqtPerdido==1 )|| (this.
      this.cli.ult_an = this.cli.an;
      this.cli.an = this.serv.ult_sn + (this.serv.ult_sn - this.cli.ult_an);
      this.incrementarVC(this.serv, this.cli, mssServ);
-     this.comprobarEC(this.serv, umbral);
+     this.comprobarEC(this.serv, umbralserv);
      if (timeout==0 && pqtPerdido==1)
      {
-       umbral = this.serv.vcrep/2;
-       if (umbral==0)umbral=1;
+       umbralserv = this.serv.vcrep/2;
+       if (umbralserv==0)umbralserv=1;
        this.serv.vcrep = 1;
        this.serv.vc = 1;
        //this.serv.ec = false;
        //this.serv.flags = nullflag;
-       this.comprobarEC(this.serv, umbral);
+       this.comprobarEC(this.serv, umbralserv);
        if (this.serv.ec==true) this.serv.flags=ecal;
        else this.serv.flags = al;
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
      }
      else
      {
-       if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
      }
      ultDataEnv = denv;
      this.serv.ult_sn = this.serv.sn;
@@ -6160,20 +6172,20 @@ if ((this.simular.segperdserv2 != null && timeout==0 && pqtPerdido==1 )|| (this.
      sin_ACK++;
      if (timeout==0 && pqtPerdido==1)
      {
-       umbral = this.serv.vcrep/2;
-       if (umbral==0)umbral=1;
+       umbralserv = this.serv.vcrep/2;
+       if (umbralserv==0)umbralserv=1;
        this.serv.vcrep = 1;
        this.serv.vc = 1;
        //this.serv.ec = false;
        //this.serv.flags = nullflag;
-       this.comprobarEC(this.serv, umbral);
+       this.comprobarEC(this.serv, umbralserv);
        if (this.serv.ec==true) this.serv.flags=ecal;
        else this.serv.flags = al;
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0,emisor:0, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1 , Num_ACKdup:ACK_dup, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0,emisor:0, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1 , Num_ACKdup:ACK_dup, NumEnvio:0});
      }
      else
      {
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:ACK_dup, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:ACK_dup, NumEnvio:0});
      }
      ultDataEnv = denv;
      this.serv.ult_sn = this.serv.sn;
@@ -6200,14 +6212,14 @@ if (pqtPerdido==1)
   if (ACK_dup==3)
   {
     this.serv.ec = false;
-    umbral = Math.round((this.serv.vc/2)*100)/100;
+    umbralserv = Math.round((this.serv.vc/2)*100)/100;
     this.serv.vc=1;
     this.serv.vcrep=1;
     this.serv.ec = false;
-    this.comprobarEC(this.serv, umbral);
+    this.comprobarEC(this.serv, umbralserv);
     if (this.serv.ec==true) this.serv.flags=ecal;
     else this.serv.flags = al;
-    if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep, emisor:2, pqt_rtx:1, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+    if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep, emisor:2, pqt_rtx:1, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
     this.serv.vc++;
     this.serv.vcrep++;
     envAck++;
@@ -6226,7 +6238,7 @@ if (pqtPerdido==1)
     let inc: number = this.serv.ult_sn - this.cli.ult_an;
     this.cli.an = this.serv.ult_sn + (inc == 0 ? denv : inc);
     ACK_dup++;
-    if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup: ACK_dup, NumEnvio:0});
+    if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup: ACK_dup, NumEnvio:0});
     envAck = 0; 
     flag_ACKdup = 0;
   }
@@ -6234,7 +6246,7 @@ else if (timeout==0)//REENVÍO DEL PAQUETE
  {
    if (envAck < 2 && denv !=0 )
    {
-   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
    reconocido=0;
    pqtPerdido=0;
    envAck++;
@@ -6243,7 +6255,7 @@ else if (timeout==0)//REENVÍO DEL PAQUETE
    {
    this.cli.ult_sn = this.cli.sn;
    this.cli.ult_an = this.cli.an;
-   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
    envAck++;
    reconocido=0;
    pqtPerdido=0;
@@ -6254,22 +6266,22 @@ else if (timeout==0)//REENVÍO DEL PAQUETE
    timeout--;
    if (timeout==0)
    {
-     umbral = this.cli.vcrep/2;
-     if (umbral==0)umbral=1;
+     umbralserv = this.cli.vcrep/2;
+     if (umbralserv==0)umbralserv=1;
      this.serv.vcrep=1;
      this.serv.vc=1;
      //this.serv.ec = false;
      //this.serv.flags = nullflag;
-     this.comprobarEC(this.serv, umbral);
+     this.comprobarEC(this.serv, umbralserv);
      if (this.serv.ec==true) this.serv.flags=ecal;
      else this.serv.flags = al;
-     this.comprobarEC(this.serv, umbral);
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+     this.comprobarEC(this.serv, umbralserv);
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
      
    }
    else
    {
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralserv, envio:0, Num_ACKdup:0, NumEnvio:0});
    }
 }
 }
@@ -6282,10 +6294,10 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
  }
  this.cli.ult_sn = this.cli.sn;
  this.incrementarVC(this.serv, this.cli, mssServ);
- this.comprobarEC(this.serv, umbral);
+ this.comprobarEC(this.serv, umbralserv);
  if (NumEnvios==2)
  {
- if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: ack, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+ if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: ack, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
  }
  this.serv.ult_sn = this.serv.sn;
  this.serv.ult_an = this.serv.an;
@@ -6353,6 +6365,7 @@ else
 //PRIMER SEGMENTO
 //#########################
 // >>>>> Si el primer segmento se pierde <<<<<
+/*
 if (this.simular.segperdclien3 != null && contadorPqtEnv +1==segperdNumclien3[x])
 {
  x++;
@@ -6360,7 +6373,7 @@ if (this.simular.segperdclien3 != null && contadorPqtEnv +1==segperdNumclien3[x]
  sn_perd = this.cli.sn;
  an_perd = this.cli.an;
  d_perd = denv;
- if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1 , pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:3});
+ if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1 , pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:3});
  contadorPqtEnv++;
  timeout= this.simular.timeout;
  reconocido=1;
@@ -6370,7 +6383,7 @@ if (this.simular.segperdclien3 != null && contadorPqtEnv +1==segperdNumclien3[x]
 else 
 {
 // El cliente envía el primer paquete
-if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: ack, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1 , pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:3});
+if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: ack, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1 , pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:3});
 numPqtClienEnv++;
 contadorPqtEnv++;
 }
@@ -6385,11 +6398,11 @@ if (pqtPerdido==1)
      {
      this.cli.vcrep+=1;
      this.cli.vc+=1;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: ack, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc:this.serv.vcrep, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: ack, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc:this.serv.vcrep, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
      reconocido=0;
      ACK_inm = 1;
      pqtPerdido=0;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
 
    }  
    }
@@ -6398,20 +6411,20 @@ if (pqtPerdido==1)
      timeout--;
      if (timeout==0)
      {
-       umbral = this.cli.vcrep/2;
-       if (umbral==0)umbral=1;
+       umbralcli = this.cli.vcrep/2;
+       if (umbralcli==0)umbralcli=1;
        this.cli.vcrep=1;
        this.cli.vc=1;
        //this.cli.ec = false;
        //this.cli.flags = nullflag;
-       this.comprobarEC(this.cli, umbral);
+       this.comprobarEC(this.cli, umbralcli);
        if (this.cli.ec==true) this.cli.flags=ecal;
        else this.cli.flags = al;
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
      }
      else
      {
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
      }
    }
  }
@@ -6421,7 +6434,7 @@ if (pqtPerdido==1)
 if (numPqtClien != 0 && segperdNumclien2[0]!=1) // Si hay mas de un paquete a enviar
 {
  // El servidor espera 1 tick por si recibe otro paquete
- if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+ if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
 
  // El servidor manda el ACK del primer paquete
  this.serv.flags = ack;
@@ -6430,16 +6443,18 @@ if (numPqtClien != 0 && segperdNumclien2[0]!=1) // Si hay mas de un paquete a en
  this.serv.ult_an = this.serv.an;
  this.serv.an = this.cli.sn + denv;
  this.incrementarVC(this.cli, this.serv, mssClien);
- this.comprobarEC(this.cli, umbral);
+ this.comprobarEC(this.cli, umbralcli);
  //ACK
- if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2 , pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+ if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2 , pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
  this.cli.ult_an = this.serv.an;
 }
-
+*/
 //RESTO DE PAQUETES
 //############################
 for (; numPqtClienEnv <= numPqtClien; numPqtClienEnv++) { //Segmentos enviados a partir del primero
 let x: number=0;
+let numenvio: number=0;
+if (numPqtClienEnv==0)numenvio=3;
 //REENVÍO PAQUETE PERDIDO
 if ((this.simular.segperdclien3 != null && timeout==0 && pqtPerdido==1) || (this.simular.segperdclien3 != null && ACK_dup==3 && pqtPerdido==1))
 {
@@ -6449,7 +6464,7 @@ if ((this.simular.segperdclien3 != null && timeout==0 && pqtPerdido==1) || (this
    {
    this.cli.vcrep+=1;
    this.cli.vc+=1;
-   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
    envAck++;
    reconocido=0;
    ACK_inm = 1;
@@ -6461,7 +6476,7 @@ if ((this.simular.segperdclien3 != null && timeout==0 && pqtPerdido==1) || (this
    this.cli.vc+=1;
    this.serv.ult_sn = this.serv.sn;
    this.serv.ult_an = this.serv.an;
-   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
    envAck++;
    reconocido=0;
    ACK_inm = 1;
@@ -6472,14 +6487,14 @@ if ((this.simular.segperdclien3 != null && timeout==0 && pqtPerdido==1) || (this
  {
    if (envAck < 2 && denv !=0 )
    {
-   umbral = Math.round((this.cli.vc / 2)*100)/100;
+   umbralcli = Math.round((this.cli.vc / 2)*100)/100;
    this.cli.vc=1;
    this.cli.vcrep=1;
    this.cli.ec = false;
-   this.comprobarEC(this.cli, umbral);
+   this.comprobarEC(this.cli, umbralcli);
    if (this.cli.ec==true) this.cli.flags=ecal;
    else this.cli.flags = al;
-   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
    this.cli.vc++;
    this.cli.vcrep++;
    envAck++;
@@ -6490,16 +6505,16 @@ if ((this.simular.segperdclien3 != null && timeout==0 && pqtPerdido==1) || (this
    }  
    else if (denv !=0) //FLECHAS CRUZADAS
    {
-   umbral = Math.round((this.cli.vc / 2)*100)/100;
+   umbralcli = Math.round((this.cli.vc / 2)*100)/100;
    this.cli.vc=1;
    this.cli.vcrep=1;
    this.cli.ec = false;
    this.serv.ult_sn = this.serv.sn;
    this.serv.ult_an = this.serv.an;
-   this.comprobarEC(this.cli, umbral);
+   this.comprobarEC(this.cli, umbralcli);
    if (this.cli.ec==true) this.cli.flags=ecal;
    else this.cli.flags = al;
-   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: al, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: al, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
    this.cli.vc++;
    this.cli.vcrep++;
    envAck++;
@@ -6520,9 +6535,9 @@ if ((this.simular.segperdclien3 != null && timeout==0 && pqtPerdido==1) || (this
    this.serv.an = this.cli.ult_sn + (inc == 0 ? denv : inc);
    this.serv.flags = ack;
    this.incrementarVC(this.cli, this.serv, mssClien);
-   this.comprobarEC(this.cli, umbral);
+   this.comprobarEC(this.cli, umbralcli);
    this.serv.ult_an = this.serv.an;
-   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0 });
+   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0 });
    numPqtClienEnv--; // HACE QUE EL SEGMENTO PERDIDO SE REPITA DOS VECES!! Solucionado con contadorPqtEnv
    envAck = 0; 
    ACK_inm=0;
@@ -6542,23 +6557,23 @@ if ((this.simular.segperdclien3 != null && timeout==0 && pqtPerdido==1) || (this
      let inc: number = this.cli.ult_sn - this.serv.ult_an;
      this.serv.an = this.cli.ult_sn + (inc == 0 ? denv : inc);
      this.incrementarVC(this.cli, this.serv, mssClien);
-     this.comprobarEC(this.cli, umbral);
+     this.comprobarEC(this.cli, umbralcli);
      if(timeout==0 && pqtPerdido==1)
      {
-       umbral = Math.round((this.cli.vcrep/2)*100)/100; 
-       if (umbral==0)umbral=1;
+       umbralcli = Math.round((this.cli.vcrep/2)*100)/100; 
+       if (umbralcli==0)umbralcli=1;
        this.cli.vcrep=1;
        this.cli.vc=1;
        //this.cli.flags = nullflag;
        //this.cli.ec = false;
-       this.comprobarEC(this.cli, umbral);
+       this.comprobarEC(this.cli, umbralcli);
        if (this.cli.ec==true) this.cli.flags=ecal;
        else this.cli.flags = al;
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:0 , Num_ACKdup:0, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbralcli, envio:0 , Num_ACKdup:0, NumEnvio:numenvio});
      }
      else
      {
-       if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0 , Num_ACKdup:0, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0 , Num_ACKdup:0, NumEnvio:numenvio});
      }
      this.cli.ult_sn = this.cli.sn;
      this.cli.ult_an = this.cli.an;
@@ -6576,20 +6591,20 @@ if ((this.simular.segperdclien3 != null && timeout==0 && pqtPerdido==1) || (this
      ACK_dup++;
      if(timeout==0 && pqtPerdido==1)
      {
-       umbral = Math.round((this.cli.vcrep/2)*100)/100;
-       if (umbral==0)umbral=1;
+       umbralcli = Math.round((this.cli.vcrep/2)*100)/100;
+       if (umbralcli==0)umbralcli=1;
        this.cli.vcrep=1;
        this.cli.vc=1;
        this.cli.flags = nullflag;
        this.cli.ec = false;
-       this.comprobarEC(this.cli, umbral);
+       this.comprobarEC(this.cli, umbralcli);
        if (this.cli.ec==true) this.cli.flags=ecal;
        else this.cli.flags = al;
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0 , fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:ACK_dup, NumEnvio:numenvio});
      }
      else
      {
-       if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:ACK_dup, NumEnvio:numenvio});
      }
      numPqtClienEnv--; // HACE QUE EL SEGMENTO PERDIDO SE REPITA DOS VECES!! Solucionado con contadorPqtEnv
      envAck = 0; 
@@ -6609,12 +6624,12 @@ if ((this.simular.segperdclien3 != null && timeout==0 && pqtPerdido==1) || (this
    this.cli.ult_sn = this.cli.sn;
    this.cli.sn += ultDataEnv;
    this.serv.flags= nullflag;
-   this.comprobarEC(this.cli, umbral);
+   this.comprobarEC(this.cli, umbralcli);
    sn_perd = this.cli.sn;
    an_perd = this.cli.an;
    d_perd = denv;
    this.serv.an += ultDataEnv;
-   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:numenvio});
    ultDataEnv = denv;
    contadorPqtEnv++;
    numPqtClienEnv--;
@@ -6632,12 +6647,12 @@ if ((this.simular.segperdclien3 != null && timeout==0 && pqtPerdido==1) || (this
    this.serv.ult_an = this.serv.an;
    this.serv.an = this.cli.ult_sn + (this.cli.ult_sn - this.serv.ult_an);
    this.incrementarVC(this.cli, this.serv, mssClien);
-   this.comprobarEC(this.cli, umbral);
+   this.comprobarEC(this.cli, umbralcli);
    sn_perd = this.cli.sn;
    an_perd = this.cli.an;
    d_perd = denv;
    this.serv.an += ultDataEnv;
-   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0 , Num_ACKdup:0, NumEnvio:0});
+   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0 , Num_ACKdup:0, NumEnvio:numenvio});
    contadorPqtEnv++;
    numPqtClienEnv--;
    envAck = 0;
@@ -6654,23 +6669,23 @@ if ((this.simular.segperdclien3 != null && timeout==0 && pqtPerdido==1) || (this
    this.serv.flags= nullflag;
    this.cli.ult_sn = this.cli.sn;
    this.cli.sn += ultDataEnv;
-   this.comprobarEC(this.cli, umbral);
+   this.comprobarEC(this.cli, umbralcli);
    if(timeout==0 && pqtPerdido==1)
    { 
-     umbral = this.cli.vcrep/2; 
-     if (umbral==0)umbral=1;
+     umbralcli = this.cli.vcrep/2; 
+     if (umbralcli==0)umbralcli=1;
      this.cli.vcrep=1;
      this.cli.vc=1;
      //this.cli.flags = nullflag;
      //this.cli.ec = false;
-     this.comprobarEC(this.cli, umbral);
+     this.comprobarEC(this.cli, umbralcli);
      if (this.cli.ec==true) this.cli.flags=ecal;
      else this.cli.flags = al;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:numenvio});
    }
    else
    {
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 , emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 , emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:numenvio});
      if(pqtPerdido==1) 
      {
        flag_ACKdup=1;
@@ -6689,20 +6704,20 @@ if ((this.simular.segperdclien3 != null && timeout==0 && pqtPerdido==1) || (this
    numPqtClienEnv--;
    if(timeout==0 && pqtPerdido==1)
    { 
-     umbral = this.cli.vcrep/2; 
-     if (umbral==0)umbral=1;
+     umbralcli = this.cli.vcrep/2; 
+     if (umbralcli==0)umbralcli=1;
      this.cli.vcrep=1;
      this.cli.vc=1;
      //this.cli.flags = nullflag;
      this.cli.ec = false;
-     this.comprobarEC(this.cli, umbral);
+     this.comprobarEC(this.cli, umbralcli);
      if (this.cli.ec==true) this.cli.flags=ecal;
      else this.cli.flags = al;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep ,emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep ,emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
    }
    else
    {
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
    }
  } 
  //ACK Y DATOS 
@@ -6717,23 +6732,23 @@ if ((this.simular.segperdclien3 != null && timeout==0 && pqtPerdido==1) || (this
      this.serv.ult_an = this.serv.an;
      this.serv.an = this.cli.ult_sn + (this.cli.ult_sn - this.serv.ult_an);
      this.incrementarVC(this.cli, this.serv, mssServ);
-     this.comprobarEC(this.cli, umbral);
+     this.comprobarEC(this.cli, umbralcli);
      if(timeout==0 && pqtPerdido==1)
      { 
-       umbral = this.cli.vcrep/2;
-       if (umbral==0)umbral=1;
+       umbralcli = this.cli.vcrep/2;
+       if (umbralcli==0)umbralcli=1;
        this.cli.vcrep=1;
        this.cli.vc=1;
        //this.cli.flags = nullflag;
        //this.cli.ec = false;
-       this.comprobarEC(this.cli, umbral);
+       this.comprobarEC(this.cli, umbralcli);
        if (this.cli.ec==true) this.cli.flags=ecal;
        else this.cli.flags = al;
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:0, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:0, pqt_rtx:0 , fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:numenvio});
      }
      else
      {
-       if (nseg+1<=pasoapaso || pasoapaso==0)  this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:0, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)  this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:0, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:numenvio});
      }
      ultDataEnv = denv;
      this.cli.ult_sn = this.cli.sn;
@@ -6754,8 +6769,8 @@ if ((this.simular.segperdclien3 != null && timeout==0 && pqtPerdido==1) || (this
      sin_ACK++;
      if(timeout==0 && pqtPerdido==1)
      { 
-       umbral = this.cli.vcrep/2; 
-       if (umbral==0)umbral=1;
+       umbralcli = this.cli.vcrep/2; 
+       if (umbralcli==0)umbralcli=1;
        this.cli.vcrep=1;
        this.cli.vc=1;
        //this.cli.flags = nullflag;
@@ -6763,11 +6778,11 @@ if ((this.simular.segperdclien3 != null && timeout==0 && pqtPerdido==1) || (this
        //this.comprobarEC(this.cli, umbral);
        //if (this.cli.ec==true) this.cli.flags=ecal;
        //else this.cli.flags = al; 
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:0, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:0, pqt_rtx:0 , fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:ACK_dup, NumEnvio:numenvio});
      }
      else
      {
-       if (nseg+1<=pasoapaso || pasoapaso==0)  this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:0, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)  this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:0, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:ACK_dup, NumEnvio:numenvio});
      }
      ultDataEnv = denv;
      this.cli.ult_sn = this.cli.sn;
@@ -6791,14 +6806,14 @@ if (pqtPerdido==1)
  {
   if (ACK_dup==3)
   {
-    umbral = Math.round((this.cli.vc / 2)*100)/100;
+    umbralcli = Math.round((this.cli.vc / 2)*100)/100;
     this.cli.vc=1;
     this.cli.vcrep=1;
     this.cli.ec = false;
-    this.comprobarEC(this.cli, umbral);
+    this.comprobarEC(this.cli, umbralcli);
     if (this.cli.ec==true) this.cli.flags=ecal;
     else this.cli.flags = al;
-    if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+    if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
     this.cli.vc++;
     this.cli.vcrep++;
     envAck++;
@@ -6817,7 +6832,7 @@ if (pqtPerdido==1)
     this.serv.an = this.cli.ult_sn + (inc == 0 ? denv : inc);
     this.serv.flags = ack;
     ACK_dup++;
-    if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
+    if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: sn_perd, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:ACK_dup, NumEnvio:0});
     numPqtClienEnv--; // HACE QUE EL SEGMENTO PERDIDO SE REPITA DOS VECES!! Solucionado con contadorPqtEnv
     envAck = 0; 
     flag_ACKdup = 0;
@@ -6828,10 +6843,10 @@ if (pqtPerdido==1)
    {
    //this.cli.vcrep+=1;
    //this.cli.vc+=1;
-   this.comprobarEC(this.cli, umbral);
+   this.comprobarEC(this.cli, umbralcli);
    if (this.cli.ec==true) this.cli.flags=ecal;
    else this.cli.flags = al;
-   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
    reconocido=0;
    ACK_inm = 1;
    pqtPerdido=0;
@@ -6842,7 +6857,7 @@ if (pqtPerdido==1)
    //this.cli.vc+=1;
    this.serv.ult_sn = this.serv.sn;
    this.serv.ult_an = this.serv.an;
-   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: sn_perd, ancli: an_perd, dcli: d_perd, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:1 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
    envAck++;
    reconocido=0;
    ACK_inm = 1;
@@ -6854,20 +6869,20 @@ if (pqtPerdido==1)
    timeout--;
    if (timeout==0)
    {
-     umbral = this.cli.vcrep/2;
-     if (umbral==0)umbral=1;
+     umbralcli = this.cli.vcrep/2;
+     if (umbralcli==0)umbralcli=1;
      this.cli.vcrep=1;
      this.cli.vc=1;
      //this.cli.ec = false;
      //this.cli.flags = nullflag;
-     this.comprobarEC(this.cli, umbral);
+     this.comprobarEC(this.cli, umbralcli);
      if (this.cli.ec==true) this.cli.flags=ecal;
      else this.cli.flags = al;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.cli.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
    }
    else
    {
-     this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+     this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:0});
    }
  }
 
@@ -6896,7 +6911,7 @@ if (envAck != 0 || (envAck == 0 && modPqtClien != 0)) { // Si el ACK no se ha en
    denv = mssServ;
  this.serv.ult_sn = this.serv.sn;
  this.incrementarVC(this.cli, this.serv, mssClien);
- this.comprobarEC(this.cli, umbral);
+ this.comprobarEC(this.cli, umbralserv);
  //Si el primer paquete se pierde
  for (;numPqtServEnv<1;)
  {
@@ -6908,7 +6923,7 @@ if (envAck != 0 || (envAck == 0 && modPqtClien != 0)) { // Si el ACK no se ha en
      sn_perd = this.serv.sn;
      an_perd = this.serv.an;
      d_perd = denv;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
      contadorPqtEnv++;
      reconocido = 1;
      pqtPerdido = 1;
@@ -6916,7 +6931,7 @@ if (envAck != 0 || (envAck == 0 && modPqtClien != 0)) { // Si el ACK no se ha en
    }
    else if (pqtPerdido != 1)
    {
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
      this.cli.ult_sn = this.cli.sn;
      this.cli.ult_an = this.cli.an;
      this.cli.an++;
@@ -6925,7 +6940,7 @@ if (envAck != 0 || (envAck == 0 && modPqtClien != 0)) { // Si el ACK no se ha en
      contadorPqtEnv++;
      numPqtServEnv++;
      ACK_inm=0;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0 });
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0 });
    }
    if (pqtPerdido == 1 && timeout != 0)
    {
@@ -6934,25 +6949,25 @@ if (envAck != 0 || (envAck == 0 && modPqtClien != 0)) { // Si el ACK no se ha en
      {
        this.serv.vcrep=1;
        this.serv.vc=1;
-       this.comprobarEC(this.serv, umbral);
+       this.comprobarEC(this.serv, umbralserv);
        if (this.serv.ec==true) this.serv.flags=ecal;
        else this.serv.flags = al;
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep,emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep,emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
      }
        else
        {
-         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+         if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
        }
      }
    if (pqtPerdido == 1 && timeout ==0) //REENVÍO PRIMER PAQUETE SERVIDOR --> CLIENTE
    {
      this.serv.flags=nullflag;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: ack, snserv: sn_perd, anserv: an_perd, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: ack, snserv: sn_perd, anserv: an_perd, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0 , fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
      contadorPqtEnv++;
      numPqtServEnv++;
      pqtPerdido=0;
      // El cliente espera 1 tick por si recibe otro paquete
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0 });
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0 });
    }
 
 // >>>>> Envio de datos servidor->cliente <<<<<
@@ -6965,8 +6980,8 @@ if (numPqtServ != 0 && pqtPerdido !=1) // ACK -->Si hay mas de un paquete a envi
  this.cli.ult_an = this.cli.an;
  this.cli.an = this.serv.sn + denv;
  this.incrementarVC(this.serv, this.cli, mssServ);
- this.comprobarEC(this.serv, umbral);
- if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+ this.comprobarEC(this.serv, umbralserv);
+ if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
  this.serv.ult_an = this.serv.an;
  contadorPqtEnv++;
  reconocido = 0;
@@ -6992,7 +7007,7 @@ if ((this.simular.segperdserv3 != null && timeout==0 && pqtPerdido==1 )|| (this.
    {
      this.serv.vcrep+=1;
      this.serv.vc+=1;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
      envAck++;
      reconocido = 0;
      ACK_inm = 1;
@@ -7004,7 +7019,7 @@ if ((this.simular.segperdserv3 != null && timeout==0 && pqtPerdido==1 )|| (this.
      this.serv.vc+=1;
      this.cli.ult_sn = this.cli.sn;
      this.cli.ult_an = this.cli.an;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
      envAck++;
      reconocido = 0;
      ACK_inm = 1;
@@ -7016,14 +7031,14 @@ if ((this.simular.segperdserv3 != null && timeout==0 && pqtPerdido==1 )|| (this.
    if (envAck < 2)
    {
      this.serv.ec = false;
-     umbral = Math.round((this.serv.vc/2)*100)/100;
+     umbralserv = Math.round((this.serv.vc/2)*100)/100;
      this.serv.vc=1;
      this.serv.vcrep=1;
      this.serv.ec = false;
-     this.comprobarEC(this.serv, umbral);
+     this.comprobarEC(this.serv, umbralserv);
      if (this.serv.ec==true) this.serv.flags=ecal;
      else this.serv.flags = al;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep, emisor:2, pqt_rtx:1, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep, emisor:2, pqt_rtx:1, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
      this.serv.vc++;
      this.serv.vcrep++;
      envAck++;
@@ -7034,13 +7049,13 @@ if ((this.simular.segperdserv3 != null && timeout==0 && pqtPerdido==1 )|| (this.
    else    //Flechas Cruzadas
    {
      this.serv.ec=false;
-     umbral = this.serv.vc/2;
+     umbralserv = this.serv.vc/2;
      this.serv.vc=1;
      this.serv.vcrep=1;
      this.serv.ec = false;
      this.cli.ult_sn = this.cli.sn;
      this.cli.ult_an = this.cli.an;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: al, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:1, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: al, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:1, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
      this.serv.vc++;
      this.serv.vcrep++;
      envAck++;
@@ -7059,9 +7074,9 @@ if ((this.simular.segperdserv3 != null && timeout==0 && pqtPerdido==1 )|| (this.
    let inc: number = Math.abs(this.serv.ult_sn - this.cli.ult_an);
    this.cli.an = this.serv.ult_sn + (inc == 0 ? denv : inc);
    this.incrementarVC(this.serv, this.cli, mssServ);
-   this.comprobarEC(this.serv, umbral);
+   this.comprobarEC(this.serv, umbralserv);
    this.cli.ult_an = this.cli.an;
-   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
    numPqtServEnv--;
    envAck = 0;
    ACK_inm = 0;
@@ -7081,23 +7096,23 @@ if ((this.simular.segperdserv3 != null && timeout==0 && pqtPerdido==1 )|| (this.
      let inc: number = this.serv.ult_sn - this.cli.ult_an;
      this.cli.an = this.serv.ult_sn + (inc == 0 ? denv : inc);
      this.incrementarVC(this.serv, this.cli, mssServ);
-     this.comprobarEC(this.serv, umbral);
+     this.comprobarEC(this.serv, umbralserv);
      if(timeout==0 && pqtPerdido==1)
      {
-       umbral = this.serv.vcrep/2;
-       if (umbral==0)umbral=1;
+       umbralserv = this.serv.vcrep/2;
+       if (umbralserv==0)umbralserv=1;
        this.serv.vcrep = 1;
        this.serv.vc = 1;
        //this.serv.ec = false;
        //this.serv.flags = nullflag;
-       this.comprobarEC(this.serv, umbral);
+       this.comprobarEC(this.serv, umbralserv);
        if (this.serv.ec==true) this.serv.flags=ecal;
        else this.serv.flags = al;
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
      }
      else 
      {
-       if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
      }
      this.serv.ult_sn = this.serv.sn;
      this.serv.ult_an = this.serv.an;
@@ -7115,20 +7130,20 @@ if ((this.simular.segperdserv3 != null && timeout==0 && pqtPerdido==1 )|| (this.
      ACK_dup++;
      if(timeout==0 && pqtPerdido==1)
      {
-       umbral = this.serv.vcrep/2;
-       if (umbral==0)umbral=1;
+       umbralserv = this.serv.vcrep/2;
+       if (umbralserv==0)umbralserv=1;
        this.serv.vcrep = 1;
        this.serv.vc = 1;
        //this.serv.ec = false;
        //this.serv.flags = nullflag;
-       this.comprobarEC(this.serv, umbral);
+       this.comprobarEC(this.serv, umbralserv);
        if (this.serv.ec==true) this.serv.flags=ecal;
        else this.serv.flags = al;
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1, Num_ACKdup: ACK_dup , NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1, Num_ACKdup: ACK_dup , NumEnvio:0});
      }
      else 
      {
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup: ACK_dup, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup: ACK_dup, NumEnvio:0});
      }
      numPqtServEnv--;
      envAck = 0; 
@@ -7145,12 +7160,12 @@ if ((this.simular.segperdserv3 != null && timeout==0 && pqtPerdido==1 )|| (this.
    {
      this.serv.ult_sn = this.serv.sn;
      this.serv.sn += ultDataEnv;
-     this.comprobarEC(this.serv, umbral);
+     this.comprobarEC(this.serv, umbralserv);
      sn_perd = this.serv.sn;
      an_perd = this.serv.an;
      d_perd = denv;
      this.cli.an += ultDataEnv;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
      this.serv.ult_sn = this.serv.sn;
      ultDataEnv = denv;
      contadorPqtEnv++;
@@ -7169,12 +7184,12 @@ if ((this.simular.segperdserv3 != null && timeout==0 && pqtPerdido==1 )|| (this.
      this.cli.ult_an = this.cli.an;
      this.cli.an = this.serv.ult_sn + (this.serv.ult_sn - this.cli.ult_an);
      this.incrementarVC(this.serv, this.cli, mssServ);
-     this.comprobarEC(this.serv, umbral);
+     this.comprobarEC(this.serv, umbralserv);
      sn_perd = this.serv.sn;
      an_perd = this.serv.an;
      d_perd = denv;
      this.cli.an += ultDataEnv;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -20, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: -20, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.serv.sn, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
      contadorPqtEnv++;
      numPqtServEnv--;
      timeout = this.simular.timeout;
@@ -7191,23 +7206,23 @@ if ((this.simular.segperdserv3 != null && timeout==0 && pqtPerdido==1 )|| (this.
    this.cli.flags = nullflag;
    this.serv.ult_sn = this.serv.sn;
    this.serv.sn += ultDataEnv;
-   this.comprobarEC(this.serv, umbral);
+   this.comprobarEC(this.serv, umbralserv);
    if(timeout==0 && pqtPerdido==1)
    {
-     umbral = this.cli.vcrep/2;
-     if (umbral==0)umbral=1;
+     umbralserv = this.cli.vcrep/2;
+     if (umbralserv==0)umbralserv=1;
      this.serv.vcrep = 1;
      this.serv.vc = 1;
      //this.serv.ec = false;
      //this.serv.flags = nullflag;
-     this.comprobarEC(this.serv, umbral);
+     this.comprobarEC(this.serv, umbralserv);
      if (this.serv.ec==true) this.serv.flags=ecal;
      else this.serv.flags = al;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
    }
    else
    {
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
      if(pqtPerdido==1) 
      {
        flag_ACKdup=1;
@@ -7226,20 +7241,20 @@ if ((this.simular.segperdserv3 != null && timeout==0 && pqtPerdido==1 )|| (this.
    numPqtServEnv--;
    if(timeout==0 && pqtPerdido==1)
    { 
-     umbral = this.serv.vcrep/2; 
-     if (umbral==0)umbral=1;
+     umbralserv = this.serv.vcrep/2; 
+     if (umbralserv==0)umbralserv=1;
      this.serv.vcrep=1;
      this.serv.vc=1;
      //this.cli.flags = nullflag;
      this.serv.ec = false;
-     this.comprobarEC(this.serv, umbral);
+     this.comprobarEC(this.serv, umbralserv);
      if (this.serv.ec==true) this.serv.flags=ecal;
      else this.serv.flags = al;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep ,emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep ,emisor:1, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
    }
    else
    {
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:0, Num_ACKdup:0, NumEnvio:0});
    }
  }
  //ACK Y DATOS
@@ -7254,23 +7269,23 @@ if ((this.simular.segperdserv3 != null && timeout==0 && pqtPerdido==1 )|| (this.
      this.cli.ult_an = this.cli.an;
      this.cli.an = this.serv.ult_sn + (this.serv.ult_sn - this.cli.ult_an);
      this.incrementarVC(this.serv, this.cli, mssServ);
-     this.comprobarEC(this.serv, umbral);
+     this.comprobarEC(this.serv, umbralserv);
      if (timeout==0 && pqtPerdido==1)
      {
-       umbral = this.serv.vcrep/2;
-       if (umbral==0)umbral=1;
+       umbralserv = this.serv.vcrep/2;
+       if (umbralserv==0)umbralserv=1;
        this.serv.vcrep = 1;
        this.serv.vc = 1;
        //this.serv.ec = false;
        //this.serv.flags = nullflag;
-       this.comprobarEC(this.serv, umbral);
+       this.comprobarEC(this.serv, umbralserv);
        if (this.serv.ec==true) this.serv.flags=ecal;
        else this.serv.flags = al;
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
      }
      else
      {
-       if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
      }
      ultDataEnv = denv;
      this.serv.ult_sn = this.serv.sn;
@@ -7291,20 +7306,20 @@ if ((this.simular.segperdserv3 != null && timeout==0 && pqtPerdido==1 )|| (this.
      sin_ACK++;
      if (timeout==0 && pqtPerdido==1)
      {
-       umbral = this.serv.vcrep/2;
-       if (umbral==0)umbral=1;
+       umbralserv = this.serv.vcrep/2;
+       if (umbralserv==0)umbralserv=1;
        this.serv.vcrep = 1;
        this.serv.vc = 1;
        //this.serv.ec = false;
        //this.serv.flags = nullflag;
-       this.comprobarEC(this.serv, umbral);
+       this.comprobarEC(this.serv, umbralserv);
        if (this.serv.ec==true) this.serv.flags=ecal;
        else this.serv.flags = al;
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0,emisor:0, pqt_rtx:0, fin_temp:1,umbral:umbral, envio:1 , Num_ACKdup:ACK_dup, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0,emisor:0, pqt_rtx:0, fin_temp:1,umbral:umbralserv, envio:1 , Num_ACKdup:ACK_dup, NumEnvio:0});
      }
      else
      {
-       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:ACK_dup, NumEnvio:0});
+       if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:ACK_dup, NumEnvio:0});
      }
      ultDataEnv = denv;
      this.serv.ult_sn = this.serv.sn;
@@ -7331,14 +7346,14 @@ if (pqtPerdido==1)
   if (ACK_dup==3)
   {
     this.serv.ec = false;
-    umbral = Math.round((this.serv.vc/2)*100)/100;
+    umbralserv = Math.round((this.serv.vc/2)*100)/100;
     this.serv.vc=1;
     this.serv.vcrep=1;
     this.serv.ec = false;
-    this.comprobarEC(this.serv, umbral);
+    this.comprobarEC(this.serv, umbralserv);
     if (this.serv.ec==true) this.serv.flags=ecal;
     else this.serv.flags = al;
-    if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep, emisor:2, pqt_rtx:1, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+    if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep, emisor:2, pqt_rtx:1, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
     this.serv.vc++;
     this.serv.vcrep++;
     envAck++;
@@ -7357,7 +7372,7 @@ if (pqtPerdido==1)
     let inc: number = this.serv.ult_sn - this.cli.ult_an;
     this.cli.an = this.serv.ult_sn + (inc == 0 ? denv : inc);
     ACK_dup++;
-    if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup: ACK_dup, NumEnvio:0});
+    if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup: ACK_dup, NumEnvio:0});
     envAck = 0; 
     flag_ACKdup = 0;
   }
@@ -7365,7 +7380,7 @@ else if (timeout==0)//REENVÍO DEL PAQUETE
  {
    if (envAck < 2 && denv !=0 )
    {
-   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
    reconocido=0;
    pqtPerdido=0;
    envAck++;
@@ -7374,7 +7389,7 @@ else if (timeout==0)//REENVÍO DEL PAQUETE
    {
    this.cli.ult_sn = this.cli.sn;
    this.cli.ult_an = this.cli.an;
-   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0 , NumEnvio:0});
+   if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: sn_perd, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0 , NumEnvio:0});
    envAck++;
    reconocido=0;
    pqtPerdido=0;
@@ -7385,22 +7400,22 @@ else if (timeout==0)//REENVÍO DEL PAQUETE
    timeout--;
    if (timeout==0)
    {
-     umbral = this.cli.vcrep/2;
-     if (umbral==0)umbral=1;
+     umbralserv = this.cli.vcrep/2;
+     if (umbralserv==0)umbralserv=1;
      this.serv.vcrep=1;
      this.serv.vc=1;
      //this.serv.ec = false;
      //this.serv.flags = nullflag;
-     this.comprobarEC(this.serv, umbral);
+     this.comprobarEC(this.serv, umbralserv);
      if (this.serv.ec==true) this.serv.flags=ecal;
      else this.serv.flags = al;
-     this.comprobarEC(this.serv, umbral);
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+     this.comprobarEC(this.serv, umbralserv);
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep, emisor:1, pqt_rtx:0 , fin_temp:1,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
      
    }
    else
    {
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0, emisor:1, pqt_rtx:0 , fin_temp:0,umbral:umbralserv, envio:0, Num_ACKdup:0, NumEnvio:0});
    }
 }
 }
@@ -7413,8 +7428,8 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
  }
  this.cli.ult_sn = this.cli.sn;
  this.incrementarVC(this.serv, this.cli, mssServ);
- this.comprobarEC(this.serv, umbral);
- if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: ack, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+ this.comprobarEC(this.serv, umbralserv);
+ if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: ack, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep ,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
  this.serv.ult_sn = this.serv.sn;
  this.serv.ult_an = this.serv.an;
  this.cli.ult_an = this.cli.an;
@@ -7428,7 +7443,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
     // El cliente espera 1 tick por si hay intercambio de informacion y luego se procede a cerrar
     if (envAck == 2 && cierre == "1")
     { 
-      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
     }
 
     // ----- Cierre -----
@@ -7437,21 +7452,21 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
       //FIN
       this.cli.ult_sn = this.cli.sn;
       this.cli.flags = fin;
-      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0 , Num_ACKdup:0, NumEnvio:0});
+      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:0 , Num_ACKdup:0, NumEnvio:0});
       // FIN, ACK
       this.serv.ult_sn = this.serv.sn;
       this.serv.sn += denv;
       this.serv.ult_an = this.serv.an;
       this.serv.an = this.cli.sn + 1;
       this.serv.flags = finack;
-      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0 ,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0, Num_ACKdup:0, NumEnvio:0});
+      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0 ,emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:0, Num_ACKdup:0, NumEnvio:0});
       // ACK
       this.cli.ult_sn = this.cli.sn;
       this.cli.sn++;
       this.cli.ult_an = this.cli.an;
       this.cli.an = this.serv.sn + 1;
       this.cli.flags = ack;
-      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:0 , Num_ACKdup:0, NumEnvio:0});
+      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:0 , Num_ACKdup:0, NumEnvio:0});
 
     } else { // El servidor cierra la conexion
       // FIN
@@ -7459,20 +7474,20 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
       this.serv.sn += denv;
       this.serv.ult_an = this.serv.an;
       this.serv.flags = fin;
-      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
       // FIN, ACK
       this.cli.ult_sn = this.cli.sn;
       this.cli.ult_an = this.cli.an;
       this.cli.an = this.serv.sn + 1;
       this.cli.flags = finack;
-      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbral, envio:1 , Num_ACKdup:0, NumEnvio:0});
+      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0,emisor:1, pqt_rtx:0, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:0, NumEnvio:0});
       // ACK
       this.serv.ult_sn = this.serv.sn;
       this.serv.sn++;
       this.serv.ult_an = this.serv.an;
       this.serv.an = this.cli.sn + 1;
       this.serv.flags = ack;
-      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0 ,umbral:umbral, envio:1, Num_ACKdup:0, NumEnvio:0});
+      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0, emisor:2, pqt_rtx:0, fin_temp:0 ,umbral:umbralserv, envio:1, Num_ACKdup:0, NumEnvio:0});
     }
 
     return;
