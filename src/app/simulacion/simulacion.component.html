@@ -163,6 +163,12 @@
                 <!-- Direccion bidireccional cliente<->servidor con VC en cliente-->
                 <span *ngIf="conversacion.dir == 0">
                     <td class="info-izq">
+                        <span *ngIf="conversacion.NumEnvio ==1 " title="{{ 'contenido.primerenvio' | translate }}"
+                        class="envio"> &nbsp;{{ 'contenido.primerenvio' | translate }}&nbsp;</span>
+                        <span *ngIf="conversacion.NumEnvio ==2 " title="{{ 'contenido.segundoenvio' | translate }}"
+                        class="envio"> &nbsp;{{ 'contenido.segundoenvio' | translate }}&nbsp;</span>
+                        <span *ngIf="conversacion.NumEnvio ==3 " title="{{ 'contenido.tercerenvio' | translate }}"
+                        class="envio"> &nbsp;{{ 'contenido.tercerenvio' | translate }}&nbsp;</span>
                         <span *ngIf="conversacion.Num_ACKdup != 0" title="{{ 'simulacion.NumeroACKdup' | translate }}"
                         class="ACK-dup">&nbsp;{{ conversacion.Num_ACKdup | translate }}&nbsp;</span>
                         <span *ngIf="conversacion.flagcli[3] != ''" title="{{ 'simulacion.al' | translate }}"
@@ -211,6 +217,12 @@
                 <!-- Direccion bidireccional cliente<->servidor con VC en servidor-->
                 <span *ngIf="conversacion.dir == 10">
                     <td class="info-izq">
+                        <span *ngIf="conversacion.NumEnvio ==1 " title="{{ 'contenido.primerenvio' | translate }}"
+                        class="envio"> &nbsp;{{ 'contenido.primerenvio' | translate }}&nbsp;</span>
+                        <span *ngIf="conversacion.NumEnvio ==2 " title="{{ 'contenido.segundoenvio' | translate }}"
+                        class="envio"> &nbsp;{{ 'contenido.segundoenvio' | translate }}&nbsp;</span>
+                        <span *ngIf="conversacion.NumEnvio ==3 " title="{{ 'contenido.tercerenvio' | translate }}"
+                        class="envio"> &nbsp;{{ 'contenido.tercerenvio' | translate }}&nbsp;</span>
                        <span *ngIf="conversacion.flagcli[2] != ''" title="{{ 'simulacion.ack' | translate }}"
                               class="flagcli">&nbsp;{{ 'simulacion.ack_letra' | translate }},</span>
                         <span title="{{ 'simulacion.sn' | translate }}">&nbsp;SN={{ conversacion.sncli }}, </span>
