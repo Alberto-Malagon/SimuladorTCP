@@ -822,7 +822,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     //General
     this.simulacion.timeout = 15;
     this.simulacion.umbral = 3;
-    this.simulacion.algort = "2";
+    this.simulacion.algort = "1";
     this.simulacion.cierre = "1";
     this.simulacion.pasoapaso = 0;
   }
