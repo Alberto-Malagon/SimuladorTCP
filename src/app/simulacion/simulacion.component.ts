@@ -177,7 +177,6 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
     }
     else if (maqVC.rr == true )
     {
-      maqVC.vc += Math.ceil((maqACK.an - maqACK.ult_an) / mss);
       maqVC.vcrep = maqVC.vc;
     }
 
@@ -1762,8 +1761,21 @@ if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this
      this.serv.an = this.cli.ult_sn + (inc == 0 ? denv : inc);
      this.serv.flags = ack;
      this.cli.sn += ultDataEnv;
+     if (this.cli.rr==true)
+     {
+      this.comprobarEC(this.cli, umbralcli);
+      if (this.cli.ec==true)
+      {
+        this.cli.vc=umbralcli;
+        this.cli.vcrep=this.cli.vc;
+        this.cli.flags=ec;
+      }
+     }
+     else
+     {
      this.incrementarVC(this.cli, this.serv, mssClien);
      this.comprobarEC(this.cli, umbralcli);
+     }
      this.serv.ult_an = this.serv.an;
      if (timeout !=0 && ACK_dup==3)
      {
@@ -1999,7 +2011,7 @@ if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this
      }
      else
      {
-       if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: nullflag, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.cli.sn, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:0, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:numenvio});
+       if (nseg+1<=pasoapaso || pasoapaso==0) this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.cli.sn, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:0, pqt_rtx:0 , fin_temp:0,umbral:umbralcli, envio:0, Num_ACKdup:0, NumEnvio:numenvio});
      }
        ultDataEnv = denv;
      this.cli.ult_sn = this.cli.sn;
@@ -2379,10 +2391,22 @@ if ((this.simular.segperdserv2 != null && timeout==0 && pqtPerdido==1 )|| (this.
      let inc: number = Math.abs(this.serv.ult_sn - this.cli.ult_an);
      this.cli.an = this.serv.ult_sn + (inc == 0 ? denv : inc);
      this.serv.sn += ultDataEnv;
+     if (this.serv.rr==true)
+     {
+      this.comprobarEC(this.serv, umbralserv);
+      if (this.serv.ec==true)
+      {
+        this.serv.vc=umbralserv;
+        this.serv.vcrep=this.serv.vc;
+      }
+     }
+     else
+     {
      this.incrementarVC(this.serv, this.cli, mssServ);
      this.comprobarEC(this.serv, umbralserv);
+     }
      this.cli.ult_an = this.cli.an;
-     if (timeout !=0 && ACK_dup==3)
+     if (timeout !=0 && ACK_dup>=3)
      {
        this.serv.vcrep = umbralserv;
        this.serv.vc = umbralserv;
