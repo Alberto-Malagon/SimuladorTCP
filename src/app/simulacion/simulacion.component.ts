@@ -1661,7 +1661,7 @@ else
   ACK_inm=0;
 }
 
-for (; numPqtClienEnv <= numPqtClien; numPqtClienEnv++) { //Segmentos enviados a partir del primero
+for (; numPqtClienEnv <= numPqtClien+1; numPqtClienEnv++) { //Segmentos enviados a partir del primero
 let x: number=0;
 let numenvio: number=0;
 if (numPqtClienEnv==1)numenvio=2;
@@ -1783,7 +1783,7 @@ if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this
        this.cli.vc = umbralcli;
        this.cli.flags = ec;
      }
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0 , Num_ACKdup:0, NumEnvio:numenvio});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep, emisor:2, pqt_rtx:0, fin_temp:0,umbral:umbralcli, envio:0 , Num_ACKdup:0, NumEnvio:numenvio});
      envAck = 1;
      flag_ACKdup = 0;
      ACK_inm=0;
@@ -2066,8 +2066,11 @@ if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this
    }
 
  }
- 
- if (numPqtClienEnv == numPqtClien - 1){ // Si es el penultimo paquete a enviar, se prepara para enviar los datos restantes en el último
+ if (numPqtClienEnv == numPqtClien - 1){ // Si es el penultimo paquete a enviar, sin contar el que se debe reenviar,se prepara para enviar los datos restantes en el último
+  if (pqtPerdido == 1)
+      numPqtClienEnv += 99;  
+ }
+ if (numPqtClienEnv == numPqtClien ){ // Si es el penultimo paquete a enviar, se prepara para enviar los datos restantes en el último
      if (modPqtClien!=0)
        denv = modPqtClien;
      else
@@ -2962,7 +2965,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
       envAck=0;
       ACK_inm=0;
     } 
-    for (; numPqtClienEnv <= numPqtClien; numPqtClienEnv++) { //Segmentos enviados a partir del primero
+    for (; numPqtClienEnv <= numPqtClien+1; numPqtClienEnv++) { //Segmentos enviados a partir del primero
     let x: number=0;
     let numenvio: number=0;
     if (numPqtClienEnv==1)numenvio=3;
@@ -3353,7 +3356,11 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
        }
     
      }
-     if (numPqtClienEnv == numPqtClien - 1){ // Si es el penultimo paquete a enviar, se prepara para enviar los datos restantes en el último
+     if (numPqtClienEnv == numPqtClien - 1){ // Si es el penultimo paquete a enviar, sin contar el que se debe reenviar,se prepara para enviar los datos restantes en el último
+      if (pqtPerdido == 1)
+          numPqtClienEnv += 99;  
+     }
+     if (numPqtClienEnv == numPqtClien){ // Si es el penultimo paquete a enviar, se prepara para enviar los datos restantes en el último
          if (modPqtClien!=0)
            denv = modPqtClien;
          else
