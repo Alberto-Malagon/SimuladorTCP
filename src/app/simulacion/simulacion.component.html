@@ -170,15 +170,13 @@
                             class="envio"> &nbsp;{{ 'contenido.tercerenvio' | translate }}&nbsp;</span>
                         <span *ngIf="conversacion.Num_ACKdup != 0" title="{{ 'simulacion.NumeroACKdup' | translate }}"
                             class="ACK-dup">&nbsp;{{ conversacion.Num_ACKdup | translate }}&nbsp;</span>
+                            &nbsp;
                         <span *ngIf="conversacion.flagcli[3] != ''" title="{{ 'simulacion.al' | translate }}"
                             class="modo">&nbsp;{{ 'simulacion.al_letra' | translate }}&nbsp;</span>
-                        &nbsp;
                         <span *ngIf="conversacion.flagcli[4] != ''" title="{{ 'simulacion.ec' | translate }}"
                             class="modo">&nbsp;{{ 'simulacion.ec_letra' | translate }}&nbsp;</span>
                         <span *ngIf="conversacion.flagcli[5] != ''" title="{{ 'simulacion.rr' | translate }}"
-                            class="modo">&nbsp;{{ 'simulacion.rr_letra' | translate }}&nbsp;</span>&nbsp;
-                        <span *ngIf="conversacion.fin_temp ==1" title="{{ 'simulacion.umbral' | translate }}"
-                            class="umbral">U={{ conversacion.umbral| number }},</span>  
+                            class="modo">&nbsp;{{ 'simulacion.rr_letra' | translate }}&nbsp;</span>&nbsp; 
                         <span *ngIf="conversacion.vc != 0 && conversacion.fin_temp != 1 && conversacion.pqt_rtx !=1 && conversacion.flagcli[5] == ''" title="{{ 'simulacion.vc' | translate }}"
                             class="vccli">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc | number}}&nbsp;</span>
                         <span title="{{ 'simulacion.sn' | translate }}" class="datos">  SN={{ conversacion.sncli }}, </span>
@@ -188,6 +186,8 @@
                         <span title="{{ 'simulacion.w' | translate }}" class="datos">W={{ conversacion.wcli }} </span>
                         <span *ngIf="conversacion.fin_temp ==0 && conversacion.pqt_rtx==1" title="{{ 'simulacion.vc' | translate }}"
                             class="vctemp">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc | number }}&nbsp;</span>
+                        <span *ngIf="conversacion.fin_temp ==0 && conversacion.pqt_rtx==1 && conversacion.flagcli[3] !='' "title="{{ 'simulacion.vc' | translate }}"
+                            class="umbral">&nbsp;U={{ conversacion.umbral | number }}&nbsp;</span>
                         <span *ngIf="conversacion.flagcli[5] != ''" title="{{ 'simulacion.umbral' | translate }}"
                             class="umbral">U={{ conversacion.umbral | number}},</span>
                         <span *ngIf="conversacion.flagcli[5] != ''" title="{{ 'simulacion.vc' | translate }}"
