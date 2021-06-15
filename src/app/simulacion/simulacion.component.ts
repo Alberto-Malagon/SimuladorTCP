@@ -1497,6 +1497,8 @@ if (NumEnvios == 2 || NumEnvios == 3)
       let modPqtServ: number = this.serv.data % mssServ;
       let envMaxServ: number = Math.floor(this.cli.w / mssServ);
 
+      this.serv.sn++;
+      this.cli.an = this.serv.sn;
  // ----------------------------- LADO CLIENTE -----------------------------------------   
  // >>>>> Envio de datos cliente->servidor <<<<<
  if (numPqtClien == 0)
@@ -1770,7 +1772,7 @@ if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this
    timeout --;
    this.serv.flags= nullflag;
    this.cli.ult_sn = this.cli.sn;
-   this.cli.sn += ultDataEnv;
+   if(numPqtClienEnv!=1)this.cli.sn += ultDataEnv;
    this.comprobarEC(this.cli, umbralcli);
    if (numPqtClienEnv==1)
    {
@@ -2569,6 +2571,8 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
           let envMaxServ: number = Math.floor(this.cli.w / mssServ);
           var segperdNumserv3 = this.simular.segperdserv3.split(',').map(Number); // se transforma la cadena de caracteres a un array numerico
 
+          this.serv.sn++;
+          this.cli.an = this.serv.sn;
      // ----------------------------- LADO CLIENTE -----------------------------------------   
      // >>>>> Envio de datos cliente->servidor <<<<<
      if (numPqtClien == 0)
@@ -2839,7 +2843,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
        timeout --;
        this.serv.flags= nullflag;
        this.cli.ult_sn = this.cli.sn;
-       this.cli.sn += ultDataEnv;
+       if (numPqtClienEnv!=1) this.cli.sn += ultDataEnv;
        this.comprobarEC(this.cli, umbralcli);
        if (numPqtClienEnv==1)
        {
@@ -4801,8 +4805,6 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
           if (umbralserv==0)umbralserv=1;
           this.serv.vcrep=1;
           this.serv.vc=1;
-          //this.serv.ec = false;
-          //this.serv.flags = nullflag;
           this.comprobarEC(this.serv, umbralserv);
           if (this.serv.ec==true) this.serv.flags=ecal;
           else this.serv.flags = al;
@@ -4860,7 +4862,9 @@ if (NumEnvios == 2 || NumEnvios == 3)
       let modPqtServ: number = this.serv.data % mssServ;
       let envMaxServ: number = Math.floor(this.cli.w / mssServ);
       var segperdNumserv2 = this.simular.segperdserv2.split(',').map(Number); // se transforma la cadena de caracteres a un array numerico
-
+      
+      this.serv.sn++;
+      this.cli.an = this.serv.sn;
    
 
  // ----------------------------- LADO CLIENTE -----------------------------------------   
@@ -5096,7 +5100,7 @@ if ((this.simular.segperdclien2 != null && timeout==0 && pqtPerdido==1) || (this
    timeout --;
    this.serv.flags= nullflag;
    this.cli.ult_sn = this.cli.sn;
-   this.cli.sn += ultDataEnv;
+   if (numPqtClienEnv !=1)this.cli.sn += ultDataEnv;
    this.comprobarEC(this.cli, umbralcli);
    if (numPqtClienEnv==1)
    {
@@ -5416,7 +5420,7 @@ if ((this.simular.segperdserv2 != null && timeout==0 && pqtPerdido==1 )|| (this.
      this.cli.ult_sn = this.cli.sn;
      this.cli.ult_an = this.cli.an;
      ACK_dup++;
-     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: al, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:1, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:ACK_dup, NumEnvio:0});
+     if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: al, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:1, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:ACK_dup, NumEnvio:0});
      this.serv.vc++;
      this.serv.vcrep++;
      envAck++;
@@ -5830,6 +5834,8 @@ if (NumEnvios == 3)
       let envMaxServ: number = Math.floor(this.cli.w / mssServ);
       var segperdNumserv3 = this.simular.segperdserv3.split(',').map(Number); // se transforma la cadena de caracteres a un array numerico
 
+      this.serv.sn++;
+      this.cli.an = this.serv.sn;
  // ----------------------------- LADO CLIENTE -----------------------------------------   
  // >>>>> Envio de datos cliente->servidor <<<<<
  if (numPqtClien == 0)
@@ -6062,7 +6068,7 @@ if ((this.simular.segperdclien3 != null && timeout==0 && pqtPerdido==1) || (this
    let vc_aux: number=0;
    this.serv.flags= nullflag;
    this.cli.ult_sn = this.cli.sn;
-   this.cli.sn += ultDataEnv;
+   if(numPqtClienEnv!=1)this.cli.sn += ultDataEnv;
    this.comprobarEC(this.cli, umbralcli);
    if (numPqtClienEnv==1)
    {
@@ -6371,7 +6377,7 @@ if ((this.simular.segperdserv3 != null && timeout==0 && pqtPerdido==1 )|| (this.
       this.cli.ult_sn = this.cli.sn;
       this.cli.ult_an = this.cli.an;
       ACK_dup++;
-      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: al, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:1, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:ACK_dup, NumEnvio:0});
+      if (nseg+1<=pasoapaso || pasoapaso==0)this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: sn_perd, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: al, snserv: sn_perd, anserv: an_perd, dserv: d_perd, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep,emisor:0, pqt_rtx:1, fin_temp:0,umbral:umbralserv, envio:1 , Num_ACKdup:ACK_dup, NumEnvio:0});
       this.serv.vc++;
       this.serv.vcrep++;
       envAck++;
