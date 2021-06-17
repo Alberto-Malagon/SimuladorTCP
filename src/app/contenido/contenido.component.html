@@ -125,7 +125,7 @@
 
     <!-- Boton de simular, rellenar y limpiar formulario -->
     <div style="margin-bottom: 15px;">
-      <button type="button" class="btn btn-formulario" title="{{ 'contenido.simularpaso' | translate }}" (click)="pasoapaso_retrocede();simular();scrollToBottom();" >
+      <button type="button" class="btn btn-formulario" title="{{ 'contenido.simularpaso' | translate }}" (click)="pasoapaso_retrocede();simular()" >
         <i class="fas fa-backward"></i>
     </button>
       <button *ngIf="movil" type="button" class="btn btn-formulario" title="{{ 'contenido.simular' | translate }}" (click)="simular(); sidenav.toggle()">
@@ -134,7 +134,7 @@
       <button *ngIf="!movil" type="button" class="btn btn-formulario" title="{{ 'contenido.simular' | translate }}" (click)="simular()">
         <fa-icon [icon]="faPlay"></fa-icon>
       </button>
-      <button type="button" class="btn btn-formulario" title="{{ 'contenido.simularpaso' | translate }}" (click)="pasoapaso_avanza();simular();scrollToBottom();">
+      <button type="button" class="btn btn-formulario" title="{{ 'contenido.simularpaso' | translate }}" (click)="pasoapaso_avanza();simular()">
         <i class="fas fa-forward"></i>
     </button>
       <button type="button" class="btn btn-formulario" title="{{ 'contenido.rellenar' | translate }}" (click)="rellenarDatos()">
