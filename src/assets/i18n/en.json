@@ -152,7 +152,7 @@
     "tutor2-web": "http://www.ftn.uns.ac.rs/1417837849/milan-segedinac",
     "agradecimiento2": "from the University of Novi Sad (Vojvodina, Serbia)",
     "herramientas": "These tools have been used to carry out this project",
-    "licencias-web": "https://github.com/javierorp/tcp-simulador/blob/master/README.md#licenses",
+    "licencias-web": "https://github.com/Alberto-Malagon/SimuladorTCP/blob/master/README.md#licenses",
     "iconos": "All the icons used in the application come from",
     "traduccion": "This application has been translated into English with the help of",
     "softw-licen": "View",
@@ -160,7 +160,7 @@
     "softw-licen-3": "of the resources used",
     "repo-licen": "This project is licensed under",
     "repo-licen-tp": "GNU General Public License v3.0",
-    "repo-licen-web": "https://github.com/javierorp/tcp-simulador/blob/master/LICENSE",
+    "repo-licen-web": "https://github.com/Alberto-Malagon/SimuladorTCP/blob/master/LICENSE",
     "repo": "Repository",
     "cerrar": "Close"
   },

@@ -743,21 +743,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
       this.simulacion.pasoapaso--;
       if (this.simulacion.pasoapaso==-1)this.simulacion.pasoapaso=0;
     }
-  
-    /*
-   * @description Actualiza el valor de la variable pasoapaso a 0
-   * 0-Simulacion completa
-   * 1-Establecimiento
-   * 2-Envío cliente -> servidor
-   * 3-Envío servidor -> cliente
-   * 4-Fin
-   * @author Alberto-Malagon
-   */
-  /*
-    pasoapaso_aCero(): void {
-      this.simulacion.pasoapaso=0;
-    }
-   */ 
+
   /**
    * @description Cierra la alerta sobre la que se ha pulsado
    * @author javierorp
@@ -777,15 +763,6 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     param = Math.floor(param);
     return param;
   }
-
-  /**
-   * @description Muestra la parte final de la pagina
-   * @author Alberto-Malagon
-   */
-   scrollToBottom(): void {
-    var objDiv = document.getElementById("contenido");
-    objDiv.scrollTop = objDiv.scrollHeight;
-   }
    
   /* TEST */
   test(): void {
