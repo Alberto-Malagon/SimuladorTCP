@@ -47,7 +47,8 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
   // Componente hijo donde se ejecuta la simulacion
   @ViewChild(SimulacionComponent, {static: false}) simulacionComp: SimulacionComponent;
 
-  // Objeto simulacion que obtiene los datos del formulario
+  /* Objeto simulacion que obtiene 
+  los datos del formulario */
   simulacion: Simulacion = {
     //Cliente
     ipclien: "127.0.0.1",
@@ -80,7 +81,8 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     envios:1
   };
 
-  // Objeto que se le enviara a SimulacionComponent para simular
+  /* Objeto que se le enviara a 
+  SimulacionComponent para simular*/
   simulacionEnv: Simulacion = {
     //Cliente
     ipclien: "",
@@ -195,10 +197,8 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
       var simular: Boolean = false;
       this.enprocMsg = false;
       this.destruirSimulacionComp(); // Destruimos la simulacion anterior
-
       // Se comprueba que los parametros introducidos sean correctos
       simular = this.comprobarParametros();
-
       if (simular) {
         // Asi se consiguen que los datos se pasen por valor en lugar de por referencia
         var ipclien: string = this.simulacion.ipclien;
@@ -227,8 +227,9 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
         var cierre: string = this.simulacion.cierre;
         var pasoapaso: number = this.simulacion.pasoapaso;
         var envios: number = this.simulacion.envios;
-        this.simulacionEnv = { ipclien, mssclien, datosclien, datosclien2, datosclien3, snclien, segperdclien, segperdclien2,
-          segperdclien3, wclien, ipserv, mssserv, datosserv, datosserv2,datosserv3, snserv, segperdserv, segperdserv2, segperdserv3, wserv, timeout,
+        this.simulacionEnv = { ipclien, mssclien, datosclien, datosclien2, datosclien3, snclien,
+          segperdclien, segperdclien2,segperdclien3, wclien, ipserv, mssserv, datosserv,
+          datosserv2,datosserv3, snserv, segperdserv, segperdserv2, segperdserv3, wserv, timeout,
           umbral, algort, cierre, pasoapaso, envios };
 
         this.sidenavOpened = this.movil == true ? false : true; // Ocultamos la barra de navegacion si es un movil
@@ -290,8 +291,8 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
       segperdclien = segperdclien.replace(/[a-zA-Z]+/gi, ''); // se eliminan los caracteres que sean letras
       segperdclien = segperdclien.replace(/\s/g, ''); // se eliminan los espacios
       segperdclien = segperdclien.replace(/\W+/g, ','); // se cambian todos los caracteres no numericos por comas (,)
-
-      var segperdNum = segperdclien.split(',').map(Number); // se transforma la cadena de caracteres a un array numerico
+      // se transforma la cadena de caracteres a un array numerico
+      var segperdNum = segperdclien.split(',').map(Number); 
       segperdNum = segperdNum.sort((n1, n2) => n1 - n2); // se ordenan los numeros de menor a mayor
       //Se comprueba que ninguno de los valores introducidos es mayor que el número de sgmentos a enviar.
       let x: number;
@@ -302,8 +303,8 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
         if(segperdNum[x]>NumEnvMax_cli)
           segperdclialert=1;
       }
+      
       segperdclien = segperdNum.toString(); // se transforma el array numerico en una cadena de caracteres
-
       // Eliminamos los valores duplicados
       var segperdArr = segperdclien.split(',');
       for (var i = 0; i < segperdArr.length; i++) {
@@ -313,9 +314,11 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
         }
       }
       segperdclien = segperdArr.toString();
-      segperdclien = segperdclien.replace(/\W+/g, ','); // se vuelve a ejecutar esta regex para eliminar las comas duplicadas
-      segperdclien = (segperdclien[0] == ',') ? segperdclien.substring(1) : segperdclien; // si el primer caracter es una coma se elimina
-      segperdclien = (segperdclien[segperdclien.length - 1] == ',') ? segperdclien.substring(0, segperdclien.length - 1) : segperdclien; // si el ultimo caracter es una coma se elimina
+      segperdclien = segperdclien.replace(/\W+/g, ',');                                                                                      // se vuelve a ejecutar esta regex para eliminar las comas duplicadas
+      // si el primer caracter es una coma se elimina
+      segperdclien = (segperdclien[0] == ',') ? segperdclien.substring(1) : segperdclien; 
+      // si el ultimo caracter es una coma se elimina
+      segperdclien = (segperdclien[segperdclien.length - 1] == ',') ? segperdclien.substring(0, segperdclien.length - 1) : segperdclien; 
 
       if (segperdclien == "0")
         segperdclien = ""
@@ -619,21 +622,30 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
    */
   rellenarDatos(): void {
     try {
+      this.simulacion.envios = this.numAleatorio(1, 3, 1);
       //Cliente
       this.simulacion.ipclien = "127.0." + this.numAleatorio(0, 11, 1).toString() + "." + this.numAleatorio(0, 255, 1).toString();
       this.simulacion.mssclien = this.numAleatorio(100, 2000, 10);
       this.simulacion.datosclien = this.numAleatorio(100, 5000, 10);
+      if(this.simulacion.envios==2)this.simulacion.datosclien2 = this.numAleatorio(100, 5000, 10);
+      if(this.simulacion.envios==3)this.simulacion.datosclien3 = this.numAleatorio(100, 5000, 10);
       this.simulacion.snclien = this.numAleatorio(1, 500, 5);
       this.simulacion.wclien = this.numAleatorio(0, 8000, 1000);
       this.simulacion.segperdclien = this.numAleatorio(0,this.simulacion.datosclien/this.simulacion.mssclien,1).toString();
+      if(this.simulacion.envios==2)this.simulacion.segperdclien2 = this.numAleatorio(0,this.simulacion.datosclien2/this.simulacion.mssclien,1).toString();
+      if(this.simulacion.envios==3)this.simulacion.segperdclien3 = this.numAleatorio(0,this.simulacion.datosclien3/this.simulacion.mssclien,1).toString();
 
       //Servidor
       this.simulacion.ipserv = "192.168." + + this.numAleatorio(0, 11, 1).toString() + "." + this.numAleatorio(0, 255, 1).toString();
       this.simulacion.mssserv = this.numAleatorio(100, 2000, 10);
       this.simulacion.datosserv = this.numAleatorio(100, 5000, 10);
+      if(this.simulacion.envios==2)this.simulacion.datosserv2 = this.numAleatorio(100, 5000, 10);
+      if(this.simulacion.envios==3)this.simulacion.datosserv3 = this.numAleatorio(100, 5000, 10);
       this.simulacion.snserv = this.numAleatorio(1, 500, 5);
       this.simulacion.wserv = this.numAleatorio(0, 8000, 1000);
       this.simulacion.segperdserv = this.numAleatorio(0,this.simulacion.datosserv/this.simulacion.mssclien,1).toString();;
+      if(this.simulacion.envios==2)this.simulacion.segperdserv2 = this.numAleatorio(0,this.simulacion.datosserv2/this.simulacion.mssclien,1).toString();
+      if(this.simulacion.envios==3)this.simulacion.segperdserv3 = this.numAleatorio(0,this.simulacion.datosserv3/this.simulacion.mssclien,1).toString();
 
       //General
       this.simulacion.timeout = this.numAleatorio(0, 10, 1);
