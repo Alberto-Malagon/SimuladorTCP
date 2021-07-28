@@ -37,7 +37,8 @@
   border-color    : #004e99;
 }
 
-/* Botones de simular, rellenar y limpiar formulario */
+/* Botones de avanzar,retroceder, simular, rellenar y limpiar formulario. 
+Cuadros de número de envíos */
 .btn-formulario {
   color       : #004e99;
   border-color: #004e99;

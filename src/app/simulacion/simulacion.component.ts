@@ -35,13 +35,14 @@ interface Comunicacion {
   mssserv: number; // maximo tamanyo de segmento
   numseg: number; // numero de segmento
   vc: number; // ventana de congestion
-  emisor: number; // 1 cliente // 2 servidor
-  pqt_rtx: number; //0 no retransmitido // 1 retransmitido
-  fin_temp: number; //Indica si el temporizador ha finalizado 0-> Temporizador en marcha 1-> Temporizador finalizado
+  emisor: number; // Indica qué servidor está realizando el envío de datos: 1 cliente // 2 servidor
+  pqt_rtx: number; //Indica si se trata de un segmento retransmitido o no: 0 no retransmitido // 1 retransmitido
+  fin_temp: number; //Indica si el temporizador ha finalizado 0-> En marcha 1-> Finalizado
   umbral: number; //Indica el valor del umbral
-  envio: number; //0 = c->s  1 = c<-s
+  envio: number; //Indica el emisor del mensaje: 0 = c->s  1 = c<-s
   Num_ACKdup: number; // Indica el numero de ACKs duplicados enviados
-  NumEnvio: number; // Hace referencia al numero de envio del que se trata
+  NumEnvio: number; // Hace referencia al numero de envio del que se trata. 
+                    // Utilizado para identificar el primer segmento de cada envío y mostrar un flag
 }
 
 // Interfaz para el cliente y el servidor
@@ -179,7 +180,6 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
     {
       maqVC.vcrep = maqVC.vc;
     }
-
     return maqVC;
   }
 
@@ -187,7 +187,7 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
   /**
    * TODO: implementar la simulacion utilizando TCP Reno
    * @description Simula utilizando como algoritmo de congestion Reno
-   * @author javierorp
+   * @author Alberto-Malagon
    * @returns
    */
   simularReno(): void {
@@ -872,7 +872,7 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
     }
     else envAck=0;
     // PRIMER PAQUETE DATOS + ACK
-    if (envAck != 0 || (envAck == 0 && modPqtClien != 0)) { // Si el ACK no se ha enviado ya
+    if (envAck == 0 || (envAck == 0 && modPqtClien != 0)) { // Si el ACK no se ha enviado ya
       if (envAck == 0 && modPqtClien != 0) {
         this.cli.ult_sn = this.cli.sn;
         this.cli.sn += denv;
@@ -3655,7 +3655,7 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
   /**
    * TODO: implementar la simulacion utilizando TCP Tahoe
    * @description Simula utilizando como algoritmo de congestion Tahoe
-   * @author javierorp
+   * @author Alberto-Malagon
    * @returns
    */
   simularTahoe(): void {
@@ -6826,10 +6826,10 @@ if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha 
   * @author Alberto-Malagon
   * @returns
   */
- comprobarACKretardado_cli(): boolean {
+  comprobarACKretardado_cli(): boolean {
    if (this.cli.w == this.simular.mssserv )
    return true;
    else
    return false;
- }
+  }
 }

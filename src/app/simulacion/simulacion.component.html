@@ -169,19 +169,17 @@
                         <span *ngIf="conversacion.NumEnvio ==3 " title="{{ 'contenido.tercerenvio' | translate }}"
                             class="envio"> &nbsp;{{ 'contenido.tercerenvio' | translate }}&nbsp;</span>
                         <span *ngIf="conversacion.Num_ACKdup != 0" title="{{ 'simulacion.NumeroACKdup' | translate }}"
-                            class="ACK-dup">&nbsp;{{ conversacion.Num_ACKdup | translate }}&nbsp;</span>
-                            &nbsp;
+                            class="ACK-dup">&nbsp;{{ conversacion.Num_ACKdup | translate }}&nbsp;</span>&nbsp;    
                         <span *ngIf="conversacion.flagcli[3] != ''" title="{{ 'simulacion.al' | translate }}"
                             class="modo">&nbsp;{{ 'simulacion.al_letra' | translate }}&nbsp;</span>
                         <span *ngIf="conversacion.flagcli[4] != ''" title="{{ 'simulacion.ec' | translate }}"
                             class="modo">&nbsp;{{ 'simulacion.ec_letra' | translate }}&nbsp;</span>
                         <span *ngIf="conversacion.flagcli[5] != ''" title="{{ 'simulacion.rr' | translate }}"
                             class="modo">&nbsp;{{ 'simulacion.rr_letra' | translate }}&nbsp;</span>&nbsp; 
-                        <span *ngIf="conversacion.vc != 0 && conversacion.fin_temp != 1 && conversacion.pqt_rtx !=1 && conversacion.flagcli[5] == ''" title="{{ 'simulacion.vc' | translate }}"
-                            class="vccli">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc | number}}&nbsp;</span>
+                        <span *ngIf="conversacion.vc != 0 && conversacion.fin_temp != 1 && conversacion.pqt_rtx !=1 && conversacion.flagcli[5] == ''"
+                         title="{{ 'simulacion.vc' | translate }}" class="vccli">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc | number}}&nbsp;</span>
                         <span title="{{ 'simulacion.sn' | translate }}" class="datos">  SN={{ conversacion.sncli }}, </span>
-                        <span *ngIf="conversacion.ancli != 0" title="{{ 'simulacion.an' | translate }}" class="datos">
-                            AN={{ conversacion.ancli }},</span>
+                        <span *ngIf="conversacion.ancli != 0" title="{{ 'simulacion.an' | translate }}" class="datos"> AN={{ conversacion.ancli }},</span>
                         <span title="{{ 'simulacion.datos' | translate }}" class="datos">D={{ conversacion.dcli }},</span>
                         <span title="{{ 'simulacion.w' | translate }}" class="datos">W={{ conversacion.wcli }} </span>
                         <span *ngIf="conversacion.fin_temp ==0 && conversacion.pqt_rtx==1" title="{{ 'simulacion.vc' | translate }}"
@@ -193,19 +191,15 @@
                         <span *ngIf="conversacion.flagcli[5] != ''" title="{{ 'simulacion.vc' | translate }}"
                             class="vctemp">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc | number}}</span>  
                         <span *ngIf="conversacion.pqt_rtx==1">
-                            <i class="fas fa-redo" title="{{ 'simulacion.reenvio' | translate }}"></i>
-                        </span>
+                            <i class="fas fa-redo" title="{{ 'simulacion.reenvio' | translate }}"></i></span>
                         <span *ngIf="conversacion.fin_temp == 1 && conversacion.envio == 0">
                             <span *ngIf="conversacion.vc != 0" title="{{ 'simulacion.vc' | translate }}"
                             class="vctemp">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc | number}}</span>
-                            <i class="fas fa-history" title="{{ 'simulacion.reenvio' | translate }}"></i>
-                        </span>
-                    </td>
-                    <td>
+                            <i class="fas fa-history" title="{{ 'simulacion.reenvio' | translate }}"></i></span>
+                    </td><td>
                         <span title="{{ 'simulacion.seg' | translate }} {{ conversacion.numseg }}">
                             <img src="assets\img\flechaDoble.svg" alt="cliente<---->servidor" class="flecha"
-                                draggable="false" />
-                        </span>
+                                draggable="false" /></span>
                     </td>
                     <td class="info-dcha">
                         <span title="{{ 'simulacion.sn' | translate }}" class="datos">SN={{ conversacion.snserv }}, </span>
